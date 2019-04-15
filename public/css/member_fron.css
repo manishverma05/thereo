@@ -1,0 +1,205 @@
+.member_user{
+    padding: 0px;
+    margin: 0px;
+    width: 50px;
+    height: 50px;
+}
+
+.member_user img{
+    width: 100%;
+}
+
+.member_user i{
+    position: relative;
+    float: right;
+    margin-top: -30%;
+    font-size: 15px;
+    color: #fff !important;
+    background: #8fccb6;
+    padding: 2px;
+    border-radius: 50%;
+}
+.rjbtn.sk.discover_rj {
+    background: #000;
+    opacity: 0.5;
+}
+.rjbtn.sk.discover_rj a {
+    padding: 7px;
+}
+h1.member_menu{
+	    font-size: 50px;
+}
+.rjbtn_block.smk {
+    margin-top: 30px;
+}
+.rjbtn.skb.discover_rj {
+    background: #8FCCB6;
+    border: 1px solid #658E7F;
+}
+
+.progress_bar{
+    z-index: 99;
+    width: 100%;
+    height: 40px;
+    background: rgb(101, 142, 127,1);
+    position: absolute;
+    bottom: 0px;
+    left: 0px;
+
+}
+
+.progress_bar p{
+    z-index: 9999;
+    color: #fff;
+    text-align: center;
+    font-size: 15px;
+    position: relative;
+    margin: 0px;
+    top: 11px;
+    left: 0px;
+}
+.progress_bar_inner{
+    z-index: 999;
+    background: #8FCCB6;
+    height:40px;
+    position: absolute;
+    bottom: 0px;
+    left: 0px;
+   
+}
+.program_end_btn{
+    background: #8FCCB6;
+    border:1px solid #658E7F;
+    border-bottom-right-radius: 15px;
+    border-bottom-left-radius: 15px;
+}
+.rjbtn.mem_ac_t {
+    background: #000000;
+    opacity: .65;
+    padding: 0px;
+	margin-top: 20px;
+}
+.rjbtn.mem_ac_t a {
+    padding: 8px;
+}
+.rjbtn.mem_aclo {
+    background: #8FCCB6;
+    border: 1px solid #658E7F;
+    font-size: 16px;
+    text-align: left;
+}
+.rjbtn.mem_ac_mp {
+    color: #000;
+    background: #fff;
+    border: 1px solid #D5D5D5;
+    font-size: 16px;
+    text-align: left;
+    opacity: .65;
+}
+.rjbtn.mem_ac_nws {
+       color: #fff;
+    background: #658E7F;
+    border: 1px solid #658E7F;
+    font-size: 16px;
+    text-align: left;
+}
+
+
+.myset_wrapper{
+    height: 50px;
+    margin: 2% 0px;
+}
+.myset_inner_type_one{
+    border: 1px solid #658E7F;
+    float: right;
+    width: 100%;
+}
+.myset_inner_type_two{
+    border: 1px solid #658E7F;
+    float: right;
+    width: 90%
+}
+.setting-left{
+     background: #8FCCB6;
+     color: #fff;
+     width: 93%;
+     float: left;
+     text-align: left;
+     padding: 2px;
+}
+.setting-left-mu{
+     background: #8FCCB6;
+     color: #fff;
+      width: 92%;
+     float: left;
+     text-align: left;
+     padding: 2px;
+}
+.setting-left p{ 
+     color: #fff;
+     font-size: 20px;
+     line-height: 40px;
+     margin: 0px;
+	     padding: 0 10px;
+}
+.setting-left-mu p{ 
+     color: #fff;
+     font-size: 20px;
+     line-height: 40px;
+     margin: 0px;
+	     padding: 0 10px;
+}
+.setting-right{
+     width: 7%;
+     overflow: hidden;
+}
+.setting-right-mu{
+     width: 8%;
+     overflow: hidden;
+}
+
+.checkmark{
+    height: 16px;
+    width: 16px;
+    background-color: #8FCCB6;
+    border-radius: 50%;
+}
+label.auth_container {
+    margin-top: 10px;
+}
+.auth_container input[type="radio"]:after {
+    margin: 4px 0 0;
+    margin-top: 1px \9;
+    line-height: normal;
+    width: 15px;
+    height: 15px;
+    border-radius: 15px;
+    top: -4px;
+    left: -1px;
+    position: relative;
+    background-color: #fff;
+    content: '';
+    display: inline-block;
+    visibility: visible;
+    border: 1px solid #707070;
+}
+
+.auth_container input[type='radio']:checked:after {
+        width: 15px;
+        height: 15px;
+        border-radius: 15px;
+        top: -4px;
+        left: -1px;
+        position: relative;
+        background-color: #8FCCB6;
+        content: '';
+        display: inline-block;
+        visibility: visible;
+        border: 1px solid #658E7F;
+    }
+.rj_single_block.kk {
+    padding: 0px 0 125px;
+}
+.rjbtn.browse_pro.kk {
+    margin-bottom: 50px;
+}

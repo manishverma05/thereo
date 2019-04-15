@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project-private xmlns="http://www.netbeans.org/ns/project-private/1">
+    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
+    <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
+        <group>
+            <file>file:/C:/xampp/htdocs/thero/database/factories/ResourceFactory.php</file>
+            <file>file:/C:/xampp/htdocs/thero/database/factories/SessionFactory.php</file>
+            <file>file:/C:/xampp/htdocs/thero/database/seeds/FakeProgramCategorySeeder.php</file>
+            <file>file:/C:/xampp/htdocs/thero/database/factories/ProgramCategoryFactory.php</file>
+            <file>file:/C:/xampp/htdocs/thero/database/seeds/FakeSessionCategorySeeder.php</file>
+            <file>file:/C:/xampp/htdocs/thero/database/seeds/DatabaseSeeder.php</file>
+            <file>file:/C:/xampp/htdocs/thero/database/migrations/2019_04_06_224555_create_program_category_table.php</file>
+            <file>file:/C:/xampp/htdocs/thero/config/constants.php</file>
+            <file>file:/C:/xampp/htdocs/thero/resources/views/admin/session/create.blade.php</file>
+            <file>file:/C:/xampp/htdocs/thero/app/Http/Controllers/Admin/ProgramController.php</file>
+            <file>file:/C:/xampp/htdocs/thero/app/Http/Controllers/Admin/SessionController.php</file>
+            <file>file:/C:/xampp/htdocs/thero/resources/views/admin/program/create.blade.php</file>
+            <file>file:/C:/xampp/htdocs/thero/database/seeds/FakeSessionSeeder.php</file>
+            <file>file:/C:/xampp/htdocs/thero/database/migrations/2019_04_13_171511_create_session_category_table.php</file>
+            <file>file:/C:/xampp/htdocs/thero/database/migrations/2019_04_13_172218_create_session_resource_maps.php</file>
+            <file>file:/C:/xampp/htdocs/thero/database/factories/SessionCategoryFactory.php</file>
+            <file>file:/C:/xampp/htdocs/thero/app/Models/Session.php</file>
+            <file>file:/C:/xampp/htdocs/thero/database/migrations/2019_04_08_222550_create_program_resource_maps.php</file>
+            <file>file:/C:/xampp/htdocs/thero/database/factories/MaterialFactory.php</file>
+            <file>file:/C:/xampp/htdocs/thero/database/migrations/2019_04_09_000133_create_program_author_maps.php</file>
+            <file>file:/C:/xampp/htdocs/thero/database/migrations/2019_04_13_172523_create_session_author_maps.php</file>
+            <file>file:/C:/xampp/htdocs/thero/database/migrations/2019_04_13_171141_create_session_category_maps.php</file>
+        </group>
+    </open-files>
+</project-private>
