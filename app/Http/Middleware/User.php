@@ -16,7 +16,7 @@ class User
      */
     public function handle($request, Closure $next) {
         if(!Auth::check()){
-            return redirect('/login');
+            return redirect('/');
         }
         if (auth()->user()->role_id != 2) {
             return redirect('/unauthorize')->with('error', 'Your don\'t have permission to access.');

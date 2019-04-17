@@ -72,7 +72,9 @@
                     <div class="col-sm-9 editimg editVideo" @if(!$filename) {{ 'style=display:none;' }} @endif >
                         <div class="postnbotm">
                             <h5 class="video_attach_name">{{ $filename }}</h5>
+                            @if(isset($session->attachment->unique_id))
                             <p><a href="{{ route('admin.session.video.update',[$session->attachment->unique_id]) }}"> Edit Video</a></p>
+                            @endif
                         </div>
                     </div>   
                 </div>
@@ -240,7 +242,9 @@
                 <div class="col-sm-9 editimg" @if(!$filename) {{ 'style=display:none;' }} @endif >
                      <div class="postnbotm">
                         <h5 class="cover_image_name">{{ $filename }}</h5>
+                        @if(isset($session->cover_media->unique_id))
                         <p class="editimgLink" ><a href="{{ route('admin.session.cover.update',[$session->cover_media->unique_id]) }}">Edit Image</a></p>
+                        @endif
                     </div>
                 </div>   
             </div>

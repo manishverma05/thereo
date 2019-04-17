@@ -28,7 +28,7 @@ class ProgramController extends Controller {
     public function getList() {
         $programs = Program::with('cover_media')->orderBy('id', 'desc')->get();
         $sessions = Session::with('cover_media')->orderBy('id', 'desc')->get();
-        $resources = Resource::orderBy('id', 'desc')->get();
+        $resources = Resource::with('cover_media')->orderBy('id', 'desc')->get();
         $program_categories = ProgramCategory::orderBy('id', 'desc')->get();
         return view('admin.program.index')
                         ->withPagetitle('Programs')
@@ -139,6 +139,7 @@ class ProgramController extends Controller {
 
             $request->cover_image->move($destination, $imageName);
             $program_cover_media = new ProgramCoverMedia;
+            $program_cover_media->unique_id = uniqid() . uniqid();
             $program_cover_media->program_id = $program->id;
 
             $program_cover_media->file = $imageName;
@@ -289,8 +290,8 @@ class ProgramController extends Controller {
 
             $request->cover_image->move($destination, $imageName);
             $program_cover_media = new ProgramCoverMedia;
+            $program_cover_media->unique_id = uniqid() . uniqid();
             $program_cover_media->program_id = $program->id;
-            ;
             $program_cover_media->file = $imageName;
             $program_cover_media->created_by = auth()->user()->id;
             $program_cover_media->save();

@@ -12,6 +12,7 @@ default:
 break;
 }
 @endphp
+@section('content')
 <meta http-equiv="refresh" content="2; URL={{ $landingRedirect }}">
 <div class="container-fluid header">
     <div id="homepage">
@@ -34,3 +35,4 @@ break;
         </div>
     </div>
 </div>	
+@endsection

@@ -35,9 +35,6 @@
                 <h5>Title: What name would you like the program to have?</h5>
                 <div class="form-group">
                     <input type="text" class="form-control" name="title" value="{{ old('title',$program->title) }}" placeholder="Enter the title for the program.">
-                    @if ($errors->has('title'))
-                    <div class="text-danger">{{ $errors->first('title') }}</div>
-                    @endif
                 </div>
             </div> 
         </div>
@@ -64,6 +61,14 @@
                         </thead>
                         <tbody>
                             @foreach ($sessions as $session)
+                            @php
+                            $session_cover_image = asset('administrator/images/no-image.png');
+                            $session_cover_image_thumb = asset('administrator/images/no-image.png');
+                            if(isset($session->cover_media->file)):
+                            $session_cover_image = asset(config('constants.session.cover_path_display').$session->cover_media->file);
+                            $session_cover_image_thumb = asset(config('constants.session.cover_path_display').'thumb_'.$session->cover_media->file);
+                            endif;
+                            @endphp
                             <tr>  
                                 <td class="checkbox-cell">
                                     <div class="checkbox">
@@ -75,7 +80,7 @@
                                 </td>
                                 <td>
                                     <a href="javascript::void(0)">
-                                        <img class="article-thumb" src="../images/session-1.jpg"> 
+                                        <img class="article-thumb" src="{{ $session_cover_image_thumb }}"> 
                                         {{ $session->title }}
                                     </a>
                                 </td>
@@ -262,9 +267,6 @@
                 <h5>Alternative Title: If you don't want the title of the page to be the same as the name of the program, you may input something different instead.</h5>
                 <div class="form-group">
                     <input type="text" class="form-control" name="title_alt" value="{{ old('title_alt',$program->title_alt) }}" placeholder="Alternative Title">
-                    @if ($errors->has('title_alt'))
-                    <div class="text-danger">{{ $errors->first('title_alt') }}</div>
-                    @endif
                 </div>
             </div> 
             <div class="col-sm-12 artcontent">
@@ -298,6 +300,14 @@
                         </thead>
                         <tbody>
                             @foreach ($resources as $resource)
+                            @php
+                            $resource_cover_image = asset('administrator/images/no-image.png');
+                            $resource_cover_image_thumb = asset('administrator/images/no-image.png');
+                            if(isset($resource->cover_media->file)):
+                            $resource_cover_image = asset(config('constants.resource.cover_path_display').$resource->cover_media->file);
+                            $resource_cover_image_thumb = asset(config('constants.resource.cover_path_display').'thumb_'.$resource->cover_media->file);
+                            endif;
+                            @endphp
                             <tr>  
                                 <td class="checkbox-cell">
                                     <div class="checkbox">
@@ -309,7 +319,7 @@
                                 </td>
                                 <td>
                                     <a href="javascript::void(0)">
-                                        <img class="article-thumb" src="../images/resource-1.jpg"> 
+                                        <img class="article-thumb" src="{{ $resource_cover_image_thumb }}"> 
                                         {{ $resource->title }}
                                     </a>
                                 </td>
@@ -427,14 +437,14 @@
                 <h5>Publication: How would you like to republish the article?</h5>
                 <ul>
                     <li>Schedule for Republication</li>
-                    <li><input type="date" name="publish" value="{{ old('publish',$program->publish_on) }}"/></li>
+                    <li><input type="date" name="publish" value="{{ old('publish',date('d-m-Y',strtotime($program->publish_on))) }}"/></li>
                 </ul>
             </div>
             <div class="col-sm-12 appearence">
                 <h5>Depublication: You can depublish the article using the settings below.</h5>
                 <ul>
                     <li>Schedule for Republication</li>
-                    <li><input type="date" name="unpublish" value="{{ old('unpublish',$program->unpublish_on) }}"/></li>
+                    <li><input type="date" name="unpublish" value="{{ old('unpublish',date('d-m-Y',strtotime($program->unpublish_on))) }}"/></li>
                 </ul>
             </div>
         </div>

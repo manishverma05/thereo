@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class SessionMaterialMap extends Model {
+class ResourceAttachment extends Model
+{
     //
 }

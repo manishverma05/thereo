@@ -71,14 +71,14 @@
                 <table class="table switch-view" style="display:none;" >
                     <thead>
                         <tr>
-<!--                            <td class="checkbox-cell">
+                            <td class="checkbox-cell">
                                 <div class="checkbox">
                                     <label>
                                         <input type="checkbox" class="select-th">
                                         <i class="helper"></i>
                                     </label>
                                 </div>
-                            </td>-->
+                            </td>
                             <td>Title <i class="fa fa-long-arrow-up" aria-hidden="true"></i><i class="fa fa-long-arrow-down" aria-hidden="true"></i></td>
                             <td>Author<i class="fa fa-long-arrow-up" aria-hidden="true"></i><i class="fa fa-long-arrow-down" aria-hidden="true"></i></td>
                             <td>Category <i class="fa fa-long-arrow-up" aria-hidden="true"></i><i class="fa fa-long-arrow-down" aria-hidden="true"></i></td>
@@ -87,15 +87,23 @@
                     </thead>
                     <tbody>
                         @foreach ($programs as $program)
+                        @php
+                        $program_cover_image = asset('administrator/images/no-image.png');
+                        $program_cover_image_thumb = asset('administrator/images/no-image.png');
+                        if(isset($program->cover_media->file)):
+                        $program_cover_image = asset(config('constants.program.cover_path_display').$program->cover_media->file);
+                        $program_cover_image_thumb = asset(config('constants.program.cover_path_display').'thumb_'.$program->cover_media->file);
+                        endif;
+                        @endphp
                         <tr>  
-<!--                            <td class="checkbox-cell">
+                            <td class="checkbox-cell">
                                 <div class="checkbox">
                                     <label>
                                         <input type="checkbox" name="program_id" class="select-td" value="{{ $program->id }}">
                                         <i class="helper"></i>
                                     </label>
                                 </div>
-                            </td>-->
+                            </td>
                             <td>
                                 <a href="{{ route('admin.program.update',[$program->unique_id]) }}">
                                     <img class="article-thumb" src="{{ $program_cover_image_thumb }}"> 
@@ -198,7 +206,7 @@
                             </td>
                             <td>
                                 <a href="javascript::void(0)">
-                                    <img class="article-thumb" src="../images/category-1.jpg"> 
+                                    <img class="article-thumb" src="{{ asset('images/category-1.jpg') }}"> 
                                     {{ $category->title }}
                                 </a>
                             </td>
@@ -283,6 +291,14 @@
                     </thead>
                     <tbody>
                         @foreach ($sessions as $session)
+                        @php
+                        $session_cover_image = asset('administrator/images/no-image.png');
+                        $session_cover_image_thumb = asset('administrator/images/no-image.png');
+                        if(isset($session->cover_media->file)):
+                        $session_cover_image = asset(config('constants.session.cover_path_display').$session->cover_media->file);
+                        $session_cover_image_thumb = asset(config('constants.session.cover_path_display').'thumb_'.$session->cover_media->file);
+                        endif;
+                        @endphp
                         <tr>  
                             <td class="checkbox-cell">
                                 <div class="checkbox">
@@ -312,7 +328,7 @@
         <section id="filter">
             <div class="filter_hd">
                 <p>You may search, filter, organize, and edit the sessions listed below.</p>
-                <a href="{{ route('admin.resource.create') }}" class="nw_article">Add Resource</a>
+                <a href="{{ route('admin.resource.create.option') }}" class="nw_article">Add Resource</a>
             </div>
             <div class="filter_option col-md-12">
                 <div class="col-sm-2">
@@ -343,9 +359,17 @@
                 <!-- START: grid row -->
                 <div class="row articles-wrapper switch-view">
                     @foreach ($resources as $resource)
+                    @php
+                    $resource_cover_image = asset('administrator/images/no-image.png');
+                    $resource_cover_image_thumb = asset('administrator/images/no-image.png');
+                    if(isset($resource->cover_media->file)):
+                    $resource_cover_image = asset(config('constants.resource.cover_path_display').$resource->cover_media->file);
+                    $resource_cover_image_thumb = asset(config('constants.resource.cover_path_display').'thumb_'.$resource->cover_media->file);
+                    endif;
+                    @endphp
                     <!-- START: single grid -->
-                    <div class="col-sm-3 articles-grid" style="background-image: url('../images/resource-1.jpg');background-size:cover;background-repeat:no-repeat;">
-                        <h3>{{ $resource->title }}</h3>
+                    <div class="col-sm-3 articles-grid" style="background-image: url('{{ $resource_cover_image }}');background-size:cover;background-repeat:no-repeat;">
+                        <h3><a href="{{ route("admin.resource.update.$resource->type",[$resource->unique_id]) }}">{{ $resource->title }}</a></h3>
                     </div> 
                     <!-- END: single grid -->
                     @endforeach
@@ -370,6 +394,14 @@
                     </thead>
                     <tbody>
                         @foreach ($resources as $resource)
+                        @php
+                        $resource_cover_image = asset('administrator/images/no-image.png');
+                        $resource_cover_image_thumb = asset('administrator/images/no-image.png');
+                        if(isset($resource->cover_media->file)):
+                        $resource_cover_image = asset(config('constants.resource.cover_path_display').$resource->cover_media->file);
+                        $resource_cover_image_thumb = asset(config('constants.resource.cover_path_display').'thumb_'.$resource->cover_media->file);
+                        endif;
+                        @endphp
                         <tr>  
                             <td class="checkbox-cell">
                                 <div class="checkbox">
@@ -380,8 +412,8 @@
                                 </div>
                             </td>
                             <td>
-                                <a href="javascript::void(0)">
-                                    <img class="article-thumb" src="../images/resource-1.jpg"> 
+                                <a href="{{ route("admin.resource.update.$resource->type",[$resource->unique_id]) }}">
+                                    <img class="article-thumb" src="{{ $resource_cover_image_thumb }}"> 
                                     {{ $resource->title }}
                                 </a>
                             </td>

@@ -20,7 +20,7 @@
     <body class="rj_admin_panel">
         <div class="container">
             <!-- Start Admin Header -->
-            <div class="row">
+            <div class="row breadcrumb-section">
                 <div class="col-md-12">
                     <div class="rjadmin_bar"><a href="javascript::void(0);" class="rjadmin_active"><i class="fa fa-bars"></i></a></div>
                 </div>

@@ -35,9 +35,6 @@
                 <h5>Title: What name would you like the program to have?</h5>
                 <div class="form-group">
                     <input type="text" class="form-control" name="title" value="{{ old('title') }}" placeholder="Enter the title for the program.">
-                    @if ($errors->has('title'))
-                    <div class="text-danger">{{ $errors->first('title') }}</div>
-                    @endif
                 </div>
             </div> 
         </div>
@@ -64,6 +61,14 @@
                         </thead>
                         <tbody>
                             @foreach ($sessions as $session)
+                            @php
+                            $session_cover_image = asset('administrator/images/no-image.png');
+                            $session_cover_image_thumb = asset('administrator/images/no-image.png');
+                            if(isset($session->cover_media->file)):
+                            $session_cover_image = asset(config('constants.session.cover_path_display').$session->cover_media->file);
+                            $session_cover_image_thumb = asset(config('constants.session.cover_path_display').'thumb_'.$session->cover_media->file);
+                            endif;
+                            @endphp
                             <tr>  
                                 <td class="checkbox-cell">
                                     <div class="checkbox">
@@ -75,7 +80,7 @@
                                 </td>
                                 <td>
                                     <a href="javascript::void(0)">
-                                        <img class="article-thumb" src="../images/session-1.jpg"> 
+                                        <img class="article-thumb" src="{{ $session_cover_image_thumb }}"> 
                                         {{ $session->title }}
                                     </a>
                                 </td>
@@ -106,7 +111,7 @@
                         </select>
                     </div> 
                     <div class="col-sm-5">
-                        <p>7 Resources</p>
+                        <p>7 Updates</p>
                     </div> 
                     <div class="col-sm-1">
                        <!-- <select>
@@ -262,9 +267,6 @@
                 <h5>Alternative Title: If you don't want the title of the page to be the same as the name of the program, you may input something different instead.</h5>
                 <div class="form-group">
                     <input type="text" class="form-control" name="title_alt" value="{{ old('title_alt') }}" placeholder="Alternative Title">
-                    @if ($errors->has('title_alt'))
-                    <div class="text-danger">{{ $errors->first('title_alt') }}</div>
-                    @endif
                 </div>
             </div> 
             <div class="col-sm-12 artcontent">
@@ -298,6 +300,14 @@
                         </thead>
                         <tbody>
                             @foreach ($resources as $resource)
+                            @php
+                            $resource_cover_image = asset('administrator/images/no-image.png');
+                            $resource_cover_image_thumb = asset('administrator/images/no-image.png');
+                            if(isset($resource->cover_media->file)):
+                            $resource_cover_image = asset(config('constants.resource.cover_path_display').$resource->cover_media->file);
+                            $resource_cover_image_thumb = asset(config('constants.resource.cover_path_display').'thumb_'.$resource->cover_media->file);
+                            endif;
+                            @endphp
                             <tr>  
                                 <td class="checkbox-cell">
                                     <div class="checkbox">
@@ -309,7 +319,7 @@
                                 </td>
                                 <td>
                                     <a href="javascript::void(0)">
-                                        <img class="article-thumb" src="../images/resource-1.jpg"> 
+                                        <img class="article-thumb" src="{{ $resource_cover_image_thumb }}"> 
                                         {{ $resource->title }}
                                     </a>
                                 </td>
@@ -390,8 +400,7 @@
                     </div>
                 </div>   
             </div>
-        </div>
-        
+        </div>        
         <div id="public-tab" class="tab-pane fade in">
             <div class="admin-nav-head">The publication tab controls how and when you want the article to be published.</div>        
             <div class="col-sm-12 meta-auther userAccess">
@@ -417,15 +426,15 @@
             <div class="col-sm-12 appearence">
                 <h5>Publication: How would you like to republish the article?</h5>
                 <ul>
-                    <li>Schedule for Republication</li>
-                    <li><input type="date" name="publish" value="{{ old('publish') }}"/></li>
+                    <li>Schedule for Republication <input type="date" name="publish" value="{{ old('publish') }}"/></li>
+                    <li>Republication Now</li>
                 </ul>
             </div>
             <div class="col-sm-12 appearence">
                 <h5>Depublication: You can depublish the article using the settings below.</h5>
                 <ul>
-                    <li>Schedule for Republication</li>
-                    <li><input type="date" name="unpublish" value="{{ old('unpublish') }}"/></li>
+                    <li>Schedule for Republication <input type="date" name="unpublish" value="{{ old('unpublish') }}"/></li>
+                    <li><a href="">Depublish Now</a></li>
                 </ul>
             </div>
         </div>
@@ -433,6 +442,7 @@
             <div class="admin-nav-head">Analytics provides details about how your audience responds to, and interacts with, this article in particular.</div>
         </div>
     </div>
+    <br/>
     <button type="submit" class="btn btn-primary">Add Program</button>
 </form>
 @endsection('content')
@@ -441,52 +451,52 @@
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/tagmanager/3.0.2/tagmanager.min.js"></script>
 <script src="https://cdn.ckeditor.com/ckeditor5/11.0.1/classic/ckeditor.js"></script>
 <script>
-    ClassicEditor
-            .create(document.querySelector('#editor'))
-            .catch(error => {
-                console.error(error);
-            });
+                    ClassicEditor
+                            .create(document.querySelector('#editor'))
+                            .catch(error => {
+                                console.error(error);
+                            });
 
-    $(document).ready(function () {
-        $(".tm-input").tagsManager();
-    });
-    //Select deselect session
-    $('body').on('click', '.select-session-th', function () {
-        if ($(this)[0].checked) {
-            $('body .select-session-td').prop('checked', true);
-        } else {
-            $('body .select-session-td').prop('checked', false);
-        }
-    });
-    $('body').on('click', '.select-session-td', function () {
-        if (!$(this)[0].checked) {
-            $('body .select-session-th').prop('checked', false);
-        }
-    });
-    //Select deselect resource
-    $('body').on('click', '.select-resource-th', function () {
-        if ($(this)[0].checked) {
-            $('body .select-resource-td').prop('checked', true);
-        } else {
-            $('body .select-resource-td').prop('checked', false);
-        }
-    });
-    $('body').on('click', '.select-resource-td', function () {
-        if (!$(this)[0].checked) {
-            $('body .select-resource-th').prop('checked', false);
-        }
-    });
-    function readURL(input) {
-        if (input.files && input.files[0]) {
-            var reader = new FileReader();
+                    $(document).ready(function () {
+                        $(".tm-input").tagsManager();
+                    });
+                    //Select deselect session
+                    $('body').on('click', '.select-session-th', function () {
+                        if ($(this)[0].checked) {
+                            $('body .select-session-td').prop('checked', true);
+                        } else {
+                            $('body .select-session-td').prop('checked', false);
+                        }
+                    });
+                    $('body').on('click', '.select-session-td', function () {
+                        if (!$(this)[0].checked) {
+                            $('body .select-session-th').prop('checked', false);
+                        }
+                    });
+                    //Select deselect resource
+                    $('body').on('click', '.select-resource-th', function () {
+                        if ($(this)[0].checked) {
+                            $('body .select-resource-td').prop('checked', true);
+                        } else {
+                            $('body .select-resource-td').prop('checked', false);
+                        }
+                    });
+                    $('body').on('click', '.select-resource-td', function () {
+                        if (!$(this)[0].checked) {
+                            $('body .select-resource-th').prop('checked', false);
+                        }
+                    });
+                    function readURL(input) {
+                        if (input.files && input.files[0]) {
+                            var reader = new FileReader();
 
-            reader.onload = function (e) {
-                $('#cover_image_preview').attr('src', e.target.result);
-            };
-            $('.editimg').show();
-            $('.cover_image_name').text(input.files[0].name);
-            reader.readAsDataURL(input.files[0]);
-        }
-    }
+                            reader.onload = function (e) {
+                                $('#cover_image_preview').attr('src', e.target.result);
+                            };
+                            $('.editimg').show();
+                            $('.cover_image_name').text(input.files[0].name);
+                            reader.readAsDataURL(input.files[0]);
+                        }
+                    }
 </script>
 @endsection('after-script')
