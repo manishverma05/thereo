@@ -343,7 +343,7 @@ class ProgramController extends Controller {
     }
 
     public function getCategoryUpdate($program_category_unique_id) {
-        $programCategory = ProgramCategory::with('cover_media')->first();
+        $programCategory = ProgramCategory::where('unique_id', $program_category_unique_id)->with('cover_media')->first();
         return view('admin.program.category.update')
                         ->withPagetitle('Update Program Category')
                         ->withPageheader('Update Program Category')
