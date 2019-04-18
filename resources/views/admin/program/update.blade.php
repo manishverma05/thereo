@@ -314,7 +314,9 @@
                 <div class="col-sm-9 editimg" @if(!$filename) {{ 'style=display:none;' }} @endif>
                      <div class="postnbotm" >
                         <h5 class="cover_image_name">{{ $filename }}</h5>
+                        @if(isset($program->cover_media->unique_id))
                         <p class="editimgLink" ><a href="{{ route('admin.program.cover.update',[$program->cover_media->unique_id]) }}">Edit Image</a></p>
+                        @endif
                     </div>
                 </div>   
             </div>
