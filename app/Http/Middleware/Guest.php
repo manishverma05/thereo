@@ -18,7 +18,7 @@ class Guest {
         if (Auth::check()) {
             switch (auth()->user()->role_id) {
                 case 1:
-                    return redirect()->route('admin');
+                    return redirect()->route('admin.dashboard');
                     break;
                 case 2:
                     return redirect()->route('/');

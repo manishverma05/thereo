@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller {
 
@@ -33,6 +34,12 @@ class HomeController extends Controller {
 
     public function unauthorize() {
         return view('auth.unauthorize');
+    }
+
+    public function getlogout() {
+        $user = auth()->user();
+        Auth::logout();
+        return view('auth.user_out')->withUser($user);
     }
 
 }

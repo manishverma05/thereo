@@ -159,21 +159,22 @@
                     <!-- START: grid row -->
                     <div class="row articles-wrapper switch-view">
                         @foreach ($programCategories as $category)
+                        @php
+                        $category_cover_image = asset('administrator/images/no-image.png');
+                        $category_cover_image_thumb = asset('administrator/images/no-image.png');
+                        if(isset($category->cover_media->file)):
+                        $category_cover_image = asset(config('constants.program.category.cover_path_display').$category->cover_media->file);
+                        $category_cover_image_thumb = asset(config('constants.program.category.cover_path_display').'thumb_'.$category->cover_media->file);
+                        endif;
+                        @endphp
                         <!-- START: single grid -->
-                        <div class="col-sm-3 articles-grid" style="background-image: url('../images/session-1.jpg');background-size:cover;background-repeat:no-repeat;">
-                            <h3>{{ $category->title }}</h3>
+                        <div class="col-sm-3 articles-grid" style="background-image: url('{{ $category_cover_image }}');background-size:cover;background-repeat:no-repeat;">
+                            <h3><a href="{{ route('admin.program.category.update',[$category->unique_id]) }}" >{{ $category->title }}</a></h3>
                         </div> 
                         <!-- END: single grid -->
                         @endforeach
                     </div>         
                     <!-- END :grid row -->
-                    @foreach ($programCategories as $category)
-                    <!-- START: single grid -->
-                    <div class="col-sm-3 articles-grid" style="background-image: url('../images/category-1.jpg');background-size:cover;background-repeat:no-repeat;">
-                        <h3>{{ $category->title }}</h3>
-                    </div> 
-                    <!-- END: single grid -->
-                    @endforeach
                 </div>         
                 <!-- END :grid row -->
                 <table class="table switch-view" style="display:none;" >
@@ -195,6 +196,14 @@
                     </thead>
                     <tbody>
                         @foreach ($programCategories as $category)
+                        @php
+                        $category_cover_image = asset('administrator/images/no-image.png');
+                        $category_cover_image_thumb = asset('administrator/images/no-image.png');
+                        if(isset($category->cover_media->file)):
+                        $category_cover_image = asset(config('constants.program.category.cover_path_display').$category->cover_media->file);
+                        $category_cover_image_thumb = asset(config('constants.program.category.cover_path_display').'thumb_'.$category->cover_media->file);
+                        endif;
+                        @endphp
                         <tr>  
                             <td class="checkbox-cell">
                                 <div class="checkbox">
@@ -205,8 +214,8 @@
                                 </div>
                             </td>
                             <td>
-                                <a href="javascript::void(0)">
-                                    <img class="article-thumb" src="{{ asset('images/category-1.jpg') }}"> 
+                                <a href="{{ route('admin.program.category.update',[$category->unique_id]) }}">
+                                    <img class="article-thumb" src="{{ $category_cover_image_thumb }}"> 
                                     {{ $category->title }}
                                 </a>
                             </td>

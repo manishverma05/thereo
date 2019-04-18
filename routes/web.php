@@ -18,10 +18,10 @@ Auth::routes();
 Route::group(['middleware' => 'auth'], function () {
     Route::get('/', 'HomeController@landing')->name('landing');
     Route::group(['as' => 'user.'], function () {
-        Route::get('/home', 'HomeController@index')->name('home');
-        Route::get('/about', 'HomeController@about')->name('about');
-        Route::group(['as' => 'programs.', 'prefix' => 'programs'], function () {
-            Route::get('/', 'ProgramController@index')->name('list');
-        });
+        Route::get('logout', 'HomeController@getlogout')->name('logout');
+        Route::get('home', 'HomeController@index')->name('home');
+        Route::get('about', 'HomeController@about')->name('about');
+        Route::get('programs', 'ProgramController@index')->name('programs');
+        Route::get('program/{program_slug}', 'ProgramController@detail')->name('program');
     });
 });

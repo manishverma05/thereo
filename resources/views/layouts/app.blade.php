@@ -77,7 +77,7 @@
                             $accountRoute = route('admin.dashboard');
                             break;
                         case 2:
-                            $accountRoute = route('user');
+                            $accountRoute = route('landing');
                             break;
                     }
                 }

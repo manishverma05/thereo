@@ -21,6 +21,7 @@ $factory->define(ProgramCategory::class, function (Faker $faker) {
         'slug' => 'programCategory'.$faker->unique()->slug(),
         'description' => '',
         'created_by' => '1',
+        'status' => '1',
         'title' => 'ProgramCategory'.' - '.uniqid()
     ];
 });

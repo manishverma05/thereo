@@ -27,7 +27,7 @@ use RegistersUsers;
      *
      * @var string
      */
-    protected $redirectTo = '/home';
+    protected $redirectTo = '/';
 
     /**
      * Create a new controller instance.
@@ -68,6 +68,26 @@ use RegistersUsers;
                     'role_id' => 2,
                     'password' => Hash::make($data['password']),
         ]);
+    }
+
+    /*
+     * override the $redirectTo according to user role.
+     */
+
+    public function redirectTo() {
+
+        // User role
+        $role = auth()->user()->role_id;
+
+        // Check user role
+        switch ($role) {
+            case 1:
+                return 'admin.dashboard';
+                break;
+            default:
+                return 'landing';
+                break;
+        }
     }
 
 }

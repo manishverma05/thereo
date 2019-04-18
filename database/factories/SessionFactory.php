@@ -22,6 +22,7 @@ $factory->define(Session::class, function (Faker $faker) {
         'tags' => '',
         'description' => '',
         'created_by' => '1',
+        'status' => '1',
         'title' => 'Session'.' - '.uniqid()
     ];
 });

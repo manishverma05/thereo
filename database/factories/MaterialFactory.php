@@ -21,6 +21,7 @@ $factory->define(Material::class, function (Faker $faker) {
         'slug' => 'material'.$faker->unique()->slug(),
         'description' => '',
         'created_by' => '1',
+        'status' => '1',
         'title' => 'Material'.' - '.uniqid()
     ];
 });

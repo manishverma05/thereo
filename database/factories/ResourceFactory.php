@@ -21,6 +21,7 @@ $factory->define(Resource::class, function (Faker $faker) {
         'slug' => 'resource'.$faker->unique()->slug(),
         'description' => '',
         'created_by' => '1',
+        'status' => '1',
         'title' => 'Resource'.' - '.uniqid()
     ];
 });

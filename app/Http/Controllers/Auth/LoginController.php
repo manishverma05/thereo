@@ -24,7 +24,7 @@ use AuthenticatesUsers;
      *
      * @var string
      */
-    protected $redirectTo = '/home';
+    protected $redirectTo = '/';
 
     /**
      * Create a new controller instance.
@@ -46,10 +46,10 @@ use AuthenticatesUsers;
         // Check user role
         switch ($role) {
             case 1:
-                return '/admin/dashboard';
+                return 'admin.dashboard';
                 break;
             default:
-                return '/home';
+                return 'landing';
                 break;
         }
     }

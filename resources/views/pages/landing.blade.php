@@ -84,7 +84,7 @@
                             </div>
                             <div class="col-md-4 pd0 wd420 mrgn-left">
                                 <div class="rj_masonry-1 side_masonry ">
-                                    <a href="{{ route('user.programs.list') }}">
+                                    <a href="{{ route('user.programs') }}">
                                         <img src="{{ asset('images/menu-4.jpg') }}" alt="">
                                         <div class="menu_opacity"></div>
                                         <div class="menu_name">Programs</div>

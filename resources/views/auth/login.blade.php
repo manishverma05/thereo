@@ -88,6 +88,7 @@
         <div class="banner_opacity"></div>
     </div>
     <form method="POST" action="{{ route('login') }}">
+        @csrf
         @if ($errors->has('email'))
         <span class="invalid-feedback" role="alert">
             <strong>{{ $errors->first('email') }}</strong>
@@ -109,7 +110,6 @@
             @include('auth.login_password');
         </div>
     </form>
-
 </div>	
 @endsection
 @section('after-script')

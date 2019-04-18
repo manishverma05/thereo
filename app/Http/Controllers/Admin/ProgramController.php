@@ -16,8 +16,11 @@ use App\Models\ProgramSessionMap;
 use App\Models\ProgramResourceMap;
 use App\Models\ProgramCoverMedia;
 use App\Models\ProgramAccessMap;
+use App\MOdels\ProgramCategoryCoverMedia;
 use App\Http\Requests\AdminProgramCreateRequest;
 use App\Http\Requests\AdminProgramUpdateRequest;
+use App\Http\Requests\AdminProgramCategoryCreateRequest;
+use App\Http\Requests\AdminProgramCategoryUpdateRequest;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
 use Intervention\Image\Facades\Image;
@@ -29,7 +32,7 @@ class ProgramController extends Controller {
         $programs = Program::with('cover_media')->orderBy('id', 'desc')->get();
         $sessions = Session::with('cover_media')->orderBy('id', 'desc')->get();
         $resources = Resource::with('cover_media')->orderBy('id', 'desc')->get();
-        $program_categories = ProgramCategory::orderBy('id', 'desc')->get();
+        $program_categories = ProgramCategory::with('cover_media')->orderBy('id', 'desc')->get();
         return view('admin.program.index')
                         ->withPagetitle('Programs')
                         ->withPageheader('Programs')
@@ -148,18 +151,6 @@ class ProgramController extends Controller {
         }
 
         return redirect()->route('admin.program.list')->with('success', 'Program has been added.');
-//        https://laravel.io/forum/06-11-2014-how-to-save-eloquent-model-with-relations-in-one-go
-//        $ship = new Ship;
-//        $ship->name = 'Enterprise';
-//        $ship->registry = 'ncc-1701D';
-//
-//        $captain = new Captain;
-//        $captain->name = 'jean Luc Picard';
-//
-//        DB::transaction(function() use ($ship, $captain) {
-//            $ship = $ship->save(); //Ship Exists First
-//            Ship::find($ship->id)->captain()->save($captain); //Captain is saved to existing ship
-//        });
     }
 
     public function getUpdate($program_unique_id) {
@@ -301,23 +292,113 @@ class ProgramController extends Controller {
     }
 
     public function getCategoryCreate() {
-        return view('admin.program.create')
-                        ->withPagetitle('New Category')
-                        ->withPageheader('New Category');
+        return view('admin.program.category.create')
+                        ->withPagetitle('New Program Category')
+                        ->withPageheader('New Program Category');
     }
 
-    public function postCategoryCreate(Request $request) {
-        
+    public function postCategoryCreate(AdminProgramCategoryCreateRequest $request) {
+        // Retrieve the validated input data...
+        $validation = $request->validated();
+
+        // create new program and save it
+        $program_category = new ProgramCategory;
+        $program_category->unique_id = uniqid() . uniqid();
+        $program_category->slug = $request->slug ? $request->slug : Str::slug($request->title, '-');
+        $program_category->title = $request->title;
+        $program_category->description = '';
+        $program_category->cover_title = $request->cover_title;
+        $program_category->created_by = auth()->user()->id;
+        $program_category->publish_on = $request->publish != '' ? Carbon::createFromFormat('Y-m-d H:i:s', $request->publish . ' 00:00:00') : Carbon::now();
+        if ($request->unpublish != '') {
+            $program_category->unpublish_on = Carbon::createFromFormat('Y-m-d H:i:s', $request->unpublish . ' 00:00:00');
+        }
+        $program_category->save();
+
+        if (isset($request->cover_image)) {
+            $imageName = strtolower($request->cover_image->getClientOriginalName());
+            $destination = config('constants.program.category.cover_path');
+            $i = 1;
+            while (true) {
+                if (!file_exists($destination . $imageName)) {
+                    break;
+                }
+                $imageName = ++$i . $imageName;
+            }
+            $img = Image::make($request->cover_image->getRealPath());
+            $img->resize(300, 300, function ($constraint) {
+                $constraint->aspectRatio();
+            })->save(config('constants.program.category.cover_path') . 'thumb_' . $imageName);
+
+            $request->cover_image->move($destination, $imageName);
+            $program_category_cover_media = new ProgramCategoryCoverMedia;
+            $program_category_cover_media->unique_id = uniqid() . uniqid();
+            $program_category_cover_media->program_category_id = $program_category->id;
+
+            $program_category_cover_media->file = $imageName;
+            $program_category_cover_media->created_by = auth()->user()->id;
+            $program_category_cover_media->save();
+        }
+        return redirect()->route('admin.program.list')->with('success', 'Program Category has been added.');
     }
 
-    public function getCategoryUpdate($program_unique_id) {
-        return view('admin.program.create')
-                        ->withPagetitle('Update Category')
-                        ->withPageheader('Update Category');
+    public function getCategoryUpdate($program_category_unique_id) {
+        $programCategory = ProgramCategory::with('cover_media')->first();
+        return view('admin.program.category.update')
+                        ->withPagetitle('Update Program Category')
+                        ->withPageheader('Update Program Category')
+                        ->withProgramCategory($programCategory);
     }
 
-    public function postCategoryUpdate(Request $request, $program_unique_id) {
-        
+    public function postCategoryUpdate(AdminProgramCategoryUpdateRequest $request, $program_category_unique_id) {
+        // Retrieve the validated input data...
+        $validation = $request->validated();
+
+        // create new program category and save it
+        $program_category = ProgramCategory::where('unique_id', $program_category_unique_id)->first();
+        $program_category->slug = $request->slug ? $request->slug : Str::slug($request->title, '-');
+        $program_category->title = $request->title;
+        $program_category->description = '';
+        $program_category->cover_title = $request->cover_title;
+        $program_category->created_by = auth()->user()->id;
+        $program_category->publish_on = $request->publish != '' ? Carbon::createFromFormat('Y-m-d H:i:s', $request->publish . ' 00:00:00') : Carbon::now();
+        if ($request->unpublish != '') {
+            $program_category->unpublish_on = Carbon::createFromFormat('Y-m-d H:i:s', $request->unpublish . ' 00:00:00');
+        }
+        $program_category->save();
+
+        if (isset($request->cover_image)) {
+            $program_category_cover_media_old = ProgramCategoryCoverMedia::where('program_category_id', $program_category->id)->first();
+            if ($program_category_cover_media_old) {
+                if (file_exists(config('constants.program.category.cover_path') . $program_category_cover_media_old->file))
+                    unlink(config('constants.program.category.cover_path') . $program_category_cover_media_old->file);
+                if (file_exists(config('constants.program.category.cover_path') . 'thumb_' . $program_category_cover_media_old->file))
+                    unlink(config('constants.program.category.cover_path') . 'thumb_' . $program_category_cover_media_old->file);
+                $program_category_cover_media_old->delete();
+            }
+            $imageName = strtolower($request->cover_image->getClientOriginalName());
+            $destination = config('constants.program.category.cover_path');
+            $i = 1;
+            while (true) {
+                if (!file_exists($destination . $imageName)) {
+                    break;
+                }
+                $imageName = ++$i . $imageName;
+            }
+            $img = Image::make($request->cover_image->getRealPath());
+            $img->resize(300, 300, function ($constraint) {
+                $constraint->aspectRatio();
+            })->save(config('constants.program.category.cover_path') . 'thumb_' . $imageName);
+
+            $request->cover_image->move($destination, $imageName);
+            $program_category_cover_media = new ProgramCategoryCoverMedia;
+            $program_category_cover_media->unique_id = uniqid() . uniqid();
+            $program_category_cover_media->program_category_id = $program_category->id;
+            $program_category_cover_media->file = $imageName;
+            $program_category_cover_media->created_by = auth()->user()->id;
+            $program_category_cover_media->save();
+        }
+        return redirect()->route('admin.program.list')->with('success', 'Program Category has been updated.');
     }
 
     public function getCoverUpdate($cover_unique_id) {

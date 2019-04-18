@@ -68,10 +68,9 @@
                         <button class="btn btn-primary dropdown-toggle all_program_button All_Programs" type="button" data-toggle="dropdown">All Programs
                             <i class="fa fa-angle-down"></i></button>
                         <ul class="dropdown-menu">
-                            <li><a href="javascript:void(0)">Psychological Disorder Programs</a></li>
-                            <li><a href="javascript:void(0)">Mental Health Programs</a></li>
-                            <li><a href="javascript:void(0)">Relaxation Programs</a></li>
-                            <li><a href="javascript:void(0)">Psycho Education Programs</a></li>
+                            @foreach($programCategories as $programCategory)
+                            <li><a href="javascript:void(0)">{{ $programCategory->title }}</a></li>
+                            @endforeach
                         </ul>
                     </div>
                     <div class="dropdown rj-drop">
@@ -84,100 +83,88 @@
                     </div>
                 </div>
                 <div class="or_program">
-                    <div class="col-md-8 pd0 wd860 mrgn-left">
-                        <div class="col-sm-12 pd0">
-                            <div class="rj_program rj_program_mk1  pd0">
-                                <div class="rj_program_inner">
-                                    <a href="javascript:void(0)">
-                                        <img src="{{ asset('images/program-1.jpg') }}" alt="">
-                                        <div class="menu_opacity"></div>
-                                        <div class="menu_name">Stress</div>
-                                    </a>
-                                </div>
-                            </div>                      
-                        </div>
-                        <div class="col-md-6 pd0 wd420 mrgn-left">
+                    <div class="col-md-12 pd0 wd860 mrgn-left">
+                        @foreach ($programs as $program)
+                        @php
+                        $program_cover_image = asset('images/no-image.png');
+                        $program_cover_image_thumb = asset('images/no-image.png');
+                        if(isset($program->cover_media->file)):
+                        $program_cover_image = asset(config('constants.program.cover_path_display').$program->cover_media->file);
+                        $program_cover_image_thumb = asset(config('constants.program.cover_path_display').'thumb_'.$program->cover_media->file);
+                        endif;
+                        @endphp
+                        <div class="col-md-4 pd0 wd420 mrgn-left">
                             <div class="rj_program rj_program_mk5  pd0">
                                 <div class="rj_program_inner">
-                                    <a href="javascript:void(0)">
-                                        <img src="{{ asset('images/program-1.jpg') }}" alt=""  >
+                                    <a href="{{ route('user.program',[$program->slug]) }}">
+                                        <img src="{{ $program_cover_image }}" alt=""  >
                                         <div class="menu_opacity"></div>
-                                        <div class="menu_name">Depression</div>
+                                        <div class="menu_name">{{ $program->title }}</div>
                                     </a>
                                 </div>
                             </div>                      
                         </div>
-                        <div class="col-md-6 pd0 wd420 mrgn-right">
-                            <div class="rj_program rj_program_mk3  pd0">
-                                <div class="rj_program_inner">
-                                    <a href="javascript:void(0)">
-                                        <img src="{{ asset('images/program-1.jpg') }}" alt="">
-                                        <div class="menu_opacity"></div>
-                                        <div class="menu_name">Parenting</div>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
+                        @endforeach
                     </div>
-                    <div class="col-md-4 pd0 wdwdh420 mrgn-right">
-                        <div class="rj_program rj_program_mk5  wdwdh420 pd0">
-                            <div class="rj_program_inner">
-                                <a href="javascript:void(0)">
-                                    <img src="{{ asset('images/program-4.jpg') }}" alt="" >
-                                    <div class="menu_opacity"></div>
-                                    <div class="menu_name">Self-Care</div>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="clearfix"></div>
-                    <div class="col-md-8 pd0 wd860 mrgn-left">
-                        <div class="col-sm-12 pd0">
-                            <div class="rj_program rj_program_mk1  pd0">
-                                <div class="rj_program_inner">
-                                    <a href="javascript:void(0)">
-                                        <img src="{{ asset('images/program-1.jpg') }}" alt="">
-                                        <div class="menu_opacity"></div>
-                                        <div class="menu_name">Stress</div>
-                                    </a>
-                                </div>
-                            </div>                      
-                        </div>
-                        <div class="col-md-6 pd0 wd420 mrgn-left">
-                            <div class="rj_program rj_program_mk5  pd0">
-                                <div class="rj_program_inner">
-                                    <a href="javascript:void(0)">
-                                        <img src="{{ asset('images/program-1.jpg') }}" alt=""  >
-                                        <div class="menu_opacity"></div>
-                                        <div class="menu_name">Depression</div>
-                                    </a>
-                                </div>
-                            </div>                      
-                        </div>
-                        <div class="col-md-6 pd0 wd420 mrgn-right">
-                            <div class="rj_program rj_program_mk3  pd0">
-                                <div class="rj_program_inner">
-                                    <a href="javascript:void(0)">
-                                        <img src="{{ asset('images/program-1.jpg') }}" alt="">
-                                        <div class="menu_opacity"></div>
-                                        <div class="menu_name">Parenting</div>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4 pd0 wdwdh420 mrgn-right">
-                        <div class="rj_program rj_program_mk5  wdwdh420 pd0">
-                            <div class="rj_program_inner">
-                                <a href="javascript:void(0)">
-                                    <img src="{{ asset('images/program-4.jpg') }}" alt="" >
-                                    <div class="menu_opacity"></div>
-                                    <div class="menu_name">Self-Care</div>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="clearfix"></div>
+                    <!--                    <div class="col-md-4 pd0 wdwdh420 mrgn-right">
+                                            <div class="rj_program rj_program_mk5  wdwdh420 pd0">
+                                                <div class="rj_program_inner">
+                                                    <a href="javascript:void(0)">
+                                                        <img src="{{ asset('images/program-4.jpg') }}" alt="" >
+                                                        <div class="menu_opacity"></div>
+                                                        <div class="menu_name">Self-Care</div>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="clearfix"></div>
+                                        <div class="col-md-8 pd0 wd860 mrgn-left">
+                                            <div class="col-sm-12 pd0">
+                                                <div class="rj_program rj_program_mk1  pd0">
+                                                    <div class="rj_program_inner">
+                                                        <a href="javascript:void(0)">
+                                                            <img src="{{ asset('images/program-1.jpg') }}" alt="">
+                                                            <div class="menu_opacity"></div>
+                                                            <div class="menu_name">Stress</div>
+                                                        </a>
+                                                    </div>
+                                                </div>                      
+                                            </div>
+                                            <div class="col-md-6 pd0 wd420 mrgn-left">
+                                                <div class="rj_program rj_program_mk5  pd0">
+                                                    <div class="rj_program_inner">
+                                                        <a href="javascript:void(0)">
+                                                            <img src="{{ asset('images/program-1.jpg') }}" alt=""  >
+                                                            <div class="menu_opacity"></div>
+                                                            <div class="menu_name">Depression</div>
+                                                        </a>
+                                                    </div>
+                                                </div>                      
+                                            </div>
+                                            <div class="col-md-6 pd0 wd420 mrgn-right">
+                                                <div class="rj_program rj_program_mk3  pd0">
+                                                    <div class="rj_program_inner">
+                                                        <a href="javascript:void(0)">
+                                                            <img src="{{ asset('images/program-1.jpg') }}" alt="">
+                                                            <div class="menu_opacity"></div>
+                                                            <div class="menu_name">Parenting</div>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4 pd0 wdwdh420 mrgn-right">
+                                            <div class="rj_program rj_program_mk5  wdwdh420 pd0">
+                                                <div class="rj_program_inner">
+                                                    <a href="javascript:void(0)">
+                                                        <img src="{{ asset('images/program-4.jpg') }}" alt="" >
+                                                        <div class="menu_opacity"></div>
+                                                        <div class="menu_name">Self-Care</div>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="clearfix"></div>-->
                 </div>
             </div>
         </div>

@@ -30,8 +30,8 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin'], function () {
                     // Admin Program Category
                     Route::get('create', 'ProgramController@getCategoryCreate')->name('create');
                     Route::post('create', 'ProgramController@postCategoryCreate')->name('create');
-                    Route::get('update', 'ProgramController@getCategoryUpdate')->name('update');
-                    Route::post('update', 'ProgramController@postCategoryUpdate')->name('update');
+                    Route::get('update/{program_category_unique_id}', 'ProgramController@getCategoryUpdate')->name('update');
+                    Route::post('update/{program_category_unique_id}', 'ProgramController@postCategoryUpdate')->name('update');
                 });
                 Route::group(['as' => 'cover.', 'prefix' => 'cover'], function () {
                     // Admin Session Video
