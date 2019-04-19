@@ -30,15 +30,15 @@ class ProgramController extends Controller {
 
     public function getList() {
         $programs = Program::with('cover_media')->orderBy('id', 'desc')->get();
-        $sessions = Session::with('cover_media')->orderBy('id', 'desc')->get();
-        $resources = Resource::with('cover_media')->orderBy('id', 'desc')->get();
-        $program_categories = ProgramCategory::with('cover_media')->orderBy('id', 'desc')->get();
+//        $sessions = Session::with('cover_media')->orderBy('id', 'desc')->get();
+//        $resources = Resource::with('cover_media')->orderBy('id', 'desc')->get();
+        $program_categories = ProgramCategory::with('cover_media')->with('creator')->orderBy('id', 'desc')->get();
         return view('admin.program.index')
                         ->withPagetitle('Programs')
                         ->withPageheader('Programs')
                         ->withPrograms($programs)
-                        ->withSessions($sessions)
-                        ->withResources($resources)
+//                        ->withSessions($sessions)
+//                        ->withResources($resources)
                         ->withProgramCategories($program_categories);
     }
 

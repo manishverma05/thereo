@@ -21,10 +21,10 @@ class Guest {
                     return redirect()->route('admin.dashboard');
                     break;
                 case 2:
-                    return redirect()->route('/');
+                    return redirect()->route('landing');
                     break;
                 default :
-                    return redirect('/');
+                    return redirect('landing');
                     break;
             }
         }

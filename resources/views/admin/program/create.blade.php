@@ -12,10 +12,10 @@
 <div class="rjadmin_navigation">
     <ul class="menu_tab nav nav-tabs">
         <li class="active"><a data-toggle="tab" href="#progdetail-tab">Program Details</a></li>
-        <li><a data-toggle="tab" href="#session-tab">Sessions</a></li>
-        <li><a data-toggle="tab" href="#update-tab">Updates</a></li>
+<!--        <li><a data-toggle="tab" href="#session-tab">Sessions</a></li>
+        <li><a data-toggle="tab" href="#update-tab">Updates</a></li>-->
         <li><a data-toggle="tab" href="#overview-tab">Overview Page</a></li>
-        <li><a data-toggle="tab" href="#resource-tab">Resource Page</a></li>
+        <!--<li><a data-toggle="tab" href="#resource-tab">Resource Page</a></li>-->
         <li><a data-toggle="tab" href="#meta-tab">Meta Settings</a></li>
         <li><a data-toggle="tab" href="#cover-tab">Cover Settings</a></li>
         <li><a data-toggle="tab" href="#public-tab">Publication</a></li>
@@ -361,7 +361,7 @@
                 </div>
             </div> 
             <div class="col-sm-12 meta-auther">
-                <h5>Categories: What categories would you like the article to belong to? <a href="#" class="nwauthr">New Category</a></h5>
+                <h5>Categories: What categories would you like the article to belong to? <a href="{{ route('admin.program.category.create') }}" class="nwauthr">New Category</a></h5>
                 <div class="auth_wrap">
                     @foreach($programCategories as $category)
                     <label class="auth_container">{{ $category->title }}

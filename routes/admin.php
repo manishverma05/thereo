@@ -33,29 +33,37 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin'], function () {
                     Route::get('update/{program_category_unique_id}', 'ProgramController@getCategoryUpdate')->name('update');
                     Route::post('update/{program_category_unique_id}', 'ProgramController@postCategoryUpdate')->name('update');
                 });
+                Route::group(['as' => 'update.', 'prefix' => 'update'], function () {
+                    // Admin Program Update
+                    Route::get('create/{program_unique_id}', 'ProgramUpdateController@getCreate')->name('create');
+                    Route::post('create/{program_unique_id}', 'ProgramUpdateController@postCreate')->name('create');
+                    Route::get('update/{program_unique_id}/{program_update_unique_id}', 'ProgramUpdateController@getUpdate')->name('update');
+                    Route::post('update/{program_unique_id}/{program_update_unique_id}', 'ProgramUpdateController@postUpdate')->name('update');
+                });
                 Route::group(['as' => 'cover.', 'prefix' => 'cover'], function () {
                     // Admin Session Video
                     Route::get('update/{attachment_unique_id}', 'ProgramController@getCoverUpdate')->name('update');
                     Route::post('update/{attachment_unique_id}', 'ProgramController@postVideoUpdate')->name('update');
                 });
-            });
-            Route::group(['as' => 'session.', 'prefix' => 'session'], function () {
-                // Admin Session 
-                Route::get('create', 'SessionController@getCreate')->name('create');
-                Route::post('create', 'SessionController@postCreate')->name('create');
-                Route::get('update/{session_unique_id}', 'SessionController@getUpdate')->name('update');
-                Route::post('update/{session_unique_id}', 'SessionController@postUpdate')->name('update');
-                Route::group(['as' => 'video.', 'prefix' => 'video'], function () {
-                    // Admin Session Video
-                    Route::get('update/{attachment_unique_id}', 'SessionController@getVideoUpdate')->name('update');
-                    Route::post('update/{attachment_unique_id}', 'SessionController@postVideoUpdate')->name('update');
+                Route::group(['as' => 'session.', 'prefix' => 'session'], function () {
+                    // Admin Session 
+                    Route::get('create/{program_unique_id}', 'SessionController@getCreate')->name('create');
+                    Route::post('create/{program_unique_id}', 'SessionController@postCreate')->name('create');
+                    Route::get('update/{program_unique_id}/{session_unique_id}', 'SessionController@getUpdate')->name('update');
+                    Route::post('update/{program_unique_id}/{session_unique_id}', 'SessionController@postUpdate')->name('update');
+                    Route::group(['as' => 'video.', 'prefix' => 'video'], function () {
+                        // Admin Session Video
+                        Route::get('update/{attachment_unique_id}', 'SessionController@getVideoUpdate')->name('update');
+                        Route::post('update/{attachment_unique_id}', 'SessionController@postVideoUpdate')->name('update');
+                    });
+                    Route::group(['as' => 'cover.', 'prefix' => 'cover'], function () {
+                        // Admin Session Video
+                        Route::get('update/{attachment_unique_id}', 'SessionController@getCoverUpdate')->name('update');
+                        Route::post('update/{attachment_unique_id}', 'SessionController@postVideoUpdate')->name('update');
+                    });
                 });
-                Route::group(['as' => 'cover.', 'prefix' => 'cover'], function () {
-                    // Admin Session Video
-                    Route::get('update/{attachment_unique_id}', 'SessionController@getCoverUpdate')->name('update');
-                    Route::post('update/{attachment_unique_id}', 'SessionController@postVideoUpdate')->name('update');
-                });
             });
+
             Route::group(['as' => 'resource.', 'prefix' => 'resource'], function () {
                 // Admin Resource 
                 Route::group(['as' => 'create.', 'prefix' => 'create'], function () {

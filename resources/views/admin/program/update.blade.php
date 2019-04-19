@@ -41,7 +41,53 @@
         <div id="session-tab" class="tab-pane fade in">
             <div class="admin-nav-head">Programs are made up of video pages, called sessions, that are sequenced together.</div>
             <section id="filter">
+                <div class="filter_hd">
+                    <p>You may search, filter, organize, and edit the sessions listed below.</p>
+                    <a href="{{ route('admin.session.create') }}" class="nw_article">New Session</a>
+                </div>
+                <div class="filter_option col-md-12">
+                    <div class="col-sm-2">
+                        <input type="text" value="Search">
+                    </div> 
+                    <div class="col-sm-2">
+                        <select>
+                            <option>Filter</option>
+                        </select>
+                    </div> 
+                    <div class="col-sm-5">
+                        <p>{{ count($sessions) }} Sessions</p>
+                    </div> 
+                    <div class="col-sm-1 switch-view">
+                        <a class="grid-btn switch-view-button" href="javascript:void(0)"> <i class="fa fa-th"></i> </a>
+                    </div> 
+                    <div class="col-sm-1 switch-view" style="display: none;">
+                        <a class="grid-btn switch-view-button" href="javascript:void(0)"> <i class="fa fa-th-list"></i> </a>
+                    </div> 
+                    <div class="col-sm-2">
+                        <select>
+                            <option>Actions</option>
+                        </select>
+                        <a class="conf_btn" href="#">Confirm</a>
+                    </div> 
+                </div>
                 <div class="col-md-12 responder_table">
+                    <div class="row articles-wrapper switch-view">
+                        @foreach ($sessions as $session)
+                        @php
+                        $session_cover_image = asset('administrator/images/no-image.png');
+                        $session_cover_image_thumb = asset('administrator/images/no-image.png');
+                        if(isset($session->cover_media->file)):
+                        $session_cover_image = asset(config('constants.session.cover_path_display').$session->cover_media->file);
+                        $session_cover_image_thumb = asset(config('constants.session.cover_path_display').'thumb_'.$session->cover_media->file);
+                        endif;
+                        @endphp
+                        
+                        <div class="col-sm-3 articles-grid" style="background-image: url('{{ $session_cover_image }}');background-size:cover;background-repeat:no-repeat;">
+                            <h3><a href="{{ route('admin.session.update',[$session->unique_id]) }}" >{{ $session->title }}</a></h3>
+                        </div> 
+                        
+                        @endforeach
+                    </div>        
                     <table class="table switch-view">
                         <thead>
                             <tr>
@@ -269,7 +315,7 @@
                 </div>
             </div> 
             <div class="col-sm-12 meta-auther">
-                <h5>Categories: What categories would you like the article to belong to? <a href="#" class="nwauthr">New Category</a></h5>
+                <h5>Categories: What categories would you like the article to belong to? <a href="{{ route('admin.program.category.create') }}" class="nwauthr">New Category</a></h5>
                 <div class="auth_wrap">
                     @foreach($programCategories as $category)
                     <label class="auth_container">{{ $category->title }}
@@ -358,7 +404,7 @@
                 </ul>
             </div>
         </div>
-        
+
         <div id="analytic-tab" class="tab-pane fade in">
             <div class="admin-nav-head">Analytics provides details about how your audience responds to, and interacts with, this article in particular.</div>
         </div>

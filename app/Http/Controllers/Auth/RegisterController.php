@@ -82,10 +82,10 @@ use RegistersUsers;
         // Check user role
         switch ($role) {
             case 1:
-                return 'admin.dashboard';
+                return '/admin/dashboard';
                 break;
             default:
-                return 'landing';
+                return '/landing';
                 break;
         }
     }

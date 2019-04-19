@@ -37,9 +37,11 @@ class HomeController extends Controller {
     }
 
     public function getlogout() {
-        $user = auth()->user();
         Auth::logout();
-        return view('auth.user_out')->withUser($user);
+        return redirect()->route('login');
+//        $user = auth()->user();
+//        Auth::logout();
+//        return view('auth.user_out')->withUser($user);
     }
 
 }

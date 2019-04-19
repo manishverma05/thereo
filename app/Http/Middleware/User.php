@@ -5,8 +5,8 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Support\Facades\Auth;
 
-class User
-{
+class User {
+
     /**
      * Handle an incoming request.
      *
@@ -15,12 +15,13 @@ class User
      * @return mixed
      */
     public function handle($request, Closure $next) {
-        if(!Auth::check()){
-            return redirect('/');
+        if (!Auth::check()) {
+            return redirect()->route('login');
         }
         if (auth()->user()->role_id != 2) {
             return redirect('/unauthorize')->with('error', 'Your don\'t have permission to access.');
         }
         return $next($request);
     }
+
 }

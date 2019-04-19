@@ -22,6 +22,11 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('home', 'HomeController@index')->name('home');
         Route::get('about', 'HomeController@about')->name('about');
         Route::get('programs', 'ProgramController@index')->name('programs');
-        Route::get('program/{program_slug}', 'ProgramController@detail')->name('program');
+        Route::group(['as' => 'program.', 'prefix' => 'program'], function () {
+            Route::get('/{program_slug}', 'ProgramController@detail')->name('detail');
+            Route::group(['as' => 'category.', 'prefix' => 'category'], function () {
+                Route::get('/{category_slug}', 'ProgramCategoryController@detail')->name('detail');
+            });
+        });
     });
 });

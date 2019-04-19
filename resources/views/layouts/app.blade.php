@@ -16,6 +16,7 @@
         <link href="https://fonts.googleapis.com/css?family=Josefin+Sans:400,600,700" rel="stylesheet">
         <link href="{{ asset('css/style.css') }}" rel="stylesheet">
         <link href="{{ asset('css/simplelightbox.min.css') }}" rel="stylesheet">
+        <link href="{{ asset('css/font-awesome.css') }}" rel="stylesheet">
         <style>
             .navbar-nav > li > a {
                 width: 100px !important;
@@ -70,7 +71,7 @@
                     </a>
                 </li>
                 @php
-                $accountRoute = url('/login');
+                $accountRoute = route('login');
                 if(isset(auth()->user()->role_id)){
                     switch (auth()->user()->role_id) {
                         case 1:

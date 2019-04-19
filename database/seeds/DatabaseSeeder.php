@@ -15,11 +15,11 @@ class DatabaseSeeder extends Seeder {
 
         #fakers
         $this->call(FakeAuthorUsersSeeder::class);
-        $this->call(FakeMaterialSeeder::class);
-        $this->call(FakeProgramCategorySeeder::class);
-        $this->call(FakeResourceSeeder::class);
-        $this->call(FakeSessionCategorySeeder::class);
-        $this->call(FakeSessionSeeder::class);
+//        $this->call(FakeMaterialSeeder::class);
+//        $this->call(FakeProgramCategorySeeder::class);
+//        $this->call(FakeResourceSeeder::class);
+//        $this->call(FakeSessionCategorySeeder::class);
+//        $this->call(FakeSessionSeeder::class);
     }
 
 }
