@@ -9,16 +9,14 @@
     <ul class="menu_tab nav nav-tabs">
         <li class="active"><a data-toggle="tab" href="#session-tab">Session Page</a></li>
         <li><a data-toggle="tab" href="#video-tab">Video</a></li>
-        <li><a data-toggle="tab" href="#matirial-tab">Materials Page</a></li>
-        <li><a data-toggle="tab" href="#resource-tab">Resource Page</a></li>
         <li><a data-toggle="tab" href="#cover-tab">Cover Settings</a></li>
         <li><a data-toggle="tab" href="#meta-tab">Meta Settings</a></li>
-        <li><a data-toggle="tab" href="#public-tab">Publication</a></li>
+        <!--<li><a data-toggle="tab" href="#public-tab">Publication</a></li>-->
         <li class="rightside"><a data-toggle="tab" href="#analytic-tab">Analytics</a></li>
     </ul>
 </div>
 
-<form action="{{ route('admin.session.create') }}" method="post" enctype="multipart/form-data">
+<form action="{{ url()->current() }}" method="post" enctype="multipart/form-data">
     @csrf 
     <div class="tab-content">
         <div id="session-tab" class="tab-pane fade in active">
@@ -54,7 +52,7 @@
             <div class="row media-wrapper">
                 <div class="col-sm-12 imagewrap">
                     <div class="col-sm-3 covercontainer">
-                        <video src="{{ asset('administrator/images/no-image.png') }}" alt="video" id="video_attach_preview" class="image vdo"  style="width:100%" autoplay>
+                        <video src="{{ asset('administrator/images/no-image.png') }}" alt="video" id="video_attach_preview" class="image vdo"  style="width:100%" controls="">
                             <div class="middle">
                                 <div class="text video_attach_name"></div>
                             </div>
@@ -68,95 +66,6 @@
                 </div>
             </div>
         </div>
-        <div id="matirial-tab" class="tab-pane fade in">
-            <div class="admin-nav-head">Materials are important documents (such as worksheets or reading materials) that your audience may need when viewing the video.</div>
-            <section id="filter">
-                <div class="col-md-12 responder_table">          
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <td class="checkbox-cell">
-                                    <div class="checkbox">
-                                        <label>
-                                            <input type="checkbox" name="" class="select-material-th">
-                                            <i class="helper"></i>
-                                        </label>
-                                    </div>
-                                </td>
-                                <td>Title </td>
-                                <td class="view_type_right">Type </td>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($materials as $material)
-                            <tr>  
-                                <td class="checkbox-cell">
-                                    <div class="checkbox">
-                                        <label>
-                                            <input type="checkbox" name="material_id[]" class="select-material-td" value="{{ $material->id }}" @if(is_array(old('material_id')) && in_array($material->id, old('material_id'))) checked @endif>
-                                                   <i class="helper"></i>
-                                        </label>
-                                    </div>
-                                </td>
-                                <td>
-                                    <p> {{ $material->title }} </p>                   
-                                </td>
-                                <td class="view_type_right">.mp4
-                                    <i class="fa fa-arrows-v" style="font-size: 22px; color: #8FB8C9; margin-left: 16px;"></i></td>
-                            </tr>                            
-                            @endforeach
-                        </tbody>
-                    </table>
-                </div>
-            </section>
-        </div>
-        <div id="resource-tab" class="tab-pane fade in">
-            <section id="filter">
-                <div class="col-md-12 responder_table">
-                    <table class="table switch-view">
-                        <thead>
-                            <tr>
-                                <td class="checkbox-cell">
-                                    <div class="checkbox">
-                                        <label>
-                                            <input type="checkbox" name="" class="select-resource-th">
-                                            <i class="helper"></i>
-                                        </label>
-                                    </div>
-                                </td>
-                                <td>Title <i class="fa fa-long-arrow-up" aria-hidden="true"></i><i class="fa fa-long-arrow-down" aria-hidden="true"></i></td>
-                                <td>Author<i class="fa fa-long-arrow-up" aria-hidden="true"></i><i class="fa fa-long-arrow-down" aria-hidden="true"></i></td>
-                                <td>Category <i class="fa fa-long-arrow-up" aria-hidden="true"></i><i class="fa fa-long-arrow-down" aria-hidden="true"></i></td>
-                                <td>Date <i class="fa fa-long-arrow-up" aria-hidden="true"></i><i class="fa fa-long-arrow-down" aria-hidden="true"></i></td>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($resources as $resource)
-                            <tr>  
-                                <td class="checkbox-cell">
-                                    <div class="checkbox">
-                                        <label>
-                                            <input type="checkbox" name="resource_id[]" class="select-resource-td" value="{{ $resource->id }}" @if(is_array(old('resource_id')) && in_array($resource->id, old('resource_id'))) checked @endif>
-                                                   <i class="helper"></i>
-                                        </label>
-                                    </div>
-                                </td>
-                                <td>
-                                    <a href="javascript::void(0)">
-                                        <img class="article-thumb" src="../images/resource-1.jpg"> 
-                                        {{ $resource->title }}
-                                    </a>
-                                </td>
-                                <td><a href="javascript::void(0)">Feedback</a></td>
-                                <td><a href="javascript::void(0)">Bradly Mence</a></td>
-                                <td><a href="javascript::void(0)">18/07/22</a></td>
-                            </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                </div>
-            </section>
-        </div>        
         <div id="meta-tab" class="tab-pane fade in">
             <div class="admin-nav-head">The meta tab controls information relating to search engines - in addition to settings that help organize the article.</div>
             <div class="col-sm-12 artclmeta">
@@ -225,7 +134,7 @@
                 </div>   
             </div>
         </div>
-        <div id="public-tab" class="tab-pane fade in">
+<!--        <div id="public-tab" class="tab-pane fade in">
             <div class="admin-nav-head">The publication tab controls how and when you want the article to be published.</div>        
             <div class="col-sm-12 meta-auther userAccess">
                 <h5>Access Level</h5>
@@ -243,9 +152,9 @@
                 <div class="input-group">
                     <div class="input-group-btn">
                         <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <span class="caret"></span></button>
-                    </div><!-- /btn-group -->
+                    </div> /btn-group 
                     <input type="text" class="form-control" aria-label="..." value="Dynamic Profile">
-                </div><!-- /input-group -->
+                </div> /input-group 
             </div>
             <div class="col-sm-12 appearence">
                 <h5>Publication: How would you like to republish the article?</h5>
@@ -261,7 +170,7 @@
                     <li><input type="date" name="unpublish" value="{{ old('unpublish') }}"/></li>
                 </ul>
             </div>
-        </div>
+        </div>-->
         <div id="analytic-tab" class="tab-pane fade in">
             <div class="admin-nav-head">Analytics provides details about how your audience responds to, and interacts with, this article in particular.</div>
         </div>

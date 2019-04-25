@@ -22,7 +22,7 @@ class AdminProgramUpdateRequest extends FormRequest {
      */
     public function rules() {
         return [
-            'title' => 'required|max:150',
+            'title' => ['required','max:150',Rule::unique('programs')->ignore($this->program->id, 'id')],
             'title_alt' => 'max:150',
         ];
     }

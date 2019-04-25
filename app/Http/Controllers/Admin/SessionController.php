@@ -7,42 +7,39 @@ use App\Http\Controllers\Controller;
 use App\User;
 use App\Models\Role;
 use App\Models\Session;
-use App\Models\Material;
-use App\Models\Resource;
-use App\Models\SessionAuthorMap;
 use App\Models\SessionCategory;
+use App\Models\SessionAuthorMap;
 use App\Models\SessionAttachment;
 use App\Models\SessionCategoryMap;
-use App\Models\SessionResourceMap;
-use App\Models\SessionMaterialMap;
-use App\Models\SessionCoverMedia;
 use App\Models\SessionAccessMap;
+use App\Models\SessionCoverMedia;
 use App\Http\Requests\AdminSessionCreateRequest;
-use Illuminate\Support\Str;
-use Illuminate\Support\Facades\DB;
-use Intervention\Image\Facades\Image;
 use Illuminate\Support\Carbon;
-use App\Http\Requests\AdminSessionUpdateRequest;
+use Intervention\Image\Facades\Image;
+use Illuminate\Support\Str;
+
+//use App\Models\Material;
+//use App\Models\Resource;
+//use App\Models\SessionResourceMap;
+//use App\Models\SessionMaterialMap;
+//use Illuminate\Support\Facades\DB;
+//use App\Http\Requests\AdminSessionUpdateRequest;
 
 class SessionController extends Controller {
 
-    public function getCreate() {
-        $materials = Material::orderBy('id', 'desc')->get();
+    public function getCreate($program_unique_id) {
         $roles = Role::orderBy('id', 'desc')->get();
-        $resources = Resource::orderBy('id', 'desc')->get();
         $authors = User::where('role_id', 3)->orderBy('id', 'desc')->get();
         $session_categories = SessionCategory::orderBy('id', 'desc')->get();
         return view('admin.session.create')
                         ->withPagetitle('New Session')
                         ->withPageheader('New Session')
-                        ->withMaterials($materials)
                         ->withRoles($roles)
-                        ->withResources($resources)
                         ->withAuthors($authors)
                         ->withSessionCategories($session_categories);
     }
 
-    public function postCreate(AdminSessionCreateRequest $request) {
+    public function postCreate(AdminSessionCreateRequest $request, $program_unique_id) {
         // Retrieve the validated input data...
         $validation = $request->validated();
 
@@ -60,17 +57,9 @@ class SessionController extends Controller {
         if ($request->unpublish != '') {
             $session->unpublish_on = Carbon::createFromFormat('Y-m-d H:i:s', $request->unpublish . ' 00:00:00');
         }
+        #temp
+        $session->status = '1';
         $session->save();
-
-        #save access for session
-        if (isset($request->role_id)) {
-            foreach ($request->role_id as $role_id) {
-                $session_role = new SessionAccessMap;
-                $session_role->role_id = $role_id;
-                $session_role->session_id = $session->id;
-                $session_role->save();
-            }
-        }
 
         #save authors for session
         if (isset($request->author_id)) {
@@ -88,24 +77,6 @@ class SessionController extends Controller {
                 $session_category_map->session_category_id = $session_category_id;
                 $session_category_map->session_id = $session->id;
                 $session_category_map->save();
-            }
-        }
-        #save resources for session
-        if (isset($request->resource_id)) {
-            foreach ($request->resource_id as $resource_id) {
-                $session_resource = new SessionResourceMap;
-                $session_resource->resource_id = $resource_id;
-                $session_resource->session_id = $session->id;
-                $session_resource->save();
-            }
-        }
-        #save materials for session
-        if (isset($request->material_id)) {
-            foreach ($request->material_id as $material_id) {
-                $session_material = new SessionMaterialMap;
-                $session_material->material_id = $material_id;
-                $session_material->session_id = $session->id;
-                $session_material->save();
             }
         }
 
@@ -153,7 +124,7 @@ class SessionController extends Controller {
             $session_media->created_by = auth()->user()->id;
             $session_media->save();
         }
-        return redirect()->route('admin.program.list')->with('success', 'Session has been added.');
+        return redirect()->route('admin.program.update',[$program_unique_id])->with('success', 'Session has been added.');
     }
 
     public function getUpdate($session_unique_id) {

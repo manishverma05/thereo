@@ -18,7 +18,7 @@
         <!--<li><a data-toggle="tab" href="#resource-tab">Resource Page</a></li>-->
         <li><a data-toggle="tab" href="#meta-tab">Meta Settings</a></li>
         <li><a data-toggle="tab" href="#cover-tab">Cover Settings</a></li>
-        <li><a data-toggle="tab" href="#public-tab">Publication</a></li>
+        <!--<li><a data-toggle="tab" href="#public-tab">Publication</a></li>-->
         <li class="rightside"><a data-toggle="tab" href="#analytic-tab">Analytics</a></li>
     </ul>
 
@@ -38,228 +38,6 @@
                 </div>
             </div> 
         </div>
-        <div id="session-tab" class="tab-pane fade in">
-            <div class="admin-nav-head">Programs are made up of video pages, called sessions, that are sequenced together.</div>
-            <section id="filter">
-                <div class="col-md-12 responder_table">
-                    <table class="table switch-view">
-                        <thead>
-                            <tr>
-                                <td class="checkbox-cell">
-                                    <div class="checkbox">
-                                        <label>
-                                            <input type="checkbox" name="" class="select-session-th">
-                                            <i class="helper"></i>
-                                        </label>
-                                    </div>
-                                </td>
-                                <td>Title <i class="fa fa-long-arrow-up" aria-hidden="true"></i><i class="fa fa-long-arrow-down" aria-hidden="true"></i></td>
-                                <td>Author<i class="fa fa-long-arrow-up" aria-hidden="true"></i><i class="fa fa-long-arrow-down" aria-hidden="true"></i></td>
-                                <td>Category <i class="fa fa-long-arrow-up" aria-hidden="true"></i><i class="fa fa-long-arrow-down" aria-hidden="true"></i></td>
-                                <td>Date <i class="fa fa-long-arrow-up" aria-hidden="true"></i><i class="fa fa-long-arrow-down" aria-hidden="true"></i></td>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($sessions as $session)
-                            @php
-                            $session_cover_image = asset('administrator/images/no-image.png');
-                            $session_cover_image_thumb = asset('administrator/images/no-image.png');
-                            if(isset($session->cover_media->file)):
-                            $session_cover_image = asset(config('constants.session.cover_path_display').$session->cover_media->file);
-                            $session_cover_image_thumb = asset(config('constants.session.cover_path_display').'thumb_'.$session->cover_media->file);
-                            endif;
-                            @endphp
-                            <tr>  
-                                <td class="checkbox-cell">
-                                    <div class="checkbox">
-                                        <label>
-                                            <input type="checkbox" name="session_id[]" class="select-session-td" value="{{ $session->id }}" @if(is_array(old('session_id')) && in_array($session->id, old('session_id'))) checked @endif>
-                                                   <i class="helper"></i>
-                                        </label>
-                                    </div>
-                                </td>
-                                <td>
-                                    <a href="javascript::void(0)">
-                                        <img class="article-thumb" src="{{ $session_cover_image_thumb }}"> 
-                                        {{ $session->title }}
-                                    </a>
-                                </td>
-                                <td><a href="javascript::void(0)">Feedback</a></td>
-                                <td><a href="javascript::void(0)">Bradly Mence</a></td>
-                                <td><a href="javascript::void(0)">18/07/22</a></td>
-                            </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                </div>
-            </section>
-        </div>
-        <div id="update-tab" class="tab-pane fade in">
-            <div class="admin-nav-head">Provide you audience with updates on the kinds of changes that you have been making to the program.</div>
-            <section id="filter">
-                <div class="filter_hd">
-                    <p>You may search, filter, organize, and edit the resources listed below.</p>
-                    <a href="#" class="nw_article">New Update</a>
-                </div>
-                <div class="filter_option col-md-12">
-                    <div class="col-sm-2">
-                        <input type="text" value="Search">
-                    </div> 
-                    <div class="col-sm-2">
-                        <select>
-                            <option>Filter</option>
-                        </select>
-                    </div> 
-                    <div class="col-sm-5">
-                        <p>7 Updates</p>
-                    </div> 
-                    <div class="col-sm-1">
-                       <!-- <select>
-                          <option>Actions</option>
-                       </select>
-                       <a class="conf_btn" href="#">Confirm</a> -->
-                        <a class="grid-btn" href="#"> <i class="fa fa-th-list"></i> </a>
-                    </div> 
-                    <div class="col-sm-2">
-
-                        <select>
-                            <option>Actions</option>
-                        </select>
-                        <a class="conf_btn" href="#">Confirm</a>
-                    </div> 
-                </div>
-                <div class="col-md-12 responder_table">          
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <td class="checkbox-cell">
-                                    <div class="checkbox">
-                                        <label>
-                                            <input type="checkbox" name="" value="">
-                                            <i class="helper"></i>
-                                        </label>
-                                    </div>
-                                </td>
-                                <td>Title <i class="fa fa-long-arrow-up" aria-hidden="true"></i><i class="fa fa-long-arrow-down" aria-hidden="true"></i></td>
-                                <td class="view_type_right">Type <i class="fa fa-long-arrow-up" aria-hidden="true"></i><i class="fa fa-long-arrow-down" aria-hidden="true"></i></td>
-
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>  
-                                <td class="checkbox-cell">
-                                    <div class="checkbox">
-                                        <label>
-                                            <input type="checkbox" name="" value="">
-                                            <i class="helper"></i>
-                                        </label>
-                                    </div>
-                                </td>
-                                <td>
-                                    Lorem Ipsum
-                                </td>
-
-                                <td class="view_type_right">Bradly Mence
-                                    <i class="fa fa-arrows-v" style="font-size: 22px; color: #8FB8C9; margin-left: 16px;"></i></td>
-
-                            </tr>
-                            <tr>
-                                <td class="checkbox-cell">
-                                    <div class="checkbox">
-                                        <label>
-                                            <input type="checkbox" name="" value="">
-                                            <i class="helper"></i>
-                                        </label>
-                                    </div>
-                                </td>
-                                <td>
-                                    Lorem Ipsum                
-                                </td>
-
-                                <td class="view_type_right">Bradly Mence
-                                    <i class="fa fa-arrows-v" style="font-size: 22px; color: #8FB8C9; margin-left: 16px;"></i></td>
-
-                            </tr>
-                            <tr>
-                                <td class="checkbox-cell">
-                                    <div class="checkbox">
-                                        <label>
-                                            <input type="checkbox" name="" value="">
-                                            <i class="helper"></i>
-                                        </label>
-                                    </div>
-                                </td>
-                                <td> 
-                                    Lorem Ipsum
-                                </td>
-
-                                <td class="view_type_right">Bradly Mence
-                                    <i class="fa fa-arrows-v" style="font-size: 22px; color: #8FB8C9; margin-left: 16px;"></i></td>
-
-                            </tr>
-                            <tr>
-                                <td class="checkbox-cell">
-                                    <div class="checkbox">
-                                        <label>
-                                            <input type="checkbox" name="" value="">
-                                            <i class="helper"></i>
-                                        </label>
-                                    </div>
-                                </td>
-                                <td> Lorem Ipsum </td>
-
-                                <td class="view_type_right">Bradly Mence
-                                    <i class="fa fa-arrows-v" style="font-size: 22px; color: #8FB8C9; margin-left: 16px;"></i></td>
-
-                            </tr>
-                            <tr>
-                                <td class="checkbox-cell">
-                                    <div class="checkbox">
-                                        <label>
-                                            <input type="checkbox" name="" value="">
-                                            <i class="helper"></i>
-                                        </label>
-                                    </div>
-                                </td>
-                                <td> Lorem Ipsum</td>
-
-                                <td class="view_type_right">Bradly Mence
-                                    <i class="fa fa-arrows-v" style="font-size: 22px; color: #8FB8C9; margin-left: 16px;"></i></td>
-                            </tr>
-                            <tr>
-                                <td class="checkbox-cell">
-                                    <div class="checkbox">
-                                        <label>
-                                            <input type="checkbox" name="" value="">
-                                            <i class="helper"></i>
-                                        </label>
-                                    </div>
-                                </td>
-                                <td> Lorem Ipsum</td>
-
-                                <td class="view_type_right">Bradly Mence
-                                    <i class="fa fa-arrows-v" style="font-size: 22px; color: #8FB8C9; margin-left: 16px;"></i></td>
-                            </tr>
-                            <tr>
-                                <td class="checkbox-cell">
-                                    <div class="checkbox">
-                                        <label>
-                                            <input type="checkbox" name="" value="">
-                                            <i class="helper"></i>
-                                        </label>
-                                    </div>
-                                </td>
-                                <td> Lorem Ipsum</td>
-
-                                <td class="view_type_right">Bradly Mence
-                                    <i class="fa fa-arrows-v" style="font-size: 22px; color: #8FB8C9; margin-left: 16px;"></i></td>
-
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </section>
-        </div>
         <div id="overview-tab" class="tab-pane fade in">
             <div class="admin-nav-head">Programs are made up of video pages, called sessions, that are sequenced together.</div>
             <div class="admin-nav-head">The overview page provides your audience with information about the program; in addition to displaying all the section videos involved within it.</div>
@@ -277,61 +55,6 @@
                     </textarea>
                 </div>
             </div> 
-        </div>
-        <div id="resource-tab" class="tab-pane fade in">
-            <section id="filter">
-                <div class="col-md-12 responder_table">
-                    <table class="table switch-view">
-                        <thead>
-                            <tr>
-                                <td class="checkbox-cell">
-                                    <div class="checkbox">
-                                        <label>
-                                            <input type="checkbox" name="" class="select-resource-th">
-                                            <i class="helper"></i>
-                                        </label>
-                                    </div>
-                                </td>
-                                <td>Title <i class="fa fa-long-arrow-up" aria-hidden="true"></i><i class="fa fa-long-arrow-down" aria-hidden="true"></i></td>
-                                <td>Author<i class="fa fa-long-arrow-up" aria-hidden="true"></i><i class="fa fa-long-arrow-down" aria-hidden="true"></i></td>
-                                <td>Category <i class="fa fa-long-arrow-up" aria-hidden="true"></i><i class="fa fa-long-arrow-down" aria-hidden="true"></i></td>
-                                <td>Date <i class="fa fa-long-arrow-up" aria-hidden="true"></i><i class="fa fa-long-arrow-down" aria-hidden="true"></i></td>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($resources as $resource)
-                            @php
-                            $resource_cover_image = asset('administrator/images/no-image.png');
-                            $resource_cover_image_thumb = asset('administrator/images/no-image.png');
-                            if(isset($resource->cover_media->file)):
-                            $resource_cover_image = asset(config('constants.resource.cover_path_display').$resource->cover_media->file);
-                            $resource_cover_image_thumb = asset(config('constants.resource.cover_path_display').'thumb_'.$resource->cover_media->file);
-                            endif;
-                            @endphp
-                            <tr>  
-                                <td class="checkbox-cell">
-                                    <div class="checkbox">
-                                        <label>
-                                            <input type="checkbox" name="resource_id[]" class="select-resource-td" value="{{ $resource->id }}" @if(is_array(old('resource_id')) && in_array($resource->id, old('resource_id'))) checked @endif>
-                                                   <i class="helper"></i>
-                                        </label>
-                                    </div>
-                                </td>
-                                <td>
-                                    <a href="javascript::void(0)">
-                                        <img class="article-thumb" src="{{ $resource_cover_image_thumb }}"> 
-                                        {{ $resource->title }}
-                                    </a>
-                                </td>
-                                <td><a href="javascript::void(0)">Feedback</a></td>
-                                <td><a href="javascript::void(0)">Bradly Mence</a></td>
-                                <td><a href="javascript::void(0)">18/07/22</a></td>
-                            </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                </div>
-            </section>
         </div>
         <div id="meta-tab" class="tab-pane fade in">
             <div class="admin-nav-head">The meta tab controls information relating to search engines - in addition to settings that help organize the article.</div>
@@ -401,7 +124,7 @@
                 </div>   
             </div>
         </div>        
-        <div id="public-tab" class="tab-pane fade in">
+<!--        <div id="public-tab" class="tab-pane fade in">
             <div class="admin-nav-head">The publication tab controls how and when you want the article to be published.</div>        
             <div class="col-sm-12 meta-auther userAccess">
                 <h5>Access Level</h5>
@@ -419,9 +142,9 @@
                 <div class="input-group">
                     <div class="input-group-btn">
                         <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <span class="caret"></span></button>
-                    </div><!-- /btn-group -->
+                    </div> /btn-group 
                     <input type="text" class="form-control" aria-label="..." value="Dynamic Profile">
-                </div><!-- /input-group -->
+                </div> /input-group 
             </div>
             <div class="col-sm-12 appearence">
                 <h5>Publication: How would you like to republish the article?</h5>
@@ -437,7 +160,7 @@
                     <li><a href="">Depublish Now</a></li>
                 </ul>
             </div>
-        </div>
+        </div>-->
         <div id="analytic-tab" class="tab-pane fade in">
             <div class="admin-nav-head">Analytics provides details about how your audience responds to, and interacts with, this article in particular.</div>
         </div>

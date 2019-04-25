@@ -5,55 +5,48 @@ namespace App\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Program;
+use App\Models\ProgramCategory;
+use App\Models\Role;
+use App\User;
+use App\Models\ProgramAuthorMap;
+use App\Models\ProgramCategoryMap;
+use App\Models\ProgramCoverMedia;
 use App\Models\Session;
 use App\Models\Resource;
-use App\User;
-use App\Models\Role;
-use App\Models\ProgramCategory;
-use App\Models\ProgramCategoryMap;
-use App\Models\ProgramAuthorMap;
-use App\Models\ProgramSessionMap;
-use App\Models\ProgramResourceMap;
-use App\Models\ProgramCoverMedia;
-use App\Models\ProgramAccessMap;
-use App\MOdels\ProgramCategoryCoverMedia;
 use App\Http\Requests\AdminProgramCreateRequest;
-use App\Http\Requests\AdminProgramUpdateRequest;
-use App\Http\Requests\AdminProgramCategoryCreateRequest;
-use App\Http\Requests\AdminProgramCategoryUpdateRequest;
-use Illuminate\Support\Str;
-use Illuminate\Support\Facades\DB;
-use Intervention\Image\Facades\Image;
 use Illuminate\Support\Carbon;
+use Intervention\Image\Facades\Image;
+
+//use App\Models\ProgramSessionMap;
+//use App\Models\ProgramResourceMap;
+//use App\Models\ProgramAccessMap;
+//use App\MOdels\ProgramCategoryCoverMedia;
+//use App\Http\Requests\AdminProgramUpdateRequest;
+//use App\Http\Requests\AdminProgramCategoryCreateRequest;
+//use App\Http\Requests\AdminProgramCategoryUpdateRequest;
+//use Illuminate\Support\Str;
+//use Illuminate\Support\Facades\DB;
 
 class ProgramController extends Controller {
 
     public function getList() {
         $programs = Program::with('cover_media')->orderBy('id', 'desc')->get();
-//        $sessions = Session::with('cover_media')->orderBy('id', 'desc')->get();
-//        $resources = Resource::with('cover_media')->orderBy('id', 'desc')->get();
         $program_categories = ProgramCategory::with('cover_media')->with('creator')->orderBy('id', 'desc')->get();
         return view('admin.program.index')
                         ->withPagetitle('Programs')
                         ->withPageheader('Programs')
                         ->withPrograms($programs)
-//                        ->withSessions($sessions)
-//                        ->withResources($resources)
                         ->withProgramCategories($program_categories);
     }
 
     public function getCreate() {
-        $sessions = Session::orderBy('id', 'desc')->get();
         $roles = Role::orderBy('id', 'desc')->get();
-        $resources = Resource::orderBy('id', 'desc')->get();
         $authors = User::where('role_id', 3)->orderBy('id', 'desc')->get();
         $program_categories = ProgramCategory::orderBy('id', 'desc')->get();
         return view('admin.program.create')
                         ->withPagetitle('New Program')
                         ->withPageheader('New Program')
-                        ->withSessions($sessions)
                         ->withRoles($roles)
-                        ->withResources($resources)
                         ->withAuthors($authors)
                         ->withProgramCategories($program_categories);
     }
@@ -76,27 +69,10 @@ class ProgramController extends Controller {
         if ($request->unpublish != '') {
             $program->unpublish_on = Carbon::createFromFormat('Y-m-d H:i:s', $request->unpublish . ' 00:00:00');
         }
+        #temp
+        $program->status = 1;
         $program->save();
 
-        #save access for session
-        if (isset($request->role_id)) {
-            foreach ($request->role_id as $role_id) {
-                $session_role = new ProgramAccessMap;
-                $session_role->role_id = $role_id;
-                $session_role->program_id = $program->id;
-                $session_role->save();
-            }
-        }
-
-        #save sessions for program
-        if (isset($request->session_id)) {
-            foreach ($request->session_id as $session_id) {
-                $program_session = new ProgramSessionMap;
-                $program_session->session_id = $session_id;
-                $program_session->program_id = $program->id;
-                $program_session->save();
-            }
-        }
         #save authors for program
         if (isset($request->author_id)) {
             foreach ($request->author_id as $author_id) {
@@ -113,15 +89,6 @@ class ProgramController extends Controller {
                 $program_category_map->program_category_id = $program_category_id;
                 $program_category_map->program_id = $program->id;
                 $program_category_map->save();
-            }
-        }
-        #save resources for program
-        if (isset($request->resource_id)) {
-            foreach ($request->resource_id as $resource_id) {
-                $program_resource = new ProgramResourceMap;
-                $program_resource->resource_id = $resource_id;
-                $program_resource->program_id = $program->id;
-                $program_resource->save();
             }
         }
 

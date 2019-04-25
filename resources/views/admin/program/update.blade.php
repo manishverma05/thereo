@@ -26,9 +26,9 @@
 <!-- Start Navigation -->
 <form action="{{ route('admin.program.update',[$program->unique_id]) }}" method="post" enctype="multipart/form-data">
     @csrf 
-    <input type="hidden" name="program_id" value="{{ $program->id }}"
-           <!-----Article Edit Section------>
-           <div class="tab-content">
+    <input type="hidden" name="program_id" value="{{ $program->id }}"/>
+    <!-----Article Edit Section------>
+    <div class="tab-content">
         <div id="progdetail-tab" class="tab-pane fade in active">
             <div class="admin-nav-head">Edit this article using the settings below.</div>
             <div class="col-sm-12 artctitle">
@@ -43,7 +43,7 @@
             <section id="filter">
                 <div class="filter_hd">
                     <p>You may search, filter, organize, and edit the sessions listed below.</p>
-                    <a href="{{ route('admin.session.create') }}" class="nw_article">New Session</a>
+                    <a href="{{ route('admin.program.session.create',[$program->unique_id]) }}" class="nw_article">New Session</a>
                 </div>
                 <div class="filter_option col-md-12">
                     <div class="col-sm-2">
@@ -81,11 +81,11 @@
                         $session_cover_image_thumb = asset(config('constants.session.cover_path_display').'thumb_'.$session->cover_media->file);
                         endif;
                         @endphp
-                        
+
                         <div class="col-sm-3 articles-grid" style="background-image: url('{{ $session_cover_image }}');background-size:cover;background-repeat:no-repeat;">
-                            <h3><a href="{{ route('admin.session.update',[$session->unique_id]) }}" >{{ $session->title }}</a></h3>
+                            <h3><a href="{{ route('admin.program.session.update',[$program->unique_id,$session->unique_id]) }}" >{{ $session->title }}</a></h3>
                         </div> 
-                        
+
                         @endforeach
                     </div>        
                     <table class="table switch-view">

@@ -9,8 +9,6 @@
     <ul class="menu_tab nav nav-tabs">
         <li class="active"><a data-toggle="tab" href="#progm-tab">Programs</a></li>
         <li><a data-toggle="tab" href="#cat-tab">Categories</a></li>
-<!--        <li><a data-toggle="tab" href="#sess-tab">Sessions</a></li>
-        <li><a data-toggle="tab" href="#res-tab">Resources</a></li>-->
         <li class="rightside"><a data-toggle="tab" href="#analytic-tab">Analytics</a></li>
     </ul>
 </div>
