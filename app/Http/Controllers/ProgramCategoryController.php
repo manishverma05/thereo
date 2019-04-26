@@ -14,7 +14,6 @@ class ProgramCategoryController extends Controller {
         $programCategories = ProgramCategory::with('cover_media')->orderBy('id', 'desc')->get();
         $programCategoryMap = ProgramCategoryMap::where('program_category_id',$programCategory->id)->with('program')->get();
         $programs = (object)array_column($programCategoryMap->toArray(),'program');
-        dd($programCategoryMap->toArray());
         return view('programs.index')
                         ->withPagetitle('Programs')
                         ->withPageheader('Programs')
