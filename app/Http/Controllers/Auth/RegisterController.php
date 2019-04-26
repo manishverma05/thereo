@@ -7,6 +7,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use Illuminate\Http\Request;
+use Illuminate\Auth\Events\Registered;
 
 class RegisterController extends Controller {
     /*
@@ -48,6 +50,9 @@ use RegistersUsers;
         return Validator::make($data, [
                     'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
                     'password' => ['required', 'string', 'min:8', 'confirmed'],
+                    'firstname' => ['required', 'string', 'min:2'],
+                    'lastname' => ['required', 'string', 'min:2'],
+                    'role' => ['required'],
         ]);
     }
 
@@ -58,14 +63,13 @@ use RegistersUsers;
      * @return \App\User
      */
     protected function create(array $data) {
-        $name = explode(' ', $data['name']);
         return User::create([
                     'username' => uniqid(),
-                    'firstname' => $name[0],
+                    'firstname' => $data['firstname'],
                     'middlename' => '',
-                    'lastname' => end($name),
+                    'lastname' => $data['lastname'],
                     'email' => $data['email'],
-                    'role_id' => 2,
+                    'role_id' => $data['role'],
                     'password' => Hash::make($data['password']),
         ]);
     }
@@ -75,9 +79,10 @@ use RegistersUsers;
      */
 
     public function redirectTo() {
-
+        $role = 0;
         // User role
-        $role = auth()->user()->role_id;
+        if (isset(auth()->user()->role_id))
+            $role = auth()->user()->role_id;
 
         // Check user role
         switch ($role) {
@@ -85,9 +90,21 @@ use RegistersUsers;
                 return '/admin/dashboard';
                 break;
             default:
-                return '/landing';
+                return '/login';
                 break;
         }
+    }
+
+    /**
+     * Handle a registration request for the application.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function register(Request $request) {
+        $this->validator($request->all())->validate();
+        event(new Registered($user = $this->create($request->all())));
+        return $this->registered($request, $user) ?: redirect($this->redirectPath());
     }
 
 }

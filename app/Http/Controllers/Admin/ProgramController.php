@@ -11,26 +11,31 @@ use App\User;
 use App\Models\ProgramAuthorMap;
 use App\Models\ProgramCategoryMap;
 use App\Models\ProgramCoverMedia;
+use App\Models\ProgramCategoryCoverMedia;
 use App\Models\Session;
 use App\Models\Resource;
+use App\Models\ProgramAccessMap;
+use App\Models\ProgramUpdate;
+use App\Http\Requests\AdminProgramCategoryCreateRequest;
+use App\Http\Requests\AdminProgramCategoryUpdateRequest;
 use App\Http\Requests\AdminProgramCreateRequest;
+use App\Http\Requests\AdminProgramUpdateRequest;
+use App\Http\Requests\AdminProgramUpdateCreateRequest;
+use App\Http\Requests\AdminProgramUpdateUpdateRequest;
+use Illuminate\Support\Str;
 use Illuminate\Support\Carbon;
 use Intervention\Image\Facades\Image;
 
 //use App\Models\ProgramSessionMap;
 //use App\Models\ProgramResourceMap;
-//use App\Models\ProgramAccessMap;
-//use App\MOdels\ProgramCategoryCoverMedia;
 //use App\Http\Requests\AdminProgramUpdateRequest;
-//use App\Http\Requests\AdminProgramCategoryCreateRequest;
 //use App\Http\Requests\AdminProgramCategoryUpdateRequest;
-//use Illuminate\Support\Str;
 //use Illuminate\Support\Facades\DB;
 
 class ProgramController extends Controller {
 
     public function getList() {
-        $programs = Program::with('cover_media')->orderBy('id', 'desc')->get();
+        $programs = Program::with('cover_media')->with('creator')->with('program_categories')->orderBy('id', 'desc')->get();
         $program_categories = ProgramCategory::with('cover_media')->with('creator')->orderBy('id', 'desc')->get();
         return view('admin.program.index')
                         ->withPagetitle('Programs')
@@ -122,18 +127,19 @@ class ProgramController extends Controller {
 
     public function getUpdate($program_unique_id) {
         $program = Program::where('unique_id', $program_unique_id)
-                        ->with('cover_media')
-                        ->with('sessions')
-                        ->with('resources')
-                        ->with('authors')
-                        ->with('accesss')
-                        ->with('program_categories')
-                        ->orderBy('id', 'desc')->first();
+                ->with('cover_media')
+                ->with('updates')
+                ->with('sessions')
+                ->with('resources')
+                ->with('authors')
+                ->with('accesss')
+                ->with('program_categories')
+                ->first();
         if (!$program)
             return redirect()->route('admin.program.list')->with('error', 'Program not found.');
         $sessions = Session::orderBy('id', 'desc')->get();
         $roles = Role::orderBy('id', 'desc')->get();
-        $resources = Resource::orderBy('id', 'desc')->get();
+//        $resources = Resource::orderBy('id', 'desc')->get();
         $authors = User::where('role_id', 3)->orderBy('id', 'desc')->get();
         $program_categories = ProgramCategory::orderBy('id', 'desc')->get();
         return view('admin.program.update')
@@ -147,7 +153,7 @@ class ProgramController extends Controller {
                         ->withProgramAuthors(array_column(isset($program->authors) ? $program->authors->toArray() : [], 'user_id'))
                         ->withProgramCategoryMaps(array_column(isset($program->program_categories) ? $program->program_categories->toArray() : [], 'program_category_id'))
                         ->withSessions($sessions)
-                        ->withResources($resources)
+//                        ->withResources($resources)
                         ->withAuthors($authors)
                         ->withProgramCategories($program_categories);
     }
@@ -182,16 +188,6 @@ class ProgramController extends Controller {
             }
         }
 
-        ProgramSessionMap::where('program_id', $program->id)->delete();
-        #save sessions for program
-        if (isset($request->session_id)) {
-            foreach ($request->session_id as $session_id) {
-                $program_session = new ProgramSessionMap;
-                $program_session->session_id = $session_id;
-                $program_session->program_id = $program->id;
-                $program_session->save();
-            }
-        }
         ProgramAuthorMap::where('program_id', $program->id)->delete();
         #save authors for program
         if (isset($request->author_id)) {
@@ -210,16 +206,6 @@ class ProgramController extends Controller {
                 $program_category_map->program_category_id = $program_category_id;
                 $program_category_map->program_id = $program->id;
                 $program_category_map->save();
-            }
-        }
-        ProgramResourceMap::where('program_id', $program->id)->delete();
-        #save resources for program
-        if (isset($request->resource_id)) {
-            foreach ($request->resource_id as $resource_id) {
-                $program_resource = new ProgramResourceMap;
-                $program_resource->resource_id = $resource_id;
-                $program_resource->program_id = $program->id;
-                $program_resource->save();
             }
         }
 
@@ -321,7 +307,7 @@ class ProgramController extends Controller {
         // Retrieve the validated input data...
         $validation = $request->validated();
 
-        // create new program category and save it
+        // update existing program category and save it
         $program_category = ProgramCategory::where('unique_id', $program_category_unique_id)->first();
         $program_category->slug = $request->slug ? $request->slug : Str::slug($request->title, '-');
         $program_category->title = $request->title;
@@ -376,6 +362,64 @@ class ProgramController extends Controller {
                         ->withPagetitle('Update Cover Image')
                         ->withPageheader('Update Cover Image')
                         ->withProgramCover($programCover);
+    }
+
+    public function getUpdateCreate($program_unique_id) {
+        $program = Program::where('unique_id', $program_unique_id)->first();
+        if (!$program)
+            return redirect()->route('admin.program.list')->with('error', 'Program not found.');
+        return view('admin.program.update.create')
+                        ->withPagetitle('Add Program Update')
+                        ->withPageheader('Add Program Update')
+                        ->withProgram($program);
+    }
+
+    public function postUpdateCreate(AdminProgramUpdateCreateRequest $request, $program_unique_id) {
+        // Retrieve the validated input data...
+        $validation = $request->validated();
+        $program = Program::where('unique_id', $program_unique_id)->first();
+        if (!$program)
+            return redirect()->route('admin.program.list')->with('error', 'Program not found.');
+        // create new program and save it
+        $program_update = new ProgramUpdate;
+        $program_update->unique_id = uniqid() . uniqid();
+        $program_update->title = $request->title;
+        $program_update->program_id = $program->id;
+        $program_update->description = $request->description;
+        $program_update->created_by = auth()->user()->id;
+        $program_update->save();
+        return redirect()->route('admin.program.update', [$program->unique_id])->with('success', 'Program Update has been added.');
+    }
+
+    public function getUpdateUpdate($program_unique_id, $program_update_unique_id) {
+        $program = Program::where('unique_id', $program_unique_id)->first();
+        if (!$program)
+            return redirect()->route('admin.program.list')->with('error', 'Program not found.');
+        $program_update = ProgramUpdate::where('unique_id', $program_update_unique_id)->first();
+        if (!$program_update)
+            return redirect()->route('admin.program.list')->with('error', 'Program Update not found.');
+        return view('admin.program.update.update')
+                        ->withPagetitle('Update Program Update')
+                        ->withPageheader('Update Program Update')
+                        ->withProgram($program)
+                        ->withProgramUpdate($program_update);
+    }
+
+    public function postUpdateUpdate(AdminProgramUpdateUpdateRequest $request, $program_unique_id, $program_update_unique_id) {
+        // Retrieve the validated input data...
+        $validation = $request->validated();
+        $program = Program::where('unique_id', $program_unique_id)->first();
+        if (!$program)
+            return redirect()->route('admin.program.list')->with('error', 'Program not found.');
+        // create new program update and save it
+        $program_update = ProgramUpdate::where('unique_id', $program_update_unique_id)->first();
+        if (!$program_update)
+            return redirect()->route('admin.program.list')->with('error', 'Program Update not found.');
+        $program_update->title = $request->title;
+        $program_update->description = $request->description;
+        $program_update->modified_by = auth()->user()->id;
+        $program_update->save();
+        return redirect()->route('admin.program.update', [$program->unique_id])->with('success', 'Program Update has been updated.');
     }
 
 }

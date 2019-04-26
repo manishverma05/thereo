@@ -12,8 +12,8 @@
 <div class="rjadmin_navigation">
     <ul class="menu_tab nav nav-tabs">
         <li class="active"><a data-toggle="tab" href="#progdetail-tab">Program Details</a></li>
-<!--        <li><a data-toggle="tab" href="#session-tab">Sessions</a></li>
-        <li><a data-toggle="tab" href="#update-tab">Updates</a></li>-->
+        <!--        <li><a data-toggle="tab" href="#session-tab">Sessions</a></li>
+                <li><a data-toggle="tab" href="#update-tab">Updates</a></li>-->
         <li><a data-toggle="tab" href="#overview-tab">Overview Page</a></li>
         <!--<li><a data-toggle="tab" href="#resource-tab">Resource Page</a></li>-->
         <li><a data-toggle="tab" href="#meta-tab">Meta Settings</a></li>
@@ -124,43 +124,43 @@
                 </div>   
             </div>
         </div>        
-<!--        <div id="public-tab" class="tab-pane fade in">
-            <div class="admin-nav-head">The publication tab controls how and when you want the article to be published.</div>        
-            <div class="col-sm-12 meta-auther userAccess">
-                <h5>Access Level</h5>
-                <div class="auth_wrap">
-                    @foreach($roles as $role)
-                    <label class="auth_container">{{ $role->name }}
-                        <input type="radio"  name="role_id[]" value="{{ $role->id }}"  @if(is_array(old('role_id')) && in_array($role->id, old('role_id'))) checked @endif >
-                               <span class="checkmark"></span>
-                    </label>
-                    @endforeach
-                </div>
-            </div>
-            <div class="col-sm-12 presentation">
-                <h5>Presentation Style: How prominent would you like the article to be displayed?</h5>
-                <div class="input-group">
-                    <div class="input-group-btn">
-                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <span class="caret"></span></button>
-                    </div> /btn-group 
-                    <input type="text" class="form-control" aria-label="..." value="Dynamic Profile">
-                </div> /input-group 
-            </div>
-            <div class="col-sm-12 appearence">
-                <h5>Publication: How would you like to republish the article?</h5>
-                <ul>
-                    <li>Schedule for Republication <input type="date" name="publish" value="{{ old('publish') }}"/></li>
-                    <li>Republication Now</li>
-                </ul>
-            </div>
-            <div class="col-sm-12 appearence">
-                <h5>Depublication: You can depublish the article using the settings below.</h5>
-                <ul>
-                    <li>Schedule for Republication <input type="date" name="unpublish" value="{{ old('unpublish') }}"/></li>
-                    <li><a href="">Depublish Now</a></li>
-                </ul>
-            </div>
-        </div>-->
+        <!--        <div id="public-tab" class="tab-pane fade in">
+                    <div class="admin-nav-head">The publication tab controls how and when you want the article to be published.</div>        
+                    <div class="col-sm-12 meta-auther userAccess">
+                        <h5>Access Level</h5>
+                        <div class="auth_wrap">
+                            @foreach($roles as $role)
+                            <label class="auth_container">{{ $role->name }}
+                                <input type="radio"  name="role_id[]" value="{{ $role->id }}"  @if(is_array(old('role_id')) && in_array($role->id, old('role_id'))) checked @endif >
+                                       <span class="checkmark"></span>
+                            </label>
+                            @endforeach
+                        </div>
+                    </div>
+                    <div class="col-sm-12 presentation">
+                        <h5>Presentation Style: How prominent would you like the article to be displayed?</h5>
+                        <div class="input-group">
+                            <div class="input-group-btn">
+                                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <span class="caret"></span></button>
+                            </div> /btn-group 
+                            <input type="text" class="form-control" aria-label="..." value="Dynamic Profile">
+                        </div> /input-group 
+                    </div>
+                    <div class="col-sm-12 appearence">
+                        <h5>Publication: How would you like to republish the article?</h5>
+                        <ul>
+                            <li>Schedule for Republication <input type="date" name="publish" value="{{ old('publish') }}"/></li>
+                            <li>Republication Now</li>
+                        </ul>
+                    </div>
+                    <div class="col-sm-12 appearence">
+                        <h5>Depublication: You can depublish the article using the settings below.</h5>
+                        <ul>
+                            <li>Schedule for Republication <input type="date" name="unpublish" value="{{ old('unpublish') }}"/></li>
+                            <li><a href="">Depublish Now</a></li>
+                        </ul>
+                    </div>
+                </div>-->
         <div id="analytic-tab" class="tab-pane fade in">
             <div class="admin-nav-head">Analytics provides details about how your audience responds to, and interacts with, this article in particular.</div>
         </div>
@@ -172,54 +172,55 @@
 
 @section('after-script')
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/tagmanager/3.0.2/tagmanager.min.js"></script>
-<script src="https://cdn.ckeditor.com/ckeditor5/11.0.1/classic/ckeditor.js"></script>
+<script src="https://cdn.ckeditor.com/ckeditor5/11.0.1/classic/ckeditor.js">
+</script>
 <script>
-                    ClassicEditor
-                            .create(document.querySelector('#editor'))
-                            .catch(error => {
-                                console.error(error);
-                            });
+    ClassicEditor
+            .create(document.querySelector('#editor'))
+            .catch(error => {
+                console.error(error);
+            });
 
-                    $(document).ready(function () {
-                        $(".tm-input").tagsManager();
-                    });
-                    //Select deselect session
-                    $('body').on('click', '.select-session-th', function () {
-                        if ($(this)[0].checked) {
-                            $('body .select-session-td').prop('checked', true);
-                        } else {
-                            $('body .select-session-td').prop('checked', false);
-                        }
-                    });
-                    $('body').on('click', '.select-session-td', function () {
-                        if (!$(this)[0].checked) {
-                            $('body .select-session-th').prop('checked', false);
-                        }
-                    });
-                    //Select deselect resource
-                    $('body').on('click', '.select-resource-th', function () {
-                        if ($(this)[0].checked) {
-                            $('body .select-resource-td').prop('checked', true);
-                        } else {
-                            $('body .select-resource-td').prop('checked', false);
-                        }
-                    });
-                    $('body').on('click', '.select-resource-td', function () {
-                        if (!$(this)[0].checked) {
-                            $('body .select-resource-th').prop('checked', false);
-                        }
-                    });
-                    function readURL(input) {
-                        if (input.files && input.files[0]) {
-                            var reader = new FileReader();
+    $(document).ready(function () {
+        $(".tm-input").tagsManager();
+    });
+    //Select deselect session
+    $('body').on('click', '.select-session-th', function () {
+        if ($(this)[0].checked) {
+            $('body .select-session-td').prop('checked', true);
+        } else {
+            $('body .select-session-td').prop('checked', false);
+        }
+    });
+    $('body').on('click', '.select-session-td', function () {
+        if (!$(this)[0].checked) {
+            $('body .select-session-th').prop('checked', false);
+        }
+    });
+    //Select deselect resource
+    $('body').on('click', '.select-resource-th', function () {
+        if ($(this)[0].checked) {
+            $('body .select-resource-td').prop('checked', true);
+        } else {
+            $('body .select-resource-td').prop('checked', false);
+        }
+    });
+    $('body').on('click', '.select-resource-td', function () {
+        if (!$(this)[0].checked) {
+            $('body .select-resource-th').prop('checked', false);
+        }
+    });
+    function readURL(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
 
-                            reader.onload = function (e) {
-                                $('#cover_image_preview').attr('src', e.target.result);
-                            };
-                            $('.editimg').show();
-                            $('.cover_image_name').text(input.files[0].name);
-                            reader.readAsDataURL(input.files[0]);
-                        }
-                    }
+            reader.onload = function (e) {
+                $('#cover_image_preview').attr('src', e.target.result);
+            };
+            $('.editimg').show();
+            $('.cover_image_name').text(input.files[0].name);
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
 </script>
 @endsection('after-script')

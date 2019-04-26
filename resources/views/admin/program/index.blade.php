@@ -78,8 +78,8 @@
                                 </div>
                             </td>
                             <td>Title <i class="fa fa-long-arrow-up" aria-hidden="true"></i><i class="fa fa-long-arrow-down" aria-hidden="true"></i></td>
-                            <td>Author<i class="fa fa-long-arrow-up" aria-hidden="true"></i><i class="fa fa-long-arrow-down" aria-hidden="true"></i></td>
-                            <td>Category <i class="fa fa-long-arrow-up" aria-hidden="true"></i><i class="fa fa-long-arrow-down" aria-hidden="true"></i></td>
+                            <td>Created By<i class="fa fa-long-arrow-up" aria-hidden="true"></i><i class="fa fa-long-arrow-down" aria-hidden="true"></i></td>
+                            <!--<td>Category <i class="fa fa-long-arrow-up" aria-hidden="true"></i><i class="fa fa-long-arrow-down" aria-hidden="true"></i></td>-->
                             <td>Date <i class="fa fa-long-arrow-up" aria-hidden="true"></i><i class="fa fa-long-arrow-down" aria-hidden="true"></i></td>
                         </tr>
                     </thead>
@@ -108,9 +108,9 @@
                                     {{ $program->title }}
                                 </a>
                             </td>
-                            <td><a href="javascript::void(0)">Feedback</a></td>
-                            <td><a href="javascript::void(0)">Bradly Mence</a></td>
-                            <td><a href="javascript::void(0)">18/07/22</a></td>
+                            <td><a href="javascript::void(0)">{{ $program->creator->username }}</a></td>
+                            <!--<td><a href="javascript::void(0)"></a></td>-->
+                            <td><a href="javascript::void(0)">{{ $program->created_at }}</a></td>
                         </tr>
                         @endforeach
                     </tbody>
@@ -187,8 +187,7 @@
                                 </div>
                             </td>
                             <td>Title <i class="fa fa-long-arrow-up" aria-hidden="true"></i><i class="fa fa-long-arrow-down" aria-hidden="true"></i></td>
-                            <td>Author<i class="fa fa-long-arrow-up" aria-hidden="true"></i><i class="fa fa-long-arrow-down" aria-hidden="true"></i></td>
-                            <td>Category <i class="fa fa-long-arrow-up" aria-hidden="true"></i><i class="fa fa-long-arrow-down" aria-hidden="true"></i></td>
+                            <td>Created By<i class="fa fa-long-arrow-up" aria-hidden="true"></i><i class="fa fa-long-arrow-down" aria-hidden="true"></i></td>
                             <td>Date <i class="fa fa-long-arrow-up" aria-hidden="true"></i><i class="fa fa-long-arrow-down" aria-hidden="true"></i></td>
                         </tr>
                     </thead>
@@ -218,7 +217,6 @@
                                 </a>
                             </td>
                             <td><a href="javascript::void(0)">{{ $category->creator->username }}</a></td>
-                            <td><a href="javascript::void(0)">Bradly Mence</a></td>
                             <td><a href="javascript::void(0)">{{ $category->created_at }}</a></td>
                         </tr>
                         @endforeach

@@ -10,7 +10,7 @@
         <li class="active"><a data-toggle="tab" href="#category-tab">Category Details</a></li>
         <li><a data-toggle="tab" href="#meta-tab">Meta Settings</a></li>
         <li><a data-toggle="tab" href="#cover-tab">Cover Settings</a></li>
-        <li><a data-toggle="tab" href="#public-tab">Publication</a></li>
+        <!--<li><a data-toggle="tab" href="#public-tab">Publication</a></li>-->
         <li class="rightside"><a data-toggle="tab" href="#analytic-tab">Analytics</a></li>
     </ul>
 
@@ -69,16 +69,16 @@
                 </div>   
             </div>
         </div>        
-        <div id="public-tab" class="tab-pane fade in">
+<!--        <div id="public-tab" class="tab-pane fade in">
             <div class="admin-nav-head">The publication tab controls how and when you want the article to be published.</div>        
             <div class="col-sm-12 presentation">
                 <h5>Presentation Style: How prominent would you like the article to be displayed?</h5>
                 <div class="input-group">
                     <div class="input-group-btn">
                         <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <span class="caret"></span></button>
-                    </div><!-- /btn-group -->
+                    </div> /btn-group 
                     <input type="text" class="form-control" aria-label="..." value="Dynamic Profile">
-                </div><!-- /input-group -->
+                </div> /input-group 
             </div>
             <div class="col-sm-12 appearence">
                 <h5>Publication: How would you like to republish the article?</h5>
@@ -94,7 +94,7 @@
                     <li><a href="">Depublish Now</a></li>
                 </ul>
             </div>
-        </div>
+        </div>-->
         <div id="analytic-tab" class="tab-pane fade in">
             <div class="admin-nav-head">Analytics provides details about how your audience responds to, and interacts with, this article in particular.</div>
         </div>

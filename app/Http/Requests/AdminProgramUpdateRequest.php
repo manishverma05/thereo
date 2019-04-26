@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class AdminProgramUpdateRequest extends FormRequest {
 
@@ -21,9 +22,22 @@ class AdminProgramUpdateRequest extends FormRequest {
      * @return array
      */
     public function rules() {
+        extract($_REQUEST);
         return [
-            'title' => ['required','max:150',Rule::unique('programs')->ignore($this->program->id, 'id')],
+            'title' => ['required', 'max:150', Rule::unique('programs')->ignore($program_id, 'id')],
+            'slug' => ['required', Rule::unique('programs')->ignore($program_id, 'id')],
             'title_alt' => 'max:150',
+        ];
+    }
+
+    /**
+     * Get the error messages for the defined validation rules.
+     *
+     * @return array
+     */
+    public function messages() {
+        return [
+            'slug.unique' => 'Meta URL must be unique.',
         ];
     }
 

@@ -18,7 +18,7 @@
         <li><a data-toggle="tab" href="#resource-tab">Resource Page</a></li>
         <li><a data-toggle="tab" href="#meta-tab">Meta Settings</a></li>
         <li><a data-toggle="tab" href="#cover-tab">Cover Settings</a></li>
-        <li><a data-toggle="tab" href="#public-tab">Publication</a></li>
+        <!--<li><a data-toggle="tab" href="#public-tab">Publication</a></li>-->
         <li class="rightside"><a data-toggle="tab" href="#analytic-tab">Analytics</a></li>
     </ul>
 
@@ -37,6 +37,121 @@
                     <input type="text" class="form-control" name="title" value="{{ old('title',$program->title) }}" placeholder="Enter the title for the program.">
                 </div>
             </div> 
+        </div>
+        <div id="overview-tab" class="tab-pane fade in">
+            <div class="admin-nav-head">Programs are made up of video pages, called sessions, that are sequenced together.</div>
+            <div class="admin-nav-head">The overview page provides your audience with information about the program; in addition to displaying all the section videos involved within it.</div>
+            <div class="col-sm-12 artctitle">
+                <h5>Alternative Title: If you don't want the title of the page to be the same as the name of the program, you may input something different instead.</h5>
+                <div class="form-group">
+                    <input type="text" class="form-control" name="title_alt" value="{{ old('title_alt',$program->title_alt) }}" placeholder="Alternative Title">
+                </div>
+            </div> 
+            <div class="col-sm-12 artcontent">
+                <h5>Description: What would you like to say about the program?</h5>
+                <div class="form-group">
+                    <textarea name="description" id="editor" placeholder="Enter description.">
+                       {{ old('description',$program->description) }}
+                    </textarea>
+                </div>
+            </div> 
+        </div>
+        <div id="update-tab" class="tab-pane fade in">
+            <div class="admin-nav-head">Provide you audience with updates on the kinds of changes that you have been making to the program.</div>
+            <section id="filter">
+                <div class="filter_hd">
+                    <p>You may search, filter, organize, and edit the resources listed below.</p>
+                    <a href="{{ route('admin.program.update.create',[$program->unique_id]) }}" class="nw_article">New Update</a>
+                </div>
+                <div class="filter_option col-md-12">
+                    <div class="col-sm-2">
+                        <input type="text" value="" placeholder="Type here to search">
+                    </div> 
+                    <div class="col-sm-2">
+                        <select>
+                            <option>Filter</option>
+                        </select>
+                    </div> 
+                    <div class="col-sm-5">
+                        <p>{{ count($program->updates) }} Program Updates</p>
+                    </div> 
+                    <div class="col-sm-1 switch-view">
+                        <a class="grid-btn switch-view-button" href="javascript:void(0)"> <i class="fa fa-th"></i> </a>
+                    </div> 
+                    <div class="col-sm-1 switch-view" style="display: none;">
+                        <a class="grid-btn switch-view-button" href="javascript:void(0)"> <i class="fa fa-th-list"></i> </a>
+                    </div> 
+                    <div class="col-sm-2">
+                        <select>
+                            <option>Actions</option>
+                        </select>
+                        <a class="conf_btn" href="javascript:void(0)">Confirm</a>
+                    </div> 
+                </div>
+
+                <div class="col-md-12 responder_table">
+                    <!-- START: grid row -->
+                    <div class="row articles-wrapper switch-view">
+                        @foreach ($program->updates as $program_update)
+                        @php
+                        $program_update_cover_image = asset('administrator/images/no-image.png');
+                        $program_update_cover_image_thumb = asset('administrator/images/no-image.png');
+                        @endphp
+                        <!-- START: single grid -->
+                        <div class="col-sm-3 articles-grid" style="background-image: url('{{ $program_update_cover_image }}');background-size:cover;background-repeat:no-repeat;">
+                            <h3><a href="{{ route('admin.program.update.update',[$program->unique_id,$program_update->unique_id]) }}">{{ $program_update->title }}</a></h3>
+                        </div> 
+                        <!-- END: single grid -->
+                        @endforeach
+                    </div>         
+                    <!-- END :grid row -->
+                    <table class="table switch-view" style="display:none;" >
+                        <thead>
+                            <tr>
+                                <td class="checkbox-cell">
+                                    <div class="checkbox">
+                                        <label>
+                                            <input type="checkbox" class="select-th">
+                                            <i class="helper"></i>
+                                        </label>
+                                    </div>
+                                </td>
+                                <td>Title <i class="fa fa-long-arrow-up" aria-hidden="true"></i><i class="fa fa-long-arrow-down" aria-hidden="true"></i></td>
+                                <td>Created By<i class="fa fa-long-arrow-up" aria-hidden="true"></i><i class="fa fa-long-arrow-down" aria-hidden="true"></i></td>
+                                <!--<td>Category <i class="fa fa-long-arrow-up" aria-hidden="true"></i><i class="fa fa-long-arrow-down" aria-hidden="true"></i></td>-->
+                                <td>Date <i class="fa fa-long-arrow-up" aria-hidden="true"></i><i class="fa fa-long-arrow-down" aria-hidden="true"></i></td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($program->updates as $program_update)
+                            @php
+                            $program_update_cover_image = asset('administrator/images/no-image.png');
+                            $program_update_cover_image_thumb = asset('administrator/images/no-image.png');
+                            @endphp
+                            <tr>  
+                                <td class="checkbox-cell">
+                                    <div class="checkbox">
+                                        <label>
+                                            <input type="checkbox" name="program_id" class="select-td" value="{{ $program_update->id }}">
+                                            <i class="helper"></i>
+                                        </label>
+                                    </div>
+                                </td>
+                                <td>
+                                    <a href="{{ route('admin.program.update.update',[$program->unique_id,$program_update->unique_id]) }}">
+                                        <img class="article-thumb" src="{{ $program_update_cover_image_thumb }}"> 
+                                        {{ $program_update->title }}
+                                    </a>
+                                </td>
+                                <td><a href="javascript::void(0)">{{ $program_update->creator->username }}</a></td>
+                                <!--<td><a href="javascript::void(0)"></a></td>-->
+                                <td><a href="javascript::void(0)">{{ $program_update->created_at }}</a></td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            </section>
         </div>
         <div id="session-tab" class="tab-pane fade in">
             <div class="admin-nav-head">Programs are made up of video pages, called sessions, that are sequenced together.</div>
@@ -81,7 +196,6 @@
                         $session_cover_image_thumb = asset(config('constants.session.cover_path_display').'thumb_'.$session->cover_media->file);
                         endif;
                         @endphp
-
                         <div class="col-sm-3 articles-grid" style="background-image: url('{{ $session_cover_image }}');background-size:cover;background-repeat:no-repeat;">
                             <h3><a href="{{ route('admin.program.session.update',[$program->unique_id,$session->unique_id]) }}" >{{ $session->title }}</a></h3>
                         </div> 
@@ -140,16 +254,16 @@
                 </div>
             </section>
         </div>
-        <div id="update-tab" class="tab-pane fade in">
-            <div class="admin-nav-head">Provide you audience with updates on the kinds of changes that you have been making to the program.</div>
+        <div id="resource-tab" class="tab-pane fade in">
+            <div class="admin-nav-head">Provide you audience with updates on the kinds of changes that you have been making to the program.</div>           
             <section id="filter">
                 <div class="filter_hd">
                     <p>You may search, filter, organize, and edit the resources listed below.</p>
-                    <a href="#" class="nw_article">New Update</a>
+                    <a href="{{ route('admin.program.resource.create.option',[$program->unique_id]) }}" class="nw_article">New Resource</a>
                 </div>
                 <div class="filter_option col-md-12">
                     <div class="col-sm-2">
-                        <input type="text" value="Search">
+                        <input type="text" value="" placeholder="Type here to search">
                     </div> 
                     <div class="col-sm-2">
                         <select>
@@ -157,129 +271,86 @@
                         </select>
                     </div> 
                     <div class="col-sm-5">
-                        <p>7 Resources</p>
+                        <p>{{ count($program->resources) }} Program Resources</p>
                     </div> 
-                    <div class="col-sm-1">
-                       <!-- <select>
-                          <option>Actions</option>
-                       </select>
-                       <a class="conf_btn" href="#">Confirm</a> -->
-                        <a class="grid-btn" href="#"> <i class="fa fa-th-list"></i> </a>
+                    <div class="col-sm-1 switch-view">
+                        <a class="grid-btn switch-view-button" href="javascript:void(0)"> <i class="fa fa-th"></i> </a>
+                    </div> 
+                    <div class="col-sm-1 switch-view" style="display: none;">
+                        <a class="grid-btn switch-view-button" href="javascript:void(0)"> <i class="fa fa-th-list"></i> </a>
                     </div> 
                     <div class="col-sm-2">
-
                         <select>
                             <option>Actions</option>
                         </select>
-                        <a class="conf_btn" href="#">Confirm</a>
+                        <a class="conf_btn" href="javascript:void(0)">Confirm</a>
                     </div> 
                 </div>
-                <div class="col-md-12 responder_table">          
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <td class="checkbox-cell">
-                                    <div class="checkbox">
-                                        <label>
-                                            <input type="checkbox" name="" value="">
-                                            <i class="helper"></i>
-                                        </label>
-                                    </div>
-                                </td>
-                                <td>Title <i class="fa fa-long-arrow-up" aria-hidden="true"></i><i class="fa fa-long-arrow-down" aria-hidden="true"></i></td>
-                                <td class="view_type_right">Type <i class="fa fa-long-arrow-up" aria-hidden="true"></i><i class="fa fa-long-arrow-down" aria-hidden="true"></i></td>
-
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>  
-                                <td class="checkbox-cell">
-                                    <div class="checkbox">
-                                        <label>
-                                            <input type="checkbox" name="" value="">
-                                            <i class="helper"></i>
-                                        </label>
-                                    </div>
-                                </td>
-                                <td>
-                                    Lorem Ipsum
-                                </td>
-
-                                <td class="view_type_right">Bradly Mence
-                                    <i class="fa fa-arrows-v" style="font-size: 22px; color: #8FB8C9; margin-left: 16px;"></i></td>
-
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </section>
-        </div>
-        <div id="overview-tab" class="tab-pane fade in">
-            <div class="admin-nav-head">Programs are made up of video pages, called sessions, that are sequenced together.</div>
-            <div class="admin-nav-head">The overview page provides your audience with information about the program; in addition to displaying all the section videos involved within it.</div>
-            <div class="col-sm-12 artctitle">
-                <h5>Alternative Title: If you don't want the title of the page to be the same as the name of the program, you may input something different instead.</h5>
-                <div class="form-group">
-                    <input type="text" class="form-control" name="title_alt" value="{{ old('title_alt',$program->title_alt) }}" placeholder="Alternative Title">
-                </div>
-            </div> 
-            <div class="col-sm-12 artcontent">
-                <h5>Description: What would you like to say about the program?</h5>
-                <div class="form-group">
-                    <textarea name="description" id="editor" placeholder="Enter description.">
-                       {{ old('description',$program->description) }}
-                    </textarea>
-                </div>
-            </div> 
-        </div>
-        <div id="resource-tab" class="tab-pane fade in">
-            <section id="filter">
                 <div class="col-md-12 responder_table">
-                    <table class="table switch-view">
+                    <!-- START: grid row -->
+                    <div class="row articles-wrapper switch-view">
+                        @foreach ($program->resources as $program_resource)
+                        @php
+                        $program_resource_cover_image = asset('administrator/images/no-image.png');
+                        $program_resource_cover_image_thumb = asset('administrator/images/no-image.png');
+                        if(isset($program_resource->resource->cover_media->file)):
+                        $program_resource_cover_image = asset(config('constants.resource.cover_path_display').$program_resource->resource->cover_media->file);
+                        $program_resource_cover_image_thumb = asset(config('constants.resource.cover_path_display').'thumb_'.$program_resource->resource->cover_media->file);
+                        endif;
+                        @endphp
+                        <!-- START: single grid -->
+                        <div class="col-sm-3 articles-grid" style="background-image: url('{{ $program_resource_cover_image }}');background-size:cover;background-repeat:no-repeat;">
+                            <h3><a href="{{ route('admin.program.resource.update.'.$program_resource->resource->type,[$program->unique_id,$program_resource->resource->unique_id]) }}">{{ $program_resource->resource->title }}</a></h3>
+                        </div> 
+                        <!-- END: single grid -->
+                        @endforeach
+                    </div>         
+                    <!-- END :grid row -->
+                    <table class="table switch-view" style="display:none;" >
                         <thead>
                             <tr>
                                 <td class="checkbox-cell">
                                     <div class="checkbox">
                                         <label>
-                                            <input type="checkbox" name="" class="select-resource-th">
+                                            <input type="checkbox" class="select-th">
                                             <i class="helper"></i>
                                         </label>
                                     </div>
                                 </td>
                                 <td>Title <i class="fa fa-long-arrow-up" aria-hidden="true"></i><i class="fa fa-long-arrow-down" aria-hidden="true"></i></td>
-                                <td>Author<i class="fa fa-long-arrow-up" aria-hidden="true"></i><i class="fa fa-long-arrow-down" aria-hidden="true"></i></td>
-                                <td>Category <i class="fa fa-long-arrow-up" aria-hidden="true"></i><i class="fa fa-long-arrow-down" aria-hidden="true"></i></td>
+                                <td>Created By<i class="fa fa-long-arrow-up" aria-hidden="true"></i><i class="fa fa-long-arrow-down" aria-hidden="true"></i></td>
+                                <!--<td>Category <i class="fa fa-long-arrow-up" aria-hidden="true"></i><i class="fa fa-long-arrow-down" aria-hidden="true"></i></td>-->
                                 <td>Date <i class="fa fa-long-arrow-up" aria-hidden="true"></i><i class="fa fa-long-arrow-down" aria-hidden="true"></i></td>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($resources as $resource)
+                            @foreach ($program->resources as $program_resource)
                             @php
-                            $resource_cover_image = asset('administrator/images/no-image.png');
-                            $resource_cover_image_thumb = asset('administrator/images/no-image.png');
-                            if(isset($resource->cover_media->file)):
-                            $resource_cover_image = asset(config('constants.resource.cover_path_display').$resource->cover_media->file);
-                            $resource_cover_image_thumb = asset(config('constants.resource.cover_path_display').'thumb_'.$resource->cover_media->file);
+                            $program_resource_cover_image = asset('administrator/images/no-image.png');
+                            $program_resource_cover_image_thumb = asset('administrator/images/no-image.png');
+                            if(isset($program_resource->resource->cover_media->file)):
+                            $program_resource_cover_image = asset(config('constants.resource.cover_path_display').$program_resource->resource->cover_media->file);
+                            $program_resource_cover_image_thumb = asset(config('constants.resource.cover_path_display').'thumb_'.$program_resource->resource->cover_media->file);
                             endif;
                             @endphp
                             <tr>  
                                 <td class="checkbox-cell">
                                     <div class="checkbox">
                                         <label>
-                                            <input type="checkbox" name="resource_id[]" class="select-resource-td" value="{{ $resource->id }}" @if(is_array(old('resource_id',$programResources)) && in_array($resource->id, old('resource_id',$programResources))) checked @endif>
-                                                   <i class="helper"></i>
+                                            <input type="checkbox" name="program_id" class="select-td" value="{{ $program_resource->resource->id }}">
+                                            <i class="helper"></i>
                                         </label>
                                     </div>
                                 </td>
                                 <td>
-                                    <a href="javascript::void(0)">
-                                        <img class="article-thumb" src="{{ $resource_cover_image_thumb }}"> 
-                                        {{ $resource->title }}
+                                    <a href="{{ route('admin.program.resource.update.'.$program_resource->resource->type,[$program->unique_id,$program_resource->resource->unique_id]) }}">
+                                        <img class="article-thumb" src="{{ $program_resource_cover_image_thumb }}"> 
+                                        {{ $program_resource->resource->title }}
                                     </a>
                                 </td>
-                                <td><a href="javascript::void(0)">Feedback</a></td>
-                                <td><a href="javascript::void(0)">Bradly Mence</a></td>
-                                <td><a href="javascript::void(0)">18/07/22</a></td>
+                                <td><a href="javascript::void(0)">{{ $program_resource->resource->creator->username }}</a></td>
+                                <!--<td><a href="javascript::void(0)"></a></td>-->
+                                <td><a href="javascript::void(0)">{{ $program_resource->resource->created_at }}</a></td>
                             </tr>
                             @endforeach
                         </tbody>
@@ -367,7 +438,7 @@
                 </div>   
             </div>
         </div>
-        <div id="public-tab" class="tab-pane fade in">
+<!--        <div id="public-tab" class="tab-pane fade in">
             <div class="admin-nav-head">The publication tab controls how and when you want the article to be published.</div>        
             <div class="col-sm-12 meta-auther userAccess">
                 <h5>Access Level</h5>
@@ -385,9 +456,9 @@
                 <div class="input-group">
                     <div class="input-group-btn">
                         <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <span class="caret"></span></button>
-                    </div><!-- /btn-group -->
+                    </div> /btn-group 
                     <input type="text" class="form-control" aria-label="..." value="Dynamic Profile">
-                </div><!-- /input-group -->
+                </div> /input-group 
             </div>
             <div class="col-sm-12 appearence">
                 <h5>Publication: How would you like to republish the article?</h5>
@@ -403,7 +474,7 @@
                     <li><input type="date" name="unpublish" value="{{ old('unpublish',date('d-m-Y',strtotime($program->unpublish_on))) }}"/></li>
                 </ul>
             </div>
-        </div>
+        </div>-->
 
         <div id="analytic-tab" class="tab-pane fade in">
             <div class="admin-nav-head">Analytics provides details about how your audience responds to, and interacts with, this article in particular.</div>
@@ -428,42 +499,46 @@
     $(document).ready(function () {
         $(".tm-input").tagsManager();
     });
-    $('body').on('click', '.select-session-th', function () {
-        if ($(this)[0].checked) {
-            $('body .select-session-td').prop('checked', true);
-        } else {
-            $('body .select-session-td').prop('checked', false);
-        }
+
+    $('body').on('click', '.switch-view-button', function () {
+        $('.switch-view').toggle();
     });
-    $('body').on('click', '.select-session-td', function () {
-        if (!$(this)[0].checked) {
-            $('body .select-session-th').prop('checked', false);
-        }
-    });
-    $('body').on('click', '.select-resource-th', function () {
-        if ($(this)[0].checked) {
-            $('body .select-resource-td').prop('checked', true);
-        } else {
-            $('body .select-resource-td').prop('checked', false);
-        }
-    });
-    $('body').on('click', '.select-resource-td', function () {
-        if (!$(this)[0].checked) {
-            $('body .select-resource-th').prop('checked', false);
-        }
-    });
-    $('body').on('click', '.select-resource-th', function () {
-        if ($(this)[0].checked) {
-            $('body .select-resource-td').prop('checked', true);
-        } else {
-            $('body .select-resource-td').prop('checked', false);
-        }
-    });
-    $('body').on('click', '.select-resource-td', function () {
-        if (!$(this)[0].checked) {
-            $('body .select-resource-th').prop('checked', false);
-        }
-    });
+//    $('body').on('click', '.select-session-th', function () {
+//        if ($(this)[0].checked) {
+//            $('body .select-session-td').prop('checked', true);
+//        } else {
+//            $('body .select-session-td').prop('checked', false);
+//        }
+//    });
+//    $('body').on('click', '.select-session-td', function () {
+//        if (!$(this)[0].checked) {
+//            $('body .select-session-th').prop('checked', false);
+//        }
+//    });
+//    $('body').on('click', '.select-resource-th', function () {
+//        if ($(this)[0].checked) {
+//            $('body .select-resource-td').prop('checked', true);
+//        } else {
+//            $('body .select-resource-td').prop('checked', false);
+//        }
+//    });
+//    $('body').on('click', '.select-resource-td', function () {
+//        if (!$(this)[0].checked) {
+//            $('body .select-resource-th').prop('checked', false);
+//        }
+//    });
+//    $('body').on('click', '.select-resource-th', function () {
+//        if ($(this)[0].checked) {
+//            $('body .select-resource-td').prop('checked', true);
+//        } else {
+//            $('body .select-resource-td').prop('checked', false);
+//        }
+//    });
+//    $('body').on('click', '.select-resource-td', function () {
+//        if (!$(this)[0].checked) {
+//            $('body .select-resource-th').prop('checked', false);
+//        }
+//    });
     function readURL(input) {
         if (input.files && input.files[0]) {
             var reader = new FileReader();

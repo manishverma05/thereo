@@ -12,8 +12,9 @@ class ProgramCategory extends Model {
     public function cover_media() {
         return $this->hasOne('App\Models\ProgramCategoryCoverMedia');
     }
+
     public function creator() {
-        return $this->hasOne('App\user','id','created_by');
+        return $this->hasOne('App\user', 'id', 'created_by');
     }
 
 }

@@ -14,6 +14,7 @@ class CreateProgramUpdatesTable extends Migration {
     public function up() {
         Schema::create('program_updates', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->integer('program_id');
             $table->string('unique_id', 100)->unique();
             $table->string('title', 191);
             $table->text('description');

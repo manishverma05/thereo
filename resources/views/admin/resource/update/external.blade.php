@@ -6,11 +6,11 @@
     <ul class="menu_tab nav nav-tabs">
         <li class="active"><a data-toggle="tab" href="#external-tab"> External File</a></li>
         <li><a data-toggle="tab" href="#cover-tab">Cover Settings</a></li>
-        <li><a data-toggle="tab" href="#public-tab">Publication</a></li>
+        <!--<li><a data-toggle="tab" href="#public-tab">Publication</a></li>-->
         <li class="rightside"><a data-toggle="tab" href="#analytic-tab">Analytics</a></li>
     </ul>
 </div>
-<form action="{{ route('admin.resource.create.local') }}" method="post" enctype="multipart/form-data">
+<form action="{{ route("admin.$relatedTo.resource.update.external",[$$relatedTo->unique_id,$resource->unique_id]) }}" method="post" enctype="multipart/form-data">
     @csrf 
     <div class="tab-content">
         <div id="local-tab" class="tab-pane fade in active">
@@ -26,34 +26,44 @@
                         </div>
                     </div>
                 </div>
-                <div class="row">
+<!--                <div class="row">
                     <div class="col-sm-12 ">
                         <div class="presentation">
                             <h5><span style="color: #fff;">Presentation Style: </span>How prominent would you like the article to be displayed?</h5>
                             <div class="input-group">
                                 <div class="input-group-btn">
                                     <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <span class="caret"></span></button>
-                                </div><!-- /btn-group -->
+                                </div> /btn-group 
                                 <input type="text" class="form-control" aria-label="..." value="Dynamic Profile">
-                            </div><!-- /input-group -->
+                            </div> /input-group 
                         </div>
                     </div>
-                </div>
+                </div>-->
                 <div class="col-sm-12 artcover">
                     <p><span style="color: #fff;">Cover Image: </span> The cover for this resource is currently attached to the image displayed below.</p>
                     <a href="javascript::void(0)" onclick="$('[name=attachment]').click()">Add Attachment</a>
                     <input type="file" name="attachment" style="display: none;" onchange="readAttachmentURL(this);" />
                 </div> 
+                @php
+                $resource_attachment = asset('administrator/images/no-image.png');
+                $resource_attachment_thumb = asset('administrator/images/no-image.png');
+                $filename = '';
+                if(isset($resource->attachment->file)):
+                $filename = $resource->attachment->file; 
+                $resource_attachment = asset(config('constants.resource.attachment_path_display').$resource->attachment->file);
+                $resource_attachment_thumb = asset(config('constants.resource.attachment_path_display').'thumb_'.$resource->attachment->file);
+                endif;
+                @endphp
                 <div class="col-sm-12 imagewrap">
                     <div class="col-sm-3 covercontainer">
-                        <img src="{{ asset('administrator/images/no-image.png') }}" alt="attachment" id="attachment_preview" class="image"  style="width:100%" >
+                        <img src="{{ $resource_attachment }}" alt="attachment" id="attachment_preview" class="image"  style="width:100%" >
                         <div class="middle">
-                            <div class="text attachment_name"></div>
+                            <div class="text attachment_name">{{ $filename }}</div>
                         </div>
                     </div>
-                    <div class="col-sm-9 editimg editAttachment" style="display:none;">
+                    <div class="col-sm-9 editimg editAttachment" @if(!$filename) {{ 'style=display:none;' }} @endif >
                         <div class="postnbotm">
-                            <h5 class="attachment_name"></h5>
+                            <h5 class="attachment_name">{{ $filename }}</h5>
                             <!--<p><a href="javascript:void(0)"> Edit Attachment</a></p>-->
                         </div>
                     </div>   
@@ -74,13 +84,13 @@
                 <input type="file" name="cover_image" accept="image/*" style="display: none;" onchange="readURL(this);" />
             </div> 
             @php
-            $resource_attachment = asset('administrator/images/no-image.png');
-            $resource_attachment_thumb = asset('administrator/images/no-image.png');
+            $resource_cover_image = asset('administrator/images/no-image.png');
+            $resource_cover_image_thumb = asset('administrator/images/no-image.png');
             $filename = '';
-            if(isset($resource->attachment->file)):
-            $filename = $resource->attachment->file; 
-            $resource_attachment = asset(config('constants.resource.attachment_path_display').$resource->attachment->file);
-            $resource_attachment_thumb = asset(config('constants.resource.attachment_path_display').'thumb_'.$resource->attachment->file);
+            if(isset($resource->cover_media->file)):
+            $filename = $resource->cover_media->file; 
+            $resource_cover_image = asset(config('constants.resource.cover_path_display').$resource->cover_media->file);
+            $resource_cover_image_thumb = asset(config('constants.resource.cover_path_display').'thumb_'.$resource->cover_media->file);
             endif;
             @endphp
             <div class="col-sm-12 imagewrap">
@@ -98,7 +108,7 @@
                 </div>   
             </div>
         </div>
-        <div id="public-tab" class="tab-pane fade in">
+<!--        <div id="public-tab" class="tab-pane fade in">
             <div class="admin-nav-head">The publication tab controls how and when you want the resource to be published.</div>
             <div class="col-sm-12 appearence">
                 <h5>Publication: How would you like to republish the article?</h5>
@@ -114,7 +124,7 @@
                     <li><a href="">Depublish Now</a></li>
                 </ul>
             </div>
-        </div>
+        </div>-->
         <div id="analytic-tab" class="tab-pane fade in">
             <div class="admin-nav-head">Analytics provides details about how your audience responds to, and interacts with, this resource in particular.</div>
         </div>

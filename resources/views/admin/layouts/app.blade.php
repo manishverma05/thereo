@@ -22,7 +22,7 @@
             <!-- Start Admin Header -->
             <div class="row breadcrumb-section">
                 <div class="col-md-12">
-                    <div class="rjadmin_bar"><a href="javascript::void(0);" class="rjadmin_active"><i class="fa fa-bars"></i></a></div>
+                    <div class="rjadmin_bar"><a href="{{ route('admin.dashboard') }}" class="rjadmin_active"><i class="fa fa-bars"></i></a></div>
                 </div>
                 <div class="col-md-6 col-sm-6 col-xs-8">
                     <!--@yield('breadcrumb-left')-->

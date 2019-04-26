@@ -6,11 +6,11 @@
     <ul class="menu_tab nav nav-tabs">
         <li class="active"><a data-toggle="tab" href="#media-tab"> Media File</a></li>
         <li><a data-toggle="tab" href="#cover-tab">Cover Settings</a></li>
-        <li><a data-toggle="tab" href="#public-tab">Publication</a></li>
+        <!--<li><a data-toggle="tab" href="#public-tab">Publication</a></li>-->
         <li class="rightside"><a data-toggle="tab" href="#analytic-tab">Analytics</a></li>
     </ul>
 </div>
-<form action="{{ route('admin.resource.create.local') }}" method="post" enctype="multipart/form-data">
+<form action="{{ route("admin.$relatedTo.resource.create.media",[$$relatedTo->unique_id]) }}" method="post" enctype="multipart/form-data">
     @csrf 
     <div class="tab-content">
         <div id="local-tab" class="tab-pane fade in active">
@@ -26,19 +26,19 @@
                         </div>
                     </div>
                 </div>
-                <div class="row">
+<!--                <div class="row">
                     <div class="col-sm-12 ">
                         <div class="presentation">
                             <h5><span style="color: #fff;">Presentation Style: </span>How prominent would you like the article to be displayed?</h5>
                             <div class="input-group">
                                 <div class="input-group-btn">
                                     <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <span class="caret"></span></button>
-                                </div><!-- /btn-group -->
+                                </div> /btn-group 
                                 <input type="text" class="form-control" aria-label="..." value="Dynamic Profile">
-                            </div><!-- /input-group -->
+                            </div> /input-group 
                         </div>
                     </div>
-                </div>
+                </div>-->
                 <div class="col-sm-12 artcover">
                     <p><span style="color: #fff;">Cover Image: </span> The cover for this resource is currently attached to the image displayed below.</p>
                     <a href="javascript::void(0)" onclick="$('[name=attachment]').click()">Add Attachment</a>
@@ -88,7 +88,7 @@
                 </div>   
             </div>
         </div>
-        <div id="public-tab" class="tab-pane fade in">
+<!--        <div id="public-tab" class="tab-pane fade in">
             <div class="admin-nav-head">The publication tab controls how and when you want the resource to be published.</div>
             <div class="col-sm-12 appearence">
                 <h5>Publication: How would you like to republish the article?</h5>
@@ -104,7 +104,7 @@
                     <li><a href="">Depublish Now</a></li>
                 </ul>
             </div>
-        </div>
+        </div>-->
         <div id="analytic-tab" class="tab-pane fade in">
             <div class="admin-nav-head">Analytics provides details about how your audience responds to, and interacts with, this resource in particular.</div>
         </div>

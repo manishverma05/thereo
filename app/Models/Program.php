@@ -19,6 +19,12 @@ class Program extends Model {
     public function sessions() {
         return $this->hasMany('App\Models\ProgramSessionMap');
     }
+    /**
+     * Get the updates record associated with the program.
+     */
+    public function updates() {
+        return $this->hasMany('App\Models\ProgramUpdate');
+    }
 
     /**
      * Get the resources record associated with the program.
@@ -40,12 +46,16 @@ class Program extends Model {
     public function program_categories() {
         return $this->hasMany('App\Models\ProgramCategoryMap');
     }
-    
+
     /**
      * Get the accesss record associated with the session.
      */
     public function accesss() {
         return $this->hasMany('App\Models\ProgramAccessMap');
+    }
+
+    public function creator() {
+        return $this->hasOne('App\user', 'id', 'created_by');
     }
 
 }

@@ -20,4 +20,7 @@ class Resource extends Model {
         return $this->hasOne('App\Models\ResourceAttachment');
     }
 
+    public function creator() {
+        return $this->hasOne('App\user', 'id', 'created_by');
+    }
 }

@@ -12,7 +12,7 @@
         <div class="col-md-6 col-sm-6 col-xs-8">
             <div class="rjadmin_breadcrumb_left">
                 <div class="rjadmin_back"><a href="javascript:void(0)" onclick="goBack()"><i class="fa fa-times"></i></a></div>
-                <div class="rjadmin_back"><a href="{{ route('admin.program.list') }}">Close</a></div>
+                <div class="rjadmin_back"><a href="{{ route("admin.$relatedTo.update",[$$relatedTo->unique_id]) }}">Close</a></div>
             </div>
         </div>
     </div>
@@ -26,17 +26,17 @@
                 </tr>
                 <tr>
                     <td class="resource_add">
-                        <a href="{{ route('admin.resource.create.local') }}">Local Product</a>
+                        <a href="{{ route("admin.$relatedTo.resource.create.local",[$$relatedTo->unique_id]) }}">Local Product</a>
                     </td>
                 </tr>
                 <tr>
                     <td class="resource_add">
-                        <a href="{{ route('admin.resource.create.media') }}">Media File</a>
+                        <a href="{{ route("admin.$relatedTo.resource.create.media",[$$relatedTo->unique_id]) }}">Media File</a>
                     </td>
                 </tr>
                 <tr>
                     <td class="resource_add">
-                        <a href="{{ route('admin.resource.create.external') }}"> External Link</a>
+                        <a href="{{ route("admin.$relatedTo.resource.create.external",[$$relatedTo->unique_id]) }}"> External Link</a>
                     </td>
                 </tr>
             </tbody>
