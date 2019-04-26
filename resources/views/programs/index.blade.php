@@ -83,7 +83,7 @@
                     </div>
                 </div>
                 <div class="or_program">
-                    <div class="col-md-12 pd0 wd860 mrgn-left">
+                    <div class="col-md-12 pd0 mrgn-left">
                         @foreach ($programs as $program)
                         @php
                         $program_cover_image = asset('images/no-image.png');
