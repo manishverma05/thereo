@@ -27,6 +27,9 @@ Route::group(['middleware' => 'auth'], function () {
             Route::group(['as' => 'category.', 'prefix' => 'category'], function () {
                 Route::get('/{category_slug}', 'ProgramCategoryController@detail')->name('detail');
             });
+            Route::group(['as' => 'resource.', 'prefix' => 'resource'], function () {
+                Route::get('/{program_slug}', 'ProgramResourceController@index')->name('list');
+            });
         });
     });
 });

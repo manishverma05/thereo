@@ -202,7 +202,7 @@
 
                         @endforeach
                     </div>        
-                    <table class="table switch-view">
+                    <table class="table switch-view" style="display:none;">
                         <thead>
                             <tr>
                                 <td class="checkbox-cell">
