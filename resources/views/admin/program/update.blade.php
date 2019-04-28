@@ -170,7 +170,7 @@
                         </select>
                     </div> 
                     <div class="col-sm-5">
-                        <p>{{ count($sessions) }} Sessions</p>
+                        <p>{{ count($program->sessions) }} Sessions</p>
                     </div> 
                     <div class="col-sm-1 switch-view">
                         <a class="grid-btn switch-view-button" href="javascript:void(0)"> <i class="fa fa-th"></i> </a>
@@ -187,17 +187,17 @@
                 </div>
                 <div class="col-md-12 responder_table">
                     <div class="row articles-wrapper switch-view">
-                        @foreach ($sessions as $session)
+                        @foreach ($program->sessions as $program_session)
                         @php
-                        $session_cover_image = asset('administrator/images/no-image.png');
-                        $session_cover_image_thumb = asset('administrator/images/no-image.png');
-                        if(isset($session->cover_media->file)):
-                        $session_cover_image = asset(config('constants.session.cover_path_display').$session->cover_media->file);
-                        $session_cover_image_thumb = asset(config('constants.session.cover_path_display').'thumb_'.$session->cover_media->file);
+                        $program_session->session_cover_image = asset('administrator/images/no-image.png');
+                        $program_session->session_cover_image_thumb = asset('administrator/images/no-image.png');
+                        if(isset($program_session->session->cover_media->file)):
+                        $program_session->session_cover_image = asset(config('constants.session.cover_path_display').$program_session->session->cover_media->file);
+                        $program_session->session_cover_image_thumb = asset(config('constants.session.cover_path_display').'thumb_'.$program_session->session->cover_media->file);
                         endif;
                         @endphp
-                        <div class="col-sm-3 articles-grid" style="background-image: url('{{ $session_cover_image }}');background-size:cover;background-repeat:no-repeat;">
-                            <h3><a href="{{ route('admin.program.session.update',[$program->unique_id,$session->unique_id]) }}" >{{ $session->title }}</a></h3>
+                        <div class="col-sm-3 articles-grid" style="background-image: url('{{ $program_session->session_cover_image }}');background-size:cover;background-repeat:no-repeat;">
+                            <h3><a href="{{ route('admin.program.session.update',[$program->unique_id,$program_session->session->unique_id]) }}" >{{ $program_session->session->title }}</a></h3>
                         </div> 
 
                         @endforeach
@@ -220,28 +220,28 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($sessions as $session)
+                            @foreach ($program->sessions as $program_session)
                             @php
-                            $session_cover_image = asset('administrator/images/no-image.png');
-                            $session_cover_image_thumb = asset('administrator/images/no-image.png');
-                            if(isset($session->cover_media->file)):
-                            $session_cover_image = asset(config('constants.session.cover_path_display').$session->cover_media->file);
-                            $session_cover_image_thumb = asset(config('constants.session.cover_path_display').'thumb_'.$session->cover_media->file);
+                            $program_session->session_cover_image = asset('administrator/images/no-image.png');
+                            $program_session->session_cover_image_thumb = asset('administrator/images/no-image.png');
+                            if(isset($program_session->session->cover_media->file)):
+                            $program_session->session_cover_image = asset(config('constants.session.cover_path_display').$program_session->session->cover_media->file);
+                            $program_session->session_cover_image_thumb = asset(config('constants.session.cover_path_display').'thumb_'.$program_session->session->cover_media->file);
                             endif;
                             @endphp
                             <tr>  
                                 <td class="checkbox-cell">
                                     <div class="checkbox">
                                         <label>
-                                            <input type="checkbox" name="session_id[]" class="select-session-td" value="{{ $session->id }}" @if(is_array(old('session_id',$programSessions)) && in_array($session->id, old('session_id',$programSessions))) checked @endif>
+                                            <input type="checkbox" name="session_id[]" class="select-session-td" value="{{ $program_session->session->id }}" >
                                                    <i class="helper"></i>
                                         </label>
                                     </div>
                                 </td>
                                 <td>
                                     <a href="javascript::void(0)">
-                                        <img class="article-thumb" src="{{ $session_cover_image_thumb }}"> 
-                                        {{ $session->title }}
+                                        <img class="article-thumb" src="{{ $program_session->session_cover_image_thumb }}"> 
+                                        {{ $program_session->session->title }}
                                     </a>
                                 </td>
                                 <td><a href="javascript::void(0)">Feedback</a></td>

@@ -68,14 +68,7 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin'], function () {
                     });
                 });
 
-
-
-
-
-
-
                 Route::group(['as' => 'session.', 'prefix' => 'session'], function () {
-
                     // Admin Program Session 
                     Route::get('create/{program_unique_id}', 'SessionController@getCreate')->name('create');
                     Route::post('create/{program_unique_id}', 'SessionController@postCreate')->name('create');
@@ -92,9 +85,6 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin'], function () {
                         Route::post('update/{attachment_unique_id}', 'SessionController@postVideoUpdate')->name('update');
                     });
                 });
-
-
-
 
 
 
@@ -126,7 +116,46 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin'], function () {
             });
 
 
-            // Admin Article
+            // Admin Session
+            Route::group(['as' => 'session.', 'prefix' => 'session'], function () {
+                Route::get('update/{session_unique_id}', 'SessionController@redirectSessionUpdate')->name('update');
+                Route::group(['as' => 'resource.', 'prefix' => 'resource'], function () {
+                    // Admin Resource 
+                    Route::group(['as' => 'create.', 'prefix' => 'create'], function () {
+                        Route::get('/{session_unique_id}', 'ResourceController@getSessionCreate')->name('option');
+                        Route::get('local/{session_unique_id}', 'ResourceController@getCreateSessionLocal')->name('local');
+                        Route::get('media/{session_unique_id}', 'ResourceController@getCreateSessionMedia')->name('media');
+                        Route::get('external/{session_unique_id}', 'ResourceController@getCreateSessionExternal')->name('external');
+                        Route::post('local/{session_unique_id}', 'ResourceController@postCreateSessionLocal')->name('local');
+                        Route::post('media/{session_unique_id}', 'ResourceController@postCreateSessionMedia')->name('media');
+                        Route::post('external/{session_unique_id}', 'ResourceController@postCreateSessionExternal')->name('external');
+                    });
+                    Route::group(['as' => 'update.', 'prefix' => 'update'], function () {
+                        Route::get('local/{session_unique_id}/{resource_unique_id}', 'ResourceController@getUpdateSessionLocal')->name('local');
+                        Route::get('media/{session_unique_id}/{resource_unique_id}', 'ResourceController@getUpdateSessionMedia')->name('media');
+                        Route::get('external/{session_unique_id}/{resource_unique_id}', 'ResourceController@getUpdateSessionExternal')->name('external');
+                        Route::post('local/{session_unique_id}/{resource_unique_id}', 'ResourceController@postUpdateSessionLocal')->name('local');
+                        Route::post('media/{session_unique_id}/{resource_unique_id}', 'ResourceController@postUpdateSessionMedia')->name('media');
+                        Route::post('external/{session_unique_id}/{resource_unique_id}', 'ResourceController@postUpdateSessionExternal')->name('external');
+                    });
+                });
+                Route::group(['as' => 'material.', 'prefix' => 'material'], function () {
+                    // Admin Material 
+                    Route::group(['as' => 'create.', 'prefix' => 'create'], function () {
+                        Route::get('/{session_unique_id}', 'MaterialController@getSessionCreate')->name('option');
+                        Route::get('media/{session_unique_id}', 'MaterialController@getCreateSessionMedia')->name('media');
+                        Route::get('external/{session_unique_id}', 'MaterialController@getCreateSessionExternal')->name('external');
+                        Route::post('media/{session_unique_id}', 'MaterialController@postCreateSessionMedia')->name('media');
+                        Route::post('external/{session_unique_id}', 'MaterialController@postCreateSessionExternal')->name('external');
+                    });
+                    Route::group(['as' => 'update.', 'prefix' => 'update'], function () {
+                        Route::get('media/{session_unique_id}/{material_unique_id}', 'MaterialController@getUpdateSessionMedia')->name('media');
+                        Route::get('external/{session_unique_id}/{material_unique_id}', 'MaterialController@getUpdateSessionExternal')->name('external');
+                        Route::post('media/{session_unique_id}/{material_unique_id}', 'MaterialController@postUpdateSessionMedia')->name('media');
+                        Route::post('external/{session_unique_id}/{material_unique_id}', 'MaterialController@postUpdateSessionExternal')->name('external');
+                    });
+                });
+            });
             Route::group(['as' => 'article.', 'prefix' => 'article'], function () {
                 Route::get('list', 'ArticleController@getList')->name('list');
                 Route::get('create', 'ArticleController@getCreate')->name('create');

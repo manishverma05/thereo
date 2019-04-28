@@ -43,7 +43,7 @@
                 <div class="col-md-12 prgram_vw_wrap">
                     <h1 class="Our_Programs stress">{{ $program->title }}</h1>
                     <p class="stress_para">{!! $program->description !!}</p>
-                    <div class="rjbtn browse_pro"><a href="javascript:void(0)">View Updates</a></div>
+                    <div class="rjbtn browse_pro"><a href="{{ route('user.program.update.list',[$program->slug])}}">View Updates</a></div>
                     <div class="rjbtn discover_rj"><a href="{{ route('user.program.resource.list',[$program->slug])}}">Browse Resources</a></div>
                     <div class="col-md-12 pd0">
                         @foreach($sessions as $sessionIndex => $session)
@@ -62,7 +62,7 @@
                                     <a href="javascript:void(0)">
                                         <img src="{{ $session_cover_image }}" alt="">
                                         <div class="menu_opacity white_opacity"></div>
-                                        <div class="menu_name white_opacity1">{{ $sessionIndex }}. {{ $session->title }}</div>
+                                        <div class="menu_name white_opacity1">{{ ++$sessionIndex }}. {{ $session->cover_title }}</div>
                                     </a>
                                 </div>
                             </div>
@@ -74,7 +74,7 @@
                                     <a href="javascript:void(0)">
                                         <img src="{{ $session_cover_image }}" alt="">
                                         <div class="menu_opacity menu_opacity_bl"></div>
-                                        <div class="menu_name">{{ $sessionIndex }}. {{ $session->title }}</div>
+                                        <div class="menu_name">{{ ++$sessionIndex }}. {{ $session->cover_title }}</div>
                                         <div class="rj_lock_icon"><i class="fa fa-lock"></i></div>
                                     </a>
                                 </div>

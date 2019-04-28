@@ -21,7 +21,7 @@
             <tbody>
                 <tr>
                     <td class="resource_add">
-                        What type of resource will this be?
+                        What type of material will this be?
                     </td>
                 </tr>
                 <tr>

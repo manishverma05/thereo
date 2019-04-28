@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\User;
 use App\Models\Role;
+use App\Models\Program;
 use App\Models\Session;
 use App\Models\SessionCategory;
 use App\Models\SessionAuthorMap;
@@ -13,21 +14,23 @@ use App\Models\SessionAttachment;
 use App\Models\SessionCategoryMap;
 use App\Models\SessionAccessMap;
 use App\Models\SessionCoverMedia;
+use App\Models\ProgramSessionMap;
+use App\Models\Material;
+use App\Models\Resource;
+use App\Models\SessionResourceMap;
+use App\Models\SessionMaterialMap;
 use App\Http\Requests\AdminSessionCreateRequest;
+use App\Http\Requests\AdminSessionUpdateRequest;
 use Illuminate\Support\Carbon;
 use Intervention\Image\Facades\Image;
 use Illuminate\Support\Str;
 
-//use App\Models\Material;
-//use App\Models\Resource;
-//use App\Models\SessionResourceMap;
-//use App\Models\SessionMaterialMap;
-//use Illuminate\Support\Facades\DB;
-//use App\Http\Requests\AdminSessionUpdateRequest;
-
 class SessionController extends Controller {
 
     public function getCreate($program_unique_id) {
+        $program = Program::where('unique_id', $program_unique_id)->first();
+        if (!$program)
+            return redirect()->route('admin.program.list')->with('error', 'Program not found.');
         $roles = Role::orderBy('id', 'desc')->get();
         $authors = User::where('role_id', 3)->orderBy('id', 'desc')->get();
         $session_categories = SessionCategory::orderBy('id', 'desc')->get();
@@ -39,7 +42,17 @@ class SessionController extends Controller {
                         ->withSessionCategories($session_categories);
     }
 
+    public function redirectSessionUpdate($session_unique_id) {
+        $session = Session::where('unique_id', $session_unique_id)->with('program')->first();
+        if (!$session)
+            return redirect()->route('admin.program.update', [$program_unique_id])->with('error', 'Session not found.');
+        return redirect()->route('admin.program.session.update', [$session->program->program->unique_id, $session->unique_id]);
+    }
+
     public function postCreate(AdminSessionCreateRequest $request, $program_unique_id) {
+        $program = Program::where('unique_id', $program_unique_id)->first();
+        if (!$program)
+            return redirect()->route('admin.program.list')->with('error', 'Program not found.');
         // Retrieve the validated input data...
         $validation = $request->validated();
 
@@ -60,6 +73,12 @@ class SessionController extends Controller {
         #temp
         $session->status = '1';
         $session->save();
+
+
+        $program_session = new ProgramSessionMap;
+        $program_session->session_id = $session->id;
+        $program_session->program_id = $program->id;
+        $program_session->save();
 
         #save authors for session
         if (isset($request->author_id)) {
@@ -124,10 +143,14 @@ class SessionController extends Controller {
             $session_media->created_by = auth()->user()->id;
             $session_media->save();
         }
-        return redirect()->route('admin.program.update',[$program_unique_id])->with('success', 'Session has been added.');
+        return redirect()->route('admin.program.update', [$program_unique_id])->with('success', 'Session has been added.');
     }
 
-    public function getUpdate($session_unique_id) {
+    public function getUpdate($program_unique_id, $session_unique_id) {
+        $program = Program::where('unique_id', $program_unique_id)->first();
+        if (!$program)
+            return redirect()->route('admin.program.list')->with('error', 'Program not found.');
+
         $session = Session::where('unique_id', $session_unique_id)
                         ->with('cover_media')
                         ->with('materials')
@@ -138,7 +161,7 @@ class SessionController extends Controller {
                         ->with('session_categories')
                         ->orderBy('id', 'desc')->first();
         if (!$session)
-            return redirect()->route('admin.program.list')->with('error', 'Session not found.');
+            return redirect()->route('admin.program.update', [$program_unique_id])->with('error', 'Session not found.');
         $materials = Material::orderBy('id', 'desc')->get();
         $roles = Role::orderBy('id', 'desc')->get();
         $resources = Resource::orderBy('id', 'desc')->get();
@@ -148,9 +171,10 @@ class SessionController extends Controller {
                         ->withPagetitle('Update Session')
                         ->withPageheader('Update Session')
                         ->withSession($session)
+                        ->withProgram($program)
                         ->withSessionRoles(array_column(isset($session->accesss) ? $session->accesss->toArray() : [], 'role_id'))
-                        ->withSessionMaterials(array_column(isset($session->materials) ? $session->materials->toArray() : [], 'material_id'))
-                        ->withSessionResources(array_column(isset($session->resources) ? $session->resources->toArray() : [], 'resource_id'))
+//                        ->withSessionMaterials(array_column(isset($session->materials) ? $session->materials->toArray() : [], 'material_id'))
+//                        ->withSessionResources(array_column(isset($session->resources) ? $session->resources->toArray() : [], 'resource_id'))
                         ->withSessionAuthors(array_column(isset($session->authors) ? $session->authors->toArray() : [], 'user_id'))
                         ->withSessionCategoryMaps(array_column(isset($session->session_categories) ? $session->session_categories->toArray() : [], 'session_category_id'))
                         ->withMaterials($materials)
@@ -160,7 +184,11 @@ class SessionController extends Controller {
                         ->withSessionCategories($session_categories);
     }
 
-    public function postUpdate(AdminSessionUpdateRequest $request, $session_unique_id) {
+    public function postUpdate(AdminSessionUpdateRequest $request, $program_unique_id, $session_unique_id) {
+        $program = Program::where('unique_id', $program_unique_id)->first();
+        if (!$program)
+            return redirect()->route('admin.program.list')->with('error', 'Program not found.');
+
         // Retrieve the validated input data...
         $validation = $request->validated();
 
@@ -291,7 +319,7 @@ class SessionController extends Controller {
             $session_media->created_by = auth()->user()->id;
             $session_media->save();
         }
-        return redirect()->route('admin.program.list')->with('success', 'Session has been updated.');
+        return redirect()->route('admin.program.update', [$program_unique_id])->with('success', 'Session has been updated.');
     }
 
     public function getVideoUpdate($attachment_unique_id) {

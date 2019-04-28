@@ -79,7 +79,7 @@
                 </div>
             </div> 
             <div class="col-sm-12 artcover">
-                <p>Content: What would you like to say in the article?</p>
+                <p><span style="color: #fff;">Cover Image: </span> The cover for this resource is currently attached to the image displayed below.</p>
                 <a href="javascript::void(0)" onclick="$('[name=cover_image]').click()">Add Cover</a>
                 <input type="file" name="cover_image" accept="image/*" style="display: none;" onchange="readURL(this);" />
             </div> 

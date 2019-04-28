@@ -13,7 +13,7 @@
 <form action="{{ route("admin.$relatedTo.resource.create.media",[$$relatedTo->unique_id]) }}" method="post" enctype="multipart/form-data">
     @csrf 
     <div class="tab-content">
-        <div id="local-tab" class="tab-pane fade in active">
+        <div id="media-tab" class="tab-pane fade in active">
             <div class="admin-nav-head">Attach an existing file from the media library (pdf, document, etc.), to the resource, using the settings below.</div>
             <section class="local_start_wrapper">
                 <div class="row">

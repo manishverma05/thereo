@@ -4,7 +4,7 @@
 @section('content')
 <div class="rjadmin_navigation">
     <ul class="menu_tab nav nav-tabs">
-        <li class="active"><a data-toggle="tab" href="#external-tab"> External File</a></li>
+        <li class="active"><a data-toggle="tab" href="#external-tab"> External Product</a></li>
         <li><a data-toggle="tab" href="#cover-tab">Cover Settings</a></li>
         <!--<li><a data-toggle="tab" href="#public-tab">Publication</a></li>-->
         <li class="rightside"><a data-toggle="tab" href="#analytic-tab">Analytics</a></li>
@@ -79,7 +79,7 @@
                 </div>
             </div> 
             <div class="col-sm-12 artcover">
-                <p>Content: What would you like to say in the article?</p>
+                <p><span style="color: #fff;">Cover Image: </span> The cover for this resource is currently attached to the image displayed below.</p>
                 <a href="javascript::void(0)" onclick="$('[name=cover_image]').click()">Add Cover</a>
                 <input type="file" name="cover_image" accept="image/*" style="display: none;" onchange="readURL(this);" />
             </div> 
@@ -130,7 +130,7 @@
         </div>
     </div>
     <br/>
-    <button type="submit" class="btn btn-primary">Update Resource</button>        
+    <button type="submit" class="btn btn-primary">Update Resource</button>     
 </form>
 @endsection('content')
 @section('after-script')

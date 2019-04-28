@@ -38,7 +38,7 @@ use AuthenticatesUsers;
     /*
      * override the $redirectTo according to user role.
      */
-    public function redirectTo() {
+    public function redirectPath() {
 
         // User role
         $role = auth()->user()->role_id;
@@ -49,7 +49,7 @@ use AuthenticatesUsers;
                 return '/admin/dashboard';
                 break;
             default:
-                return '/landing';
+                return '/login';
                 break;
         }
     }

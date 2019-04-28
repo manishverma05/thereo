@@ -13,7 +13,7 @@
 <form action="{{ route("admin.$relatedTo.resource.update.media",[$$relatedTo->unique_id,$resource->unique_id]) }}" method="post" enctype="multipart/form-data">
     @csrf 
     <div class="tab-content">
-        <div id="local-tab" class="tab-pane fade in active">
+        <div id="media-tab" class="tab-pane fade in active">
             <div class="admin-nav-head">Attach an existing file from the media library (pdf, document, etc.), to the resource, using the settings below.</div>
             <section class="local_start_wrapper">
                 <div class="row">
@@ -26,45 +26,45 @@
                         </div>
                     </div>
                 </div>
-                <!--                <div class="row">
-                                    <div class="col-sm-12 ">
-                                        <div class="presentation">
-                                            <h5><span style="color: #fff;">Presentation Style: </span>How prominent would you like the article to be displayed?</h5>
-                                            <div class="input-group">
-                                                <div class="input-group-btn">
-                                                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <span class="caret"></span></button>
-                                                </div> /btn-group 
-                                                <input type="text" class="form-control" aria-label="..." value="Dynamic Profile">
-                                            </div> /input-group 
-                                        </div>
-                                    </div>
-                                </div>-->
+<!--                <div class="row">
+                    <div class="col-sm-12 ">
+                        <div class="presentation">
+                            <h5><span style="color: #fff;">Presentation Style: </span>How prominent would you like the article to be displayed?</h5>
+                            <div class="input-group">
+                                <div class="input-group-btn">
+                                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <span class="caret"></span></button>
+                                </div> /btn-group 
+                                <input type="text" class="form-control" aria-label="..." value="Dynamic Profile">
+                            </div> /input-group 
+                        </div>
+                    </div>
+                </div>-->
                 <div class="col-sm-12 artcover">
                     <p><span style="color: #fff;">Cover Image: </span> The cover for this resource is currently attached to the image displayed below.</p>
                     <a href="javascript::void(0)" onclick="$('[name=attachment]').click()">Add Attachment</a>
                     <input type="file" name="attachment" style="display: none;" onchange="readAttachmentURL(this);" />
                 </div> 
                 @php
-                $resource_cover_image = asset('administrator/images/no-image.png');
-                $resource_cover_image_thumb = asset('administrator/images/no-image.png');
+                $resource_attachment = asset('administrator/images/no-image.png');
+                $resource_attachment_thumb = asset('administrator/images/no-image.png');
                 $filename = '';
-                if(isset($resource->cover_media->file)):
-                $filename = $resource->cover_media->file; 
-                $resource_cover_image = asset(config('constants.resource.cover_path_display').$resource->cover_media->file);
-                $resource_cover_image_thumb = asset(config('constants.resource.cover_path_display').'thumb_'.$resource->cover_media->file);
+                if(isset($resource->attachment->file)):
+                $filename = $resource->attachment->file; 
+                $resource_attachment = asset(config('constants.resource.attachment_path_display').$resource->attachment->file);
+                $resource_attachment_thumb = asset(config('constants.resource.attachment_path_display').'thumb_'.$resource->attachment->file);
                 endif;
                 @endphp
                 <div class="col-sm-12 imagewrap">
                     <div class="col-sm-3 covercontainer">
-                        <img src="{{ $resource_cover_image }}" alt="Cover Image" id="cover_image_preview" class="image" style="width:100%">
+                        <img src="{{ $resource_attachment }}" alt="attachment" id="attachment_preview" class="image"  style="width:100%" >
                         <div class="middle">
-                            <div class="text cover_image_name">{{ $filename }}</div>
+                            <div class="text attachment_name">{{ $filename }}</div>
                         </div>
                     </div>
-                    <div class="col-sm-9 editimg" @if(!$filename) {{ 'style=display:none;' }} @endif >
-                         <div class="postnbotm">
-                            <h5 class="cover_image_name">{{ $filename }}</h5>
-                            <!--<p><a href="admin_program_edit_cover_media.php">Edit Image</a></p>-->
+                    <div class="col-sm-9 editimg editAttachment" @if(!$filename) {{ 'style=display:none;' }} @endif >
+                        <div class="postnbotm">
+                            <h5 class="attachment_name">{{ $filename }}</h5>
+                            <!--<p><a href="javascript:void(0)"> Edit Attachment</a></p>-->
                         </div>
                     </div>   
                 </div>
@@ -79,23 +79,23 @@
                 </div>
             </div> 
             <div class="col-sm-12 artcover">
-                <p>Content: What would you like to say in the article?</p>
+                <p><span style="color: #fff;">Cover Image: </span> The cover for this resource is currently attached to the image displayed below.</p>
                 <a href="javascript::void(0)" onclick="$('[name=cover_image]').click()">Add Cover</a>
                 <input type="file" name="cover_image" accept="image/*" style="display: none;" onchange="readURL(this);" />
             </div> 
             @php
-            $resource_attachment = asset('administrator/images/no-image.png');
-            $resource_attachment_thumb = asset('administrator/images/no-image.png');
+            $resource_cover_image = asset('administrator/images/no-image.png');
+            $resource_cover_image_thumb = asset('administrator/images/no-image.png');
             $filename = '';
-            if(isset($resource->attachment->file)):
-            $filename = $resource->attachment->file; 
-            $resource_attachment = asset(config('constants.resource.attachment_path_display').$resource->attachment->file);
-            $resource_attachment_thumb = asset(config('constants.resource.attachment_path_display').'thumb_'.$resource->attachment->file);
+            if(isset($resource->cover_media->file)):
+            $filename = $resource->cover_media->file; 
+            $resource_cover_image = asset(config('constants.resource.cover_path_display').$resource->cover_media->file);
+            $resource_cover_image_thumb = asset(config('constants.resource.cover_path_display').'thumb_'.$resource->cover_media->file);
             endif;
             @endphp
             <div class="col-sm-12 imagewrap">
                 <div class="col-sm-3 covercontainer">
-                    <img src="{{ $resource_attachment }}" alt="Cover Image" id="cover_image_preview" class="image" style="width:100%">
+                    <img src="{{ $resource_cover_image }}" alt="Cover Image" id="cover_image_preview" class="image" style="width:100%">
                     <div class="middle">
                         <div class="text cover_image_name">{{ $filename }}</div>
                     </div>

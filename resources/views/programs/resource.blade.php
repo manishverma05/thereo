@@ -66,8 +66,9 @@
                                     <path class="st0" d="M1.7,2.6L6,6.9l4.3-4.3L12,3.4l-6,6l-6-6L1.7,2.6z"/>
                                 </svg></button>
                             <ul class="dropdown-menu">
-                                <li><a href="#">Lorem ipsum</a></li>
-                                <li><a href="#">Nisi ut aliquip</a></li>
+                                <li><a href="{{ route('user.program.resource.list',[$program->slug,'local'])}}">Local Resources</a></li>
+                                <li><a href="{{ route('user.program.resource.list',[$program->slug,'media'])}}">Media Resources</a></li>
+                                <li><a href="{{ route('user.program.resource.list',[$program->slug,'external'])}}">External Resources</a></li>
                             </ul>
                         </div>
                         <div class="dropdown rj-drop">

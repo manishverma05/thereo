@@ -13,7 +13,7 @@
 <form action="{{ route("admin.$relatedTo.resource.create.external",[$$relatedTo->unique_id]) }}" method="post" enctype="multipart/form-data">
     @csrf 
     <div class="tab-content">
-        <div id="local-tab" class="tab-pane fade in active">
+        <div id="external-tab" class="tab-pane fade in active">
             <div class="admin-nav-head">Attach an existing file from the media library (pdf, document, etc.), to the resource, using the settings below.</div>
             <section class="local_start_wrapper">
                 <div class="row">
@@ -40,7 +40,7 @@
                     </div>
                 </div>-->
                 <div class="col-sm-12 artcover">
-                    <p><span style="color: #fff;">Cover Image: </span> The cover for this resource is currently attached to the image displayed below.</p>
+                    
                     <a href="javascript::void(0)" onclick="$('[name=attachment]').click()">Add Attachment</a>
                     <input type="file" name="attachment" style="display: none;" onchange="readAttachmentURL(this);" />
                 </div> 
@@ -69,7 +69,7 @@
                 </div>
             </div> 
             <div class="col-sm-12 artcover">
-                <p>Content: What would you like to say in the article?</p>
+                <p><span style="color: #fff;">Cover Image: </span> The cover for this resource is currently attached to the image displayed below.</p>
                 <a href="javascript::void(0)" onclick="$('[name=cover_image]').click()">Add Cover</a>
                 <input type="file" name="cover_image" accept="image/*" style="display: none;" onchange="readURL(this);" />
             </div> 

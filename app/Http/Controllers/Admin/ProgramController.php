@@ -137,9 +137,9 @@ class ProgramController extends Controller {
                 ->first();
         if (!$program)
             return redirect()->route('admin.program.list')->with('error', 'Program not found.');
-        $sessions = Session::orderBy('id', 'desc')->get();
-        $roles = Role::orderBy('id', 'desc')->get();
+//        $sessions = Session::orderBy('id', 'desc')->get();
 //        $resources = Resource::orderBy('id', 'desc')->get();
+        $roles = Role::orderBy('id', 'desc')->get();
         $authors = User::where('role_id', 3)->orderBy('id', 'desc')->get();
         $program_categories = ProgramCategory::orderBy('id', 'desc')->get();
         return view('admin.program.update')
@@ -152,7 +152,7 @@ class ProgramController extends Controller {
                         ->withProgramResources(array_column(isset($program->resources) ? $program->resources->toArray() : [], 'resource_id'))
                         ->withProgramAuthors(array_column(isset($program->authors) ? $program->authors->toArray() : [], 'user_id'))
                         ->withProgramCategoryMaps(array_column(isset($program->program_categories) ? $program->program_categories->toArray() : [], 'program_category_id'))
-                        ->withSessions($sessions)
+//                        ->withSessions($sessions)
 //                        ->withResources($resources)
                         ->withAuthors($authors)
                         ->withProgramCategories($program_categories);

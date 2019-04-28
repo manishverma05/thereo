@@ -20,8 +20,8 @@ class ProgramController extends Controller {
     }
 
     public function detail($program_slug) {
-        $program = Program::with('cover_media')->first();
-        $sessions = Session::with('cover_media')->orderBy('id', 'desc')->get();
+        $program = Program::where('slug', $program_slug)->with('cover_media')->first();
+        $sessions = Session::with('cover_media')->orderBy('id', 'asc')->get();
         return view('programs.detail')
                         ->withPagetitle($program->title)
                         ->withPageheader($program->title)

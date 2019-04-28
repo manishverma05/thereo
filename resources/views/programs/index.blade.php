@@ -65,9 +65,17 @@
                 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum.</p>
                 <div class="rj-programe_btn Our_Programs_cont">
                     <div class="dropdown rj-drop">
-                        <button class="btn btn-primary dropdown-toggle all_program_button All_Programs" type="button" data-toggle="dropdown">All Programs
+                        <button class="btn btn-primary dropdown-toggle all_program_button All_Programs" type="button" data-toggle="dropdown">
+                            @if(empty($programCategory))
+                            All Programs
+                            @else
+                            {{ $programCategory->title }}
+                            @endif
                             <i class="fa fa-angle-down"></i></button>
                         <ul class="dropdown-menu">
+                            @if(!empty($programCategory))
+                            <li><a href="{{ route('user.programs') }}">All Programs</a></li>
+                            @endif
                             @foreach($programCategories as $programCategory)
                             <li><a href="{{ route('user.program.category.detail',[$programCategory->slug]) }}">{{ $programCategory->title }}</a></li>
                             @endforeach
@@ -99,7 +107,7 @@
                                     <a href="{{ route('user.program.detail',[$program->slug]) }}">
                                         <img src="{{ $program_cover_image }}" alt=""  >
                                         <div class="menu_opacity"></div>
-                                        <div class="menu_name">{{ $program->title }}</div>
+                                        <div class="menu_name">{{ $program->cover_title }}</div>
                                     </a>
                                 </div>
                             </div>                      

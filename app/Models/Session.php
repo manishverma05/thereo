@@ -14,6 +14,13 @@ class Session extends Model {
     }
 
     /**
+     * Get the program record associated with the session.
+     */
+    public function program() {
+        return $this->hasOne('App\Models\ProgramSessionMap');
+    }
+
+    /**
      * Get the sessions record associated with the session.
      */
     public function materials() {

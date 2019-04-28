@@ -1,8 +1,6 @@
 @extends('admin.layouts.app')
-
 @section('after-style')
 @endsection('after-style')
-
 @section('content')
 <!-- Start Navigation -->
 <div class="rjadmin_navigation">
@@ -13,12 +11,11 @@
         <li><a data-toggle="tab" href="#resource-tab">Resource Page</a></li>
         <li><a data-toggle="tab" href="#cover-tab">Cover Settings</a></li>
         <li><a data-toggle="tab" href="#meta-tab">Meta Settings</a></li>
-        <li><a data-toggle="tab" href="#public-tab">Publication</a></li>
+        <!--<li><a data-toggle="tab" href="#public-tab">Publication</a></li>-->
         <li class="rightside"><a data-toggle="tab" href="#analytic-tab">Analytics</a></li>
     </ul>
 </div>
-
-<form action="{{ route('admin.session.update',[$session->unique_id]) }}" method="post" enctype="multipart/form-data">
+<form action="{{ route('admin.program.session.update',[$program->unique_id,$session->unique_id]) }}" method="post" enctype="multipart/form-data">
     @csrf 
     <div class="tab-content">
         <div id="session-tab" class="tab-pane fade in active">
@@ -64,16 +61,16 @@
             <div class="row media-wrapper">
                 <div class="col-sm-12 imagewrap">
                     <div class="col-sm-3 covercontainer">
-                        <video src="{{ $video }}" alt="video" id="video_attach_preview" class="image vdo"  style="width:100%" >
+                        <video src="{{ $video }}" controls="true" alt="video" id="video_attach_preview" class="image vdo"  style="width:100%" >
                             <div class="middle">
                                 <div class="text video_attach_name">{{ $filename }}</div>
                             </div>
                     </div>
                     <div class="col-sm-9 editimg editVideo" @if(!$filename) {{ 'style=display:none;' }} @endif >
-                        <div class="postnbotm">
+                         <div class="postnbotm">
                             <h5 class="video_attach_name">{{ $filename }}</h5>
                             @if(isset($session->attachment->unique_id))
-                            <p><a href="{{ route('admin.session.video.update',[$session->attachment->unique_id]) }}"> Edit Video</a></p>
+                            <p><a href="{{ route('admin.program.session.video.update',[$session->attachment->unique_id]) }}"> Edit Video</a></p>
                             @endif
                         </div>
                     </div>   
@@ -83,14 +80,59 @@
         <div id="matirial-tab" class="tab-pane fade in">
             <div class="admin-nav-head">Materials are important documents (such as worksheets or reading materials) that your audience may need when viewing the video.</div>
             <section id="filter">
+                <div class="filter_hd">
+                    <p>You may search, filter, organize, and edit the materials listed below.</p>
+                    <a href="{{ route('admin.session.material.create.option',[$session->unique_id]) }}" class="nw_article">New Material</a>
+                </div>
+                <div class="filter_option col-md-12">
+                    <div class="col-sm-2">
+                        <input type="text" value="" placeholder="Type here to search">
+                    </div> 
+                    <div class="col-sm-2">
+                        <select>
+                            <option>Filter</option>
+                        </select>
+                    </div> 
+                    <div class="col-sm-5">
+                        <p>{{ count($session->materials) }} Materials</p>
+                    </div> 
+                    <div class="col-sm-1 switch-view">
+                        <a class="grid-btn switch-view-button" href="javascript:void(0)"> <i class="fa fa-th"></i> </a>
+                    </div> 
+                    <div class="col-sm-1 switch-view" style="display: none;">
+                        <a class="grid-btn switch-view-button" href="javascript:void(0)"> <i class="fa fa-th-list"></i> </a>
+                    </div> 
+                    <div class="col-sm-2">
+                        <select>
+                            <option>Actions</option>
+                        </select>
+                        <a class="conf_btn" href="javascript:void(0)">Confirm</a>
+                    </div> 
+                </div>
                 <div class="col-md-12 responder_table">          
-                    <table class="table">
+                    <div class="row articles-wrapper switch-view">
+                        @foreach ($session->materials as $material_session)
+                        @php
+                        $material_session->materials_cover_image = asset('administrator/images/no-image.png');
+                        $material_session->materials_cover_image_thumb = asset('administrator/images/no-image.png');
+                        if(isset($material_session->materials->cover_media->file)):
+                        $material_session->materials_cover_image = asset(config('constants.material.cover_path_display').$material_session->materials->cover_media->file);
+                        $material_session->materials_cover_image_thumb = asset(config('constants.material.cover_path_display').'thumb_'.$material_session->materials->cover_media->file);
+                        endif;
+                        @endphp
+                        <div class="col-sm-3 articles-grid" style="background-image: url('{{ $material_session->materials_cover_image }}');background-size:cover;background-repeat:no-repeat;">
+                            <h3><a href="{{ route('admin.session.material.update',[$session->unique_id,$material_session->materials->unique_id]) }}" >{{ $material_session->materials->title }}</a></h3>
+                        </div> 
+
+                        @endforeach
+                    </div>        
+                    <table class="table switch-view" style="display:none;">
                         <thead>
                             <tr>
                                 <td class="checkbox-cell">
                                     <div class="checkbox">
                                         <label>
-                                            <input type="checkbox" name="" class="select-material-th">
+                                            <input type="checkbox" name="" value="">
                                             <i class="helper"></i>
                                         </label>
                                     </div>
@@ -100,22 +142,30 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($materials as $material)
+                            @foreach ($session->materials as $material_session)
+                            @php
+                            $material_session->materials_cover_image = asset('administrator/images/no-image.png');
+                            $material_session->materials_cover_image_thumb = asset('administrator/images/no-image.png');
+                            if(isset($material_session->materials->cover_media->file)):
+                            $material_session->materials_cover_image = asset(config('constants.material.cover_path_display').$material_session->materials->cover_media->file);
+                            $material_session->materials_cover_image_thumb = asset(config('constants.material.cover_path_display').'thumb_'.$material_session->materials->cover_media->file);
+                            endif;
+                            @endphp
                             <tr>  
                                 <td class="checkbox-cell">
                                     <div class="checkbox">
                                         <label>
-                                            <input type="checkbox" name="material_id[]" class="select-material-td" value="{{ $material->id }}" @if(is_array(old('material_id',$sessionMaterials)) && in_array($material->id, old('material_id',$sessionMaterials))) checked @endif>
-                                                   <i class="helper"></i>
+                                            <input type="checkbox" name="material_id[]" class="select-material-td" value="{{ $material_session->materials->id }}" >
+                                            <i class="helper"></i>
                                         </label>
                                     </div>
                                 </td>
                                 <td>
-                                    <p> {{ $material->title }} </p>                   
+                                    <p> loreum ipsum</p>                   
                                 </td>
                                 <td class="view_type_right">.mp4
                                     <i class="fa fa-arrows-v" style="font-size: 22px; color: #8FB8C9; margin-left: 16px;"></i></td>
-                            </tr>                            
+                            </tr>
                             @endforeach
                         </tbody>
                     </table>
@@ -123,52 +173,109 @@
             </section>
         </div>
         <div id="resource-tab" class="tab-pane fade in">
+            <div class="admin-nav-head">Provide you audience with updates on the kinds of changes that you have been making to the session.</div>           
             <section id="filter">
+                <div class="filter_hd">
+                    <p>You may search, filter, organize, and edit the resources listed below.</p>
+                    <a href="{{ route('admin.session.resource.create.option',[$session->unique_id]) }}" class="nw_article">New Resource</a>
+                </div>
+                <div class="filter_option col-md-12">
+                    <div class="col-sm-2">
+                        <input type="text" value="" placeholder="Type here to search">
+                    </div> 
+                    <div class="col-sm-2">
+                        <select>
+                            <option>Filter</option>
+                        </select>
+                    </div> 
+                    <div class="col-sm-5">
+                        <p>{{ count($session->resources) }} Session Resources</p>
+                    </div> 
+                    <div class="col-sm-1 switch-view">
+                        <a class="grid-btn switch-view-button" href="javascript:void(0)"> <i class="fa fa-th"></i> </a>
+                    </div> 
+                    <div class="col-sm-1 switch-view" style="display: none;">
+                        <a class="grid-btn switch-view-button" href="javascript:void(0)"> <i class="fa fa-th-list"></i> </a>
+                    </div> 
+                    <div class="col-sm-2">
+                        <select>
+                            <option>Actions</option>
+                        </select>
+                        <a class="conf_btn" href="javascript:void(0)">Confirm</a>
+                    </div> 
+                </div>
                 <div class="col-md-12 responder_table">
-                    <table class="table switch-view">
+                    <!-- START: grid row -->
+                    <div class="row articles-wrapper switch-view">
+                        @foreach ($session->resources as $session_resource)
+                        @php
+                        $session_resource_cover_image = asset('administrator/images/no-image.png');
+                        $session_resource_cover_image_thumb = asset('administrator/images/no-image.png');
+                        if(isset($session_resource->resource->cover_media->file)):
+                        $session_resource_cover_image = asset(config('constants.resource.cover_path_display').$session_resource->resource->cover_media->file);
+                        $session_resource_cover_image_thumb = asset(config('constants.resource.cover_path_display').'thumb_'.$session_resource->resource->cover_media->file);
+                        endif;
+                        @endphp
+                        <!-- START: single grid -->
+                        <div class="col-sm-3 articles-grid" style="background-image: url('{{ $session_resource_cover_image }}');background-size:cover;background-repeat:no-repeat;">
+                            <h3><a href="{{ route('admin.session.resource.update.'.$session_resource->resource->type,[$session->unique_id,$session_resource->resource->unique_id]) }}">{{ $session_resource->resource->title }}</a></h3>
+                        </div> 
+                        <!-- END: single grid -->
+                        @endforeach
+                    </div>         
+                    <!-- END :grid row -->
+                    <table class="table switch-view" style="display:none;" >
                         <thead>
                             <tr>
                                 <td class="checkbox-cell">
                                     <div class="checkbox">
                                         <label>
-                                            <input type="checkbox" name="" class="select-resource-th">
+                                            <input type="checkbox" class="select-th">
                                             <i class="helper"></i>
                                         </label>
                                     </div>
                                 </td>
                                 <td>Title <i class="fa fa-long-arrow-up" aria-hidden="true"></i><i class="fa fa-long-arrow-down" aria-hidden="true"></i></td>
-                                <td>Author<i class="fa fa-long-arrow-up" aria-hidden="true"></i><i class="fa fa-long-arrow-down" aria-hidden="true"></i></td>
-                                <td>Category <i class="fa fa-long-arrow-up" aria-hidden="true"></i><i class="fa fa-long-arrow-down" aria-hidden="true"></i></td>
+                                <td>Created By<i class="fa fa-long-arrow-up" aria-hidden="true"></i><i class="fa fa-long-arrow-down" aria-hidden="true"></i></td>
+                                <!--<td>Category <i class="fa fa-long-arrow-up" aria-hidden="true"></i><i class="fa fa-long-arrow-down" aria-hidden="true"></i></td>-->
                                 <td>Date <i class="fa fa-long-arrow-up" aria-hidden="true"></i><i class="fa fa-long-arrow-down" aria-hidden="true"></i></td>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($resources as $resource)
+                            @foreach ($session->resources as $session_resource)
+                            @php
+                            $session_resource_cover_image = asset('administrator/images/no-image.png');
+                            $session_resource_cover_image_thumb = asset('administrator/images/no-image.png');
+                            if(isset($session_resource->resource->cover_media->file)):
+                            $session_resource_cover_image = asset(config('constants.resource.cover_path_display').$session_resource->resource->cover_media->file);
+                            $session_resource_cover_image_thumb = asset(config('constants.resource.cover_path_display').'thumb_'.$session_resource->resource->cover_media->file);
+                            endif;
+                            @endphp
                             <tr>  
                                 <td class="checkbox-cell">
                                     <div class="checkbox">
                                         <label>
-                                            <input type="checkbox" name="resource_id[]" class="select-resource-td" value="{{ $resource->id }}" @if(is_array(old('resource_id',$sessionResources)) && in_array($resource->id, old('resource_id',$sessionResources))) checked @endif>
-                                                   <i class="helper"></i>
+                                            <input type="checkbox" name="session_id" class="select-td" value="{{ $session_resource->resource->id }}">
+                                            <i class="helper"></i>
                                         </label>
                                     </div>
                                 </td>
                                 <td>
-                                    <a href="javascript::void(0)">
-                                        <img class="article-thumb" src="../images/resource-1.jpg"> 
-                                        {{ $resource->title }}
+                                    <a href="{{ route('admin.session.resource.update.'.$session_resource->resource->type,[$session->unique_id,$session_resource->resource->unique_id]) }}">
+                                        <img class="article-thumb" src="{{ $session_resource_cover_image_thumb }}"> 
+                                        {{ $session_resource->resource->title }}
                                     </a>
                                 </td>
-                                <td><a href="javascript::void(0)">Feedback</a></td>
-                                <td><a href="javascript::void(0)">Bradly Mence</a></td>
-                                <td><a href="javascript::void(0)">18/07/22</a></td>
+                                <td><a href="javascript::void(0)">{{ $session_resource->resource->creator->username }}</a></td>
+                                <!--<td><a href="javascript::void(0)"></a></td>-->
+                                <td><a href="javascript::void(0)">{{ $session_resource->resource->created_at }}</a></td>
                             </tr>
                             @endforeach
                         </tbody>
                     </table>
                 </div>
             </section>
-        </div>        
+        </div>              
         <div id="meta-tab" class="tab-pane fade in">
             <div class="admin-nav-head">The meta tab controls information relating to search engines - in addition to settings that help organize the article.</div>
             <div class="col-sm-12 artclmeta">
@@ -237,55 +344,54 @@
                     <div class="middle">
                         <div class="text cover_image_name">{{ $filename }}</div>
                     </div>
-
                 </div>
                 <div class="col-sm-9 editimg" @if(!$filename) {{ 'style=display:none;' }} @endif >
                      <div class="postnbotm">
                         <h5 class="cover_image_name">{{ $filename }}</h5>
                         @if(isset($session->cover_media->unique_id))
-                        <p class="editimgLink" ><a href="{{ route('admin.session.cover.update',[$session->cover_media->unique_id]) }}">Edit Image</a></p>
+                        <p class="editimgLink" ><a href="{{ route('admin.program.session.cover.update',[$session->cover_media->unique_id]) }}">Edit Image</a></p>
                         @endif
                     </div>
                 </div>   
             </div>
         </div>
-        <div id="public-tab" class="tab-pane fade in">
-            <div class="admin-nav-head">The publication tab controls how and when you want the article to be published.</div>        
-            <div class="col-sm-12 meta-auther userAccess">
-                <h5>Access Level</h5>
-                <div class="auth_wrap">
-                    @foreach($roles as $role)
-                    <label class="auth_container">{{ $role->name }}
-                        <input type="radio"  name="role_id[]" value="{{ $role->id }}"  @if(is_array(old('role_id',$sessionRoles)) && in_array($role->id, old('role_id',$sessionRoles))) checked @endif >
-                               <span class="checkmark"></span>
-                    </label>
-                    @endforeach
-                </div>
-            </div>
-            <div class="col-sm-12 presentation">
-                <h5>Presentation Style: How prominent would you like the article to be displayed?</h5>
-                <div class="input-group">
-                    <div class="input-group-btn">
-                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <span class="caret"></span></button>
-                    </div><!-- /btn-group -->
-                    <input type="text" class="form-control" aria-label="..." value="Dynamic Profile">
-                </div><!-- /input-group -->
-            </div>
-            <div class="col-sm-12 appearence">
-                <h5>Publication: How would you like to republish the article?</h5>
-                <ul>
-                    <li>Schedule for Republication</li>
-                    <li><input type="date" name="publish" value="{{ old('publish',$session->publish_on) }}"/></li>
-                </ul>
-            </div>
-            <div class="col-sm-12 appearence">
-                <h5>Depublication: You can depublish the article using the settings below.</h5>
-                <ul>
-                    <li>Schedule for Republication</li>
-                    <li><input type="date" name="unpublish" value="{{ old('unpublish',$session->unpublish_on) }}"/></li>
-                </ul>
-            </div>
-        </div>
+        <!--        <div id="public-tab" class="tab-pane fade in">
+                    <div class="admin-nav-head">The publication tab controls how and when you want the article to be published.</div>        
+                    <div class="col-sm-12 meta-auther userAccess">
+                        <h5>Access Level</h5>
+                        <div class="auth_wrap">
+                            @foreach($roles as $role)
+                            <label class="auth_container">{{ $role->name }}
+                                <input type="radio"  name="role_id[]" value="{{ $role->id }}"  @if(is_array(old('role_id',$sessionRoles)) && in_array($role->id, old('role_id',$sessionRoles))) checked @endif >
+                                       <span class="checkmark"></span>
+                            </label>
+                            @endforeach
+                        </div>
+                    </div>
+                    <div class="col-sm-12 presentation">
+                        <h5>Presentation Style: How prominent would you like the article to be displayed?</h5>
+                        <div class="input-group">
+                            <div class="input-group-btn">
+                                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <span class="caret"></span></button>
+                            </div> /btn-group 
+                            <input type="text" class="form-control" aria-label="..." value="Dynamic Profile">
+                        </div> /input-group 
+                    </div>
+                    <div class="col-sm-12 appearence">
+                        <h5>Publication: How would you like to republish the article?</h5>
+                        <ul>
+                            <li>Schedule for Republication</li>
+                            <li><input type="date" name="publish" value="{{ old('publish',$session->publish_on) }}"/></li>
+                        </ul>
+                    </div>
+                    <div class="col-sm-12 appearence">
+                        <h5>Depublication: You can depublish the article using the settings below.</h5>
+                        <ul>
+                            <li>Schedule for Republication</li>
+                            <li><input type="date" name="unpublish" value="{{ old('unpublish',$session->unpublish_on) }}"/></li>
+                        </ul>
+                    </div>
+                </div>-->
         <div id="analytic-tab" class="tab-pane fade in">
             <div class="admin-nav-head">Analytics provides details about how your audience responds to, and interacts with, this article in particular.</div>
         </div>
@@ -304,9 +410,12 @@
             .catch(error => {
                 console.error(error);
             });
-
     $(document).ready(function () {
         $(".tm-input").tagsManager();
+    });
+
+    $('body').on('click', '.switch-view-button', function () {
+        $('.switch-view').toggle();
     });
     $('body').on('click', '.select-material-th', function () {
         if ($(this)[0].checked) {
@@ -333,10 +442,22 @@
             $('body .select-resource-th').prop('checked', false);
         }
     });
+    //Select deselect material
+    $('body').on('click', '.select-material-th', function () {
+        if ($(this)[0].checked) {
+            $('body .select-material-td').prop('checked', true);
+        } else {
+            $('body .select-material-td').prop('checked', false);
+        }
+    });
+    $('body').on('click', '.select-material-td', function () {
+        if (!$(this)[0].checked) {
+            $('body .select-material-th').prop('checked', false);
+        }
+    });
     function readURL(input) {
         if (input.files && input.files[0]) {
             var reader = new FileReader();
-
             reader.onload = function (e) {
                 $('#cover_image_preview').attr('src', e.target.result);
             };

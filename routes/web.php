@@ -28,7 +28,10 @@ Route::group(['middleware' => 'auth'], function () {
                 Route::get('/{category_slug}', 'ProgramCategoryController@detail')->name('detail');
             });
             Route::group(['as' => 'resource.', 'prefix' => 'resource'], function () {
-                Route::get('/{program_slug}', 'ProgramResourceController@index')->name('list');
+                Route::get('/{program_slug}/{type?}', 'ProgramResourceController@index')->name('list');
+            });
+            Route::group(['as' => 'update.', 'prefix' => 'update'], function () {
+                Route::get('/{program_slug}', 'ProgramUpdateController@index')->name('list');
             });
         });
     });
