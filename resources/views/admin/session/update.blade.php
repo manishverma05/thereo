@@ -113,15 +113,15 @@
                     <div class="row articles-wrapper switch-view">
                         @foreach ($session->materials as $material_session)
                         @php
-                        $material_session->materials_cover_image = asset('administrator/images/no-image.png');
-                        $material_session->materials_cover_image_thumb = asset('administrator/images/no-image.png');
-                        if(isset($material_session->materials->cover_media->file)):
-                        $material_session->materials_cover_image = asset(config('constants.material.cover_path_display').$material_session->materials->cover_media->file);
-                        $material_session->materials_cover_image_thumb = asset(config('constants.material.cover_path_display').'thumb_'.$material_session->materials->cover_media->file);
+                        $material_cover_image = asset('administrator/images/no-image.png');
+                        $material_cover_image_thumb = asset('administrator/images/no-image.png');
+                        if(isset($material_session->material->cover_media->file)):
+                        $material_cover_image = asset(config('constants.material.cover_path_display').$material_session->material->cover_media->file);
+                        $material_cover_image_thumb = asset(config('constants.material.cover_path_display').'thumb_'.$material_session->material->cover_media->file);
                         endif;
                         @endphp
-                        <div class="col-sm-3 articles-grid" style="background-image: url('{{ $material_session->materials_cover_image }}');background-size:cover;background-repeat:no-repeat;">
-                            <h3><a href="{{ route('admin.session.material.update',[$session->unique_id,$material_session->materials->unique_id]) }}" >{{ $material_session->materials->title }}</a></h3>
+                        <div class="col-sm-3 articles-grid" style="background-image: url('{{ $material_cover_image }}');background-size:cover;background-repeat:no-repeat;">
+                            <h3><a href="{{ route('admin.session.material.update.'.$material_session->material->type,[$session->unique_id,$material_session->material->unique_id]) }}" >{{ $material_session->material->title }}</a></h3>
                         </div> 
 
                         @endforeach
@@ -144,18 +144,18 @@
                         <tbody>
                             @foreach ($session->materials as $material_session)
                             @php
-                            $material_session->materials_cover_image = asset('administrator/images/no-image.png');
-                            $material_session->materials_cover_image_thumb = asset('administrator/images/no-image.png');
-                            if(isset($material_session->materials->cover_media->file)):
-                            $material_session->materials_cover_image = asset(config('constants.material.cover_path_display').$material_session->materials->cover_media->file);
-                            $material_session->materials_cover_image_thumb = asset(config('constants.material.cover_path_display').'thumb_'.$material_session->materials->cover_media->file);
+                            $material_cover_image = asset('administrator/images/no-image.png');
+                            $material_cover_image_thumb = asset('administrator/images/no-image.png');
+                            if(isset($material_session->material->cover_media->file)):
+                            $material_cover_image = asset(config('constants.material.cover_path_display').$material_session->material->cover_media->file);
+                            $material_cover_image_thumb = asset(config('constants.material.cover_path_display').'thumb_'.$material_session->material->cover_media->file);
                             endif;
                             @endphp
                             <tr>  
                                 <td class="checkbox-cell">
                                     <div class="checkbox">
                                         <label>
-                                            <input type="checkbox" name="material_id[]" class="select-material-td" value="{{ $material_session->materials->id }}" >
+                                            <input type="checkbox" name="material_id[]" class="select-material-td" value="{{ $material_session->material->id }}" >
                                             <i class="helper"></i>
                                         </label>
                                     </div>

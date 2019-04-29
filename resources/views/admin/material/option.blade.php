@@ -26,11 +26,6 @@
                 </tr>
                 <tr>
                     <td class="resource_add">
-                        <a href="{{ route("admin.$relatedTo.material.create.local",[$$relatedTo->unique_id]) }}">Local Product</a>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="resource_add">
                         <a href="{{ route("admin.$relatedTo.material.create.media",[$$relatedTo->unique_id]) }}">Media File</a>
                     </td>
                 </tr>

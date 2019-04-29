@@ -6,9 +6,16 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Material;
 use App\Models\Session;
+use App\Models\SessionMaterialMap;
+use App\Models\MaterialCoverMedia;
+use App\Models\MaterialAttachment;
 use App\Http\Requests\AdminMaterialCreateMediaRequest;
+use App\Http\Requests\AdminMaterialUpdateMediaRequest;
+use App\Http\Requests\AdminMaterialCreateExternalRequest;
+use App\Http\Requests\AdminMaterialUpdateExternalRequest;
 use Illuminate\Support\Str;
 use Illuminate\Support\Carbon;
+use Intervention\Image\Facades\Image;
 
 class MaterialController extends Controller {
 

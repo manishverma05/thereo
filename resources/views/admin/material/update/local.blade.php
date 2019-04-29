@@ -10,7 +10,7 @@
         <li class="rightside"><a data-toggle="tab" href="#analytic-tab">Analytics</a></li>
     </ul>
 </div>
-<form action="{{ route("admin.$relatedTo.material.update.local",[$$relatedTo->unique_id,$resource->unique_id]) }}" method="post" enctype="multipart/form-data">
+<form action="{{ route("admin.$relatedTo.material.update.local",[$$relatedTo->unique_id,$material->unique_id]) }}" method="post" enctype="multipart/form-data">
     @csrf 
     <div class="tab-content">
         <div id="local-tab" class="tab-pane fade in active">
@@ -21,7 +21,7 @@
                         <div class="artctitle">
                             <h5>Title: What name would you like the program to have?</h5>
                             <div class="form-group">
-                                <input type="text" class="form-control" name="title" value="{{ old('title',$resource->title) }}" placeholder="Enter the title for the program.">
+                                <input type="text" class="form-control" name="title" value="{{ old('title',$material->title) }}" placeholder="Enter the title for the program.">
                             </div>
                         </div>
                     </div>
@@ -45,18 +45,18 @@
                     <input type="file" name="attachment" style="display: none;" onchange="readAttachmentURL(this);" />
                 </div> 
                 @php
-                $resource_attachment = asset('administrator/images/no-image.png');
-                $resource_attachment_thumb = asset('administrator/images/no-image.png');
+                $material_attachment = asset('administrator/images/no-image.png');
+                $material_attachment_thumb = asset('administrator/images/no-image.png');
                 $filename = '';
-                if(isset($resource->attachment->file)):
-                $filename = $resource->attachment->file; 
-                $resource_attachment = asset(config('constants.material.attachment_path_display').$resource->attachment->file);
-                $resource_attachment_thumb = asset(config('constants.material.attachment_path_display').'thumb_'.$resource->attachment->file);
+                if(isset($material->attachment->file)):
+                $filename = $material->attachment->file; 
+                $material_attachment = asset(config('constants.material.attachment_path_display').$material->attachment->file);
+                $material_attachment_thumb = asset(config('constants.material.attachment_path_display').'thumb_'.$material->attachment->file);
                 endif;
                 @endphp
                 <div class="col-sm-12 imagewrap">
                     <div class="col-sm-3 covercontainer">
-                        <img src="{{ $resource_attachment }}" alt="attachment" id="attachment_preview" class="image"  style="width:100%" >
+                        <img src="{{ $material_attachment }}" alt="attachment" id="attachment_preview" class="image"  style="width:100%" >
                         <div class="middle">
                             <div class="text attachment_name">{{ $filename }}</div>
                         </div>
@@ -75,7 +75,7 @@
             <div class="col-sm-12 artctitle">
                 <h5>Cover Title: If you don't want the title of the cover to be the same as the name of the article, you may input something different here instead.</h5>
                 <div class="form-group">
-                    <input type="text" class="form-control"  value="{{ old('cover_title',$resource->cover_title) }}" name="cover_title">
+                    <input type="text" class="form-control"  value="{{ old('cover_title',$material->cover_title) }}" name="cover_title">
                 </div>
             </div> 
             <div class="col-sm-12 artcover">
@@ -84,18 +84,18 @@
                 <input type="file" name="cover_image" accept="image/*" style="display: none;" onchange="readURL(this);" />
             </div> 
             @php
-            $resource_cover_image = asset('administrator/images/no-image.png');
-            $resource_cover_image_thumb = asset('administrator/images/no-image.png');
+            $material_cover_image = asset('administrator/images/no-image.png');
+            $material_cover_image_thumb = asset('administrator/images/no-image.png');
             $filename = '';
-            if(isset($resource->cover_media->file)):
-            $filename = $resource->cover_media->file; 
-            $resource_cover_image = asset(config('constants.material.cover_path_display').$resource->cover_media->file);
-            $resource_cover_image_thumb = asset(config('constants.material.cover_path_display').'thumb_'.$resource->cover_media->file);
+            if(isset($material->cover_media->file)):
+            $filename = $material->cover_media->file; 
+            $material_cover_image = asset(config('constants.material.cover_path_display').$material->cover_media->file);
+            $material_cover_image_thumb = asset(config('constants.material.cover_path_display').'thumb_'.$material->cover_media->file);
             endif;
             @endphp
             <div class="col-sm-12 imagewrap">
                 <div class="col-sm-3 covercontainer">
-                    <img src="{{ $resource_cover_image }}" alt="Cover Image" id="cover_image_preview" class="image" style="width:100%">
+                    <img src="{{ $material_cover_image }}" alt="Cover Image" id="cover_image_preview" class="image" style="width:100%">
                     <div class="middle">
                         <div class="text cover_image_name">{{ $filename }}</div>
                     </div>
@@ -113,14 +113,14 @@
             <div class="col-sm-12 appearence">
                 <h5>Publication: How would you like to republish the article?</h5>
                 <ul>
-                    <li>Schedule for Republication <input type="date" name="publish" value="{{ old('publish',$resource->publish_on) }}"/></li>
+                    <li>Schedule for Republication <input type="date" name="publish" value="{{ old('publish',$material->publish_on) }}"/></li>
                     <li>Republication Now</li>
                 </ul>
             </div>
             <div class="col-sm-12 appearence">
                 <h5>Depublication: You can depublish the article using the settings below.</h5>
                 <ul>
-                    <li>Schedule for Republication <input type="date" name="unpublish" value="{{ old('unpublish',$resource->unpublish_on) }}"/></li>
+                    <li>Schedule for Republication <input type="date" name="unpublish" value="{{ old('unpublish',$material->unpublish_on) }}"/></li>
                     <li><a href="">Depublish Now</a></li>
                 </ul>
             </div>

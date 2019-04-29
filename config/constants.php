@@ -21,4 +21,10 @@ return [
         'attachment_path' => base_path() . '/public/mythero/resource/attachments/',
         'attachment_path_display' => '/mythero/resource/attachments/',
     ],
+    'material' => [
+        'cover_path' => base_path() . '/public/mythero/material/covers/',
+        'cover_path_display' => '/mythero/material/covers/',
+        'attachment_path' => base_path() . '/public/mythero/material/attachments/',
+        'attachment_path_display' => '/mythero/material/attachments/',
+    ],
 ];
