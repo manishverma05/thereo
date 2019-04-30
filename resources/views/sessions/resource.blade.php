@@ -53,8 +53,8 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-12 prog_resource">
-                    <h1>Resources on {{ $program->slug }}</h1>
-                    {!! $program->description !!}
+                    <h1>Resources on {{ $session->title }}</h1>
+                    {!! $session->description !!}
                     <div class="rj-programe_btn">
                         <div class="dropdown rj-drop">
                             <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">All Resources
@@ -66,9 +66,9 @@
                                     <path class="st0" d="M1.7,2.6L6,6.9l4.3-4.3L12,3.4l-6,6l-6-6L1.7,2.6z"/>
                                 </svg></button>
                             <ul class="dropdown-menu">
-                                <li><a href="{{ route('user.program.resource.list',[$program->slug,'local'])}}">Local Resources</a></li>
-                                <li><a href="{{ route('user.program.resource.list',[$program->slug,'media'])}}">Media Resources</a></li>
-                                <li><a href="{{ route('user.program.resource.list',[$program->slug,'external'])}}">External Resources</a></li>
+                                <li><a href="{{ route('user.session.resource.list',[$session->slug,'local'])}}">Local Resources</a></li>
+                                <li><a href="{{ route('user.session.resource.list',[$session->slug,'media'])}}">Media Resources</a></li>
+                                <li><a href="{{ route('user.session.resource.list',[$session->slug,'external'])}}">External Resources</a></li>
                             </ul>
                         </div>
                         <div class="dropdown rj-drop">
@@ -88,13 +88,13 @@
                     </div>
 
                     <div class="program_resource_wrap">
-                        @foreach ($program->resources as $program_resource)
+                        @foreach ($session->resources as $session_resource)
                         @php
-                        $program_resource_cover_image = asset('images/no-image.png');
-                        $program_resource_cover_image_thumb = asset('images/no-image.png');
-                        if(isset($program_resource->resource->cover_media->file)):
-                        $program_resource_cover_image = asset(config('constants.resource.cover_path_display').$program_resource->resource->cover_media->file);
-                        $program_resource_cover_image_thumb = asset(config('constants.resource.cover_path_display').'thumb_'.$program_resource->resource->cover_media->file);
+                        $session_resource_cover_image = asset('images/no-image.png');
+                        $session_resource_cover_image_thumb = asset('images/no-image.png');
+                        if(isset($session_resource->resource->cover_media->file)):
+                        $session_resource_cover_image = asset(config('constants.resource.cover_path_display').$session_resource->resource->cover_media->file);
+                        $session_resource_cover_image_thumb = asset(config('constants.resource.cover_path_display').'thumb_'.$session_resource->resource->cover_media->file);
                         endif;
                         @endphp
                         <div class="col-md-4 pd0">
@@ -102,9 +102,9 @@
                             <div class="rj_program pd-left">
                                 <div class="rj_program_inner">
                                     <a href="javascript:void(0)">
-                                        <img src="{{ $program_resource_cover_image }}" alt="">
+                                        <img src="{{ $session_resource_cover_image }}" alt="">
                                             <div class="menu_opacity"></div>
-                                            <div class="menu_name">{{ $program_resource->resource->title }}</div>
+                                            <div class="menu_name">{{ $session_resource->resource->title }}</div>
                                     </a>
                                 </div>
                             </div>                       

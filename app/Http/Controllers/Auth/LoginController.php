@@ -38,6 +38,7 @@ use AuthenticatesUsers;
     /*
      * override the $redirectTo according to user role.
      */
+
     public function redirectPath() {
 
         // User role
@@ -49,7 +50,7 @@ use AuthenticatesUsers;
                 return '/admin/dashboard';
                 break;
             default:
-                return '/login';
+                return '/dashboard';
                 break;
         }
     }

@@ -71,14 +71,14 @@
                     </a>
                 </li>
                 @php
-                $accountRoute = route('login');
+                $accountRoute = route('user.dashboard');
                 if(isset(auth()->user()->role_id)){
                     switch (auth()->user()->role_id) {
                         case 1:
                             $accountRoute = route('admin.dashboard');
                             break;
                         case 2:
-                            $accountRoute = route('landing');
+                            $accountRoute = route('user.dashboard');
                             break;
                     }
                 }
