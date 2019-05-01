@@ -21,7 +21,7 @@
         <div class="container">
             <div class="row">
                 <div class="rjpro_updates prog_update col-sm-12">
-                    <h1>Updates on Stress</h1>
+                    <h1>Updates on {{ $program->title }}</h1>
                     @foreach($program->updates as $update)
                     <div class="pro_up">
                         <div class="pro_box"><span>{{ $update->created_at }} |</span> {{ $update->title }}</div>
