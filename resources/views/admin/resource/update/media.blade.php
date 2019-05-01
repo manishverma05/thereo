@@ -40,7 +40,7 @@
                     </div>
                 </div>-->
                 <div class="col-sm-12 artcover">
-                    <p><span style="color: #fff;">Cover Image: </span> The cover for this resource is currently attached to the image displayed below.</p>
+                    <p><span style="color: #fff;">Attachment: </span> The attachment for this resource is currently attached to the image displayed below.</p>
                     <a href="javascript::void(0)" onclick="$('[name=attachment]').click()">Add Attachment</a>
                     <input type="file" name="attachment" style="display: none;" onchange="readAttachmentURL(this);" />
                 </div> 

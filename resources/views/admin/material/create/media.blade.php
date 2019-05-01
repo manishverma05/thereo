@@ -14,7 +14,7 @@
     @csrf 
     <div class="tab-content">
         <div id="media-tab" class="tab-pane fade in active">
-            <div class="admin-nav-head">Attach an existing file from the media library (pdf, document, etc.), to the resource, using the settings below.</div>
+            <div class="admin-nav-head">Attach an existing file from the media library (pdf, document, etc.), to the material, using the settings below.</div>
             <section class="local_start_wrapper">
                 <div class="row">
                     <div class="col-sm-12">
@@ -40,7 +40,7 @@
                     </div>
                 </div>-->
                 <div class="col-sm-12 artcover">
-                    <p><span style="color: #fff;">Cover Image: </span> The cover for this resource is currently attached to the image displayed below.</p>
+                    <p><span style="color: #fff;">Attachment: </span> The attachment for this material is currently attached to the image displayed below.</p>
                     <a href="javascript::void(0)" onclick="$('[name=attachment]').click()">Add Attachment</a>
                     <input type="file" name="attachment" style="display: none;" onchange="readAttachmentURL(this);" />
                 </div> 
@@ -69,7 +69,7 @@
                 </div>
             </div> 
             <div class="col-sm-12 artcover">
-                <p>Content: What would you like to say in the article?</p>
+                <p><span style="color: #fff;">Cover Image: </span> The cover for this material is currently attached to the image displayed below.</p>
                 <a href="javascript::void(0)" onclick="$('[name=cover_image]').click()">Add Cover</a>
                 <input type="file" name="cover_image" accept="image/*" style="display: none;" onchange="readURL(this);" />
             </div> 
@@ -89,7 +89,7 @@
             </div>
         </div>
 <!--        <div id="public-tab" class="tab-pane fade in">
-            <div class="admin-nav-head">The publication tab controls how and when you want the resource to be published.</div>
+            <div class="admin-nav-head">The publication tab controls how and when you want the material to be published.</div>
             <div class="col-sm-12 appearence">
                 <h5>Publication: How would you like to republish the article?</h5>
                 <ul>
@@ -106,7 +106,7 @@
             </div>
         </div>-->
         <div id="analytic-tab" class="tab-pane fade in">
-            <div class="admin-nav-head">Analytics provides details about how your audience responds to, and interacts with, this resource in particular.</div>
+            <div class="admin-nav-head">Analytics provides details about how your audience responds to, and interacts with, this material in particular.</div>
         </div>
     </div>
     <br/>

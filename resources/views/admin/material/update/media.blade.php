@@ -14,7 +14,7 @@
     @csrf 
     <div class="tab-content">
         <div id="media-tab" class="tab-pane fade in active">
-            <div class="admin-nav-head">Attach an existing file from the media library (pdf, document, etc.), to the resource, using the settings below.</div>
+            <div class="admin-nav-head">Attach an existing file from the media library (pdf, document, etc.), to the material, using the settings below.</div>
             <section class="local_start_wrapper">
                 <div class="row">
                     <div class="col-sm-12">
@@ -40,23 +40,23 @@
                                     </div>
                                 </div>-->
                 <div class="col-sm-12 artcover">
-                    <p><span style="color: #fff;">Cover Image: </span> The cover for this resource is currently attached to the image displayed below.</p>
+                    <p><span style="color: #fff;">Attachment: </span> The attachment for this material is currently attached to the image displayed below.</p>
                     <a href="javascript::void(0)" onclick="$('[name=attachment]').click()">Add Attachment</a>
                     <input type="file" name="attachment" style="display: none;" onchange="readAttachmentURL(this);" />
                 </div> 
                 @php
-                $material_cover_image = asset('administrator/images/no-image.png');
-                $material_cover_image_thumb = asset('administrator/images/no-image.png');
+                $material_attachment = asset('administrator/images/no-image.png');
+                $material_attachment_thumb = asset('administrator/images/no-image.png');
                 $filename = '';
-                if(isset($material->cover_media->file)):
-                $filename = $material->cover_media->file; 
-                $material_cover_image = asset(config('constants.material.cover_path_display').$material->cover_media->file);
-                $material_cover_image_thumb = asset(config('constants.material.cover_path_display').'thumb_'.$material->cover_media->file);
+                if(isset($material->attachment->file)):
+                $filename = $material->attachment->file; 
+                $material_attachment = asset(config('constants.material.attachment_path_display').$material->attachment->file);
+                $material_attachment_thumb = asset(config('constants.material.attachment_path_display').'thumb_'.$material->attachment->file);
                 endif;
                 @endphp
                 <div class="col-sm-12 imagewrap">
                     <div class="col-sm-3 covercontainer">
-                        <img src="{{ $material_cover_image }}" alt="Cover Image" id="cover_image_preview" class="image" style="width:100%">
+                        <img src="{{ $material_attachment }}" alt="Cover Image" id="cover_image_preview" class="image" style="width:100%">
                         <div class="middle">
                             <div class="text cover_image_name">{{ $filename }}</div>
                         </div>
@@ -79,23 +79,23 @@
                 </div>
             </div> 
             <div class="col-sm-12 artcover">
-                <p>Content: What would you like to say in the article?</p>
+                <p><span style="color: #fff;">Cover Image: </span> The cover for this material is currently attached to the image displayed below.</p>
                 <a href="javascript::void(0)" onclick="$('[name=cover_image]').click()">Add Cover</a>
                 <input type="file" name="cover_image" accept="image/*" style="display: none;" onchange="readURL(this);" />
             </div> 
             @php
-            $material_attachment = asset('administrator/images/no-image.png');
-            $material_attachment_thumb = asset('administrator/images/no-image.png');
+            $material_cover_image = asset('administrator/images/no-image.png');
+            $material_cover_image_thumb = asset('administrator/images/no-image.png');
             $filename = '';
-            if(isset($material->attachment->file)):
-            $filename = $material->attachment->file; 
-            $material_attachment = asset(config('constants.material.attachment_path_display').$material->attachment->file);
-            $material_attachment_thumb = asset(config('constants.material.attachment_path_display').'thumb_'.$material->attachment->file);
+            if(isset($material->cover_media->file)):
+            $filename = $material->cover_media->file; 
+            $material_cover_image = asset(config('constants.material.cover_path_display').$material->cover_media->file);
+            $material_cover_image_thumb = asset(config('constants.material.cover_path_display').'thumb_'.$material->cover_media->file);
             endif;
             @endphp
             <div class="col-sm-12 imagewrap">
                 <div class="col-sm-3 covercontainer">
-                    <img src="{{ $material_attachment }}" alt="Cover Image" id="cover_image_preview" class="image" style="width:100%">
+                    <img src="{{ $material_cover_image }}" alt="Cover Image" id="cover_image_preview" class="image" style="width:100%">
                     <div class="middle">
                         <div class="text cover_image_name">{{ $filename }}</div>
                     </div>
@@ -109,7 +109,7 @@
             </div>
         </div>
         <!--        <div id="public-tab" class="tab-pane fade in">
-                    <div class="admin-nav-head">The publication tab controls how and when you want the resource to be published.</div>
+                    <div class="admin-nav-head">The publication tab controls how and when you want the material to be published.</div>
                     <div class="col-sm-12 appearence">
                         <h5>Publication: How would you like to republish the article?</h5>
                         <ul>
@@ -126,7 +126,7 @@
                     </div>
                 </div>-->
         <div id="analytic-tab" class="tab-pane fade in">
-            <div class="admin-nav-head">Analytics provides details about how your audience responds to, and interacts with, this resource in particular.</div>
+            <div class="admin-nav-head">Analytics provides details about how your audience responds to, and interacts with, this material in particular.</div>
         </div>
     </div>
     <br/>
