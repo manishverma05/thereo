@@ -56,14 +56,14 @@
                 @endphp
                 <div class="col-sm-12 imagewrap">
                     <div class="col-sm-3 covercontainer">
-                        <img src="{{ $material_attachment }}" alt="Cover Image" id="cover_image_preview" class="image" style="width:100%">
+                        <img src="{{ $material_attachment }}" alt="Attachment" id="attachment_preview" class="image" style="width:100%">
                         <div class="middle">
                             <div class="text cover_image_name">{{ $filename }}</div>
                         </div>
                     </div>
-                    <div class="col-sm-9 editimg" @if(!$filename) {{ 'style=display:none;' }} @endif >
+                    <div class="col-sm-9 editAttachment" @if(!$filename) {{ 'style=display:none;' }} @endif >
                          <div class="postnbotm">
-                            <h5 class="cover_image_name">{{ $filename }}</h5>
+                            <h5 class="attachment_name">{{ $filename }}</h5>
                             <!--<p><a href="admin_program_edit_cover_media.php">Edit Image</a></p>-->
                         </div>
                     </div>   
