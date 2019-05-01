@@ -58,7 +58,7 @@
                     <div class="col-sm-3 covercontainer">
                         <img src="{{ $material_attachment }}" alt="Attachment" id="attachment_preview" class="image" style="width:100%">
                         <div class="middle">
-                            <div class="text cover_image_name">{{ $filename }}</div>
+                            <div class="text attachment_name">{{ $filename }}</div>
                         </div>
                     </div>
                     <div class="col-sm-9 editAttachment" @if(!$filename) {{ 'style=display:none;' }} @endif >
