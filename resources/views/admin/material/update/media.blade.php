@@ -61,7 +61,7 @@
                             <div class="text attachment_name">{{ $filename }}</div>
                         </div>
                     </div>
-                    <div class="col-sm-9 editAttachment" @if(!$filename) {{ 'style=display:none;' }} @endif >
+                    <div class="col-sm-9 editimg editAttachment" @if(!$filename) {{ 'style=display:none;' }} @endif >
                          <div class="postnbotm">
                             <h5 class="attachment_name">{{ $filename }}</h5>
                             <!--<p><a href="admin_program_edit_cover_media.php">Edit Image</a></p>-->
