@@ -246,7 +246,7 @@ class MaterialController extends Controller {
         $material = Material::where('unique_id', $material_unique_id)->first();
         $material->slug = $request->slug ? $request->slug : Str::slug($request->title, '-') . uniqid();
         $material->title = $request->title;
-        $material->type = 'local';
+        $material->type = 'media';
         $material->description = '';
         $material->cover_title = $request->cover_title;
         $material->created_by = auth()->user()->id;
@@ -332,7 +332,7 @@ class MaterialController extends Controller {
         $material = Material::where('unique_id', $material_unique_id)->first();
         $material->slug = $request->slug ? $request->slug : Str::slug($request->title, '-') . uniqid();
         $material->title = $request->title;
-        $material->type = 'local';
+        $material->type = 'external';
         $material->description = '';
         $material->cover_title = $request->cover_title;
         $material->created_by = auth()->user()->id;
