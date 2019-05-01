@@ -50,19 +50,19 @@
                         @php
                         $session_cover_image = asset('images/no-image.png');
                         $session_cover_image_thumb = asset('administrator/images/no-image.png');
-                        if(isset($session->cover_media->file)):
-                        $session_cover_image = asset(config('constants.session.cover_path_display').$session->cover_media->file);
-                        $session_cover_image_thumb = asset(config('constants.session.cover_path_display').'thumb_'.$session->cover_media->file);
+                        if(isset($session->session->cover_media->file)):
+                        $session_cover_image = asset(config('constants.session.cover_path_display').$session->session->cover_media->file);
+                        $session_cover_image_thumb = asset(config('constants.session.cover_path_display').'thumb_'.$session->session->cover_media->file);
                         endif;
                         @endphp
                         @if($sessionIndex < 2)
                         <div class="col-md-4 blk-both">
                             <div class="rj_program">
                                 <div class="rj_program_inner blk">
-                                    <a href="{{ route('user.program.session.list',[$program->slug.'#'.$session->slug]) }}">
+                                    <a href="{{ route('user.program.session.list',[$program->slug.'#'.$session->session->slug]) }}">
                                         <img src="{{ $session_cover_image }}" alt="">
                                         <div class="menu_opacity white_opacity"></div>
-                                        <div class="menu_name white_opacity1">{{ ++$sessionIndex }}. {{ $session->cover_title }}</div>
+                                        <div class="menu_name white_opacity1">{{ ++$sessionIndex }}. {{ $session->session->cover_title }}</div>
                                     </a>
                                 </div>
                             </div>
@@ -71,10 +71,10 @@
                         <div class="col-md-4 blk-both">
                             <div class="rj_program">
                                 <div class="rj_program_inner blk">
-                                    <a href="{{ route('user.program.session.list',[$program->slug.'#'.$session->slug]) }}">
+                                    <a href="javascript:void(0)">
                                         <img src="{{ $session_cover_image }}" alt="">
                                         <div class="menu_opacity menu_opacity_bl"></div>
-                                        <div class="menu_name">{{ ++$sessionIndex }}. {{ $session->cover_title }}</div>
+                                        <div class="menu_name">{{ ++$sessionIndex }}. {{ $session->session->cover_title }}</div>
                                         <div class="rj_lock_icon"><i class="fa fa-lock"></i></div>
                                     </a>
                                 </div>
