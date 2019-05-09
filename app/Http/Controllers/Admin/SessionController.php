@@ -4,33 +4,37 @@ namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\User;
-use App\Models\Role;
 use App\Models\Program;
-use App\Models\Session;
+use App\Models\Role;
+use App\User;
 use App\Models\SessionCategory;
-use App\Models\SessionAuthorMap;
-use App\Models\SessionAttachment;
-use App\Models\SessionCategoryMap;
-use App\Models\SessionAccessMap;
-use App\Models\SessionCoverMedia;
+use App\Models\Media;
+use App\Models\Session;
 use App\Models\ProgramSessionMap;
-use App\Models\Material;
+use App\Models\SessionAuthorMap;
+use App\Models\SessionMediaMap;
 use App\Models\Resource;
 use App\Models\SessionResourceMap;
-use App\Models\SessionMaterialMap;
+use App\Models\SessionAccessMap;
+use App\Models\SessionCategoryMap;
 use App\Http\Requests\AdminSessionCreateRequest;
 use App\Http\Requests\AdminSessionUpdateRequest;
 use Illuminate\Support\Carbon;
-use Intervention\Image\Facades\Image;
 use Illuminate\Support\Str;
 
+//use App\Models\SessionAttachment;
+//use App\Models\SessionCoverMedia;
+//use App\Models\Material;
+//use App\Models\SessionMaterialMap;
+//use Illuminate\Support\Carbon;
+//use Intervention\Image\Facades\Image;
 class SessionController extends Controller {
 
     public function getCreate($program_unique_id) {
         $program = Program::where('unique_id', $program_unique_id)->first();
         if (!$program)
             return redirect()->route('admin.program.list')->with('error', 'Program not found.');
+        $galleries = Media::orderBy('id', 'desc')->get();
         $roles = Role::orderBy('id', 'desc')->get();
         $authors = User::where('role_id', 3)->orderBy('id', 'desc')->get();
         $session_categories = SessionCategory::orderBy('id', 'desc')->get();
@@ -39,6 +43,9 @@ class SessionController extends Controller {
                         ->withPageheader('New Session')
                         ->withRoles($roles)
                         ->withAuthors($authors)
+                        ->withProgram($program)
+                        ->withAuthors($authors)
+                        ->withGalleries($galleries)
                         ->withSessionCategories($session_categories);
     }
 
@@ -55,7 +62,6 @@ class SessionController extends Controller {
             return redirect()->route('admin.program.list')->with('error', 'Program not found.');
         // Retrieve the validated input data...
         $validation = $request->validated();
-
         // create new Session and save it
         $session = new Session;
         $session->unique_id = uniqid() . uniqid();
@@ -70,15 +76,25 @@ class SessionController extends Controller {
         if ($request->unpublish != '') {
             $session->unpublish_on = Carbon::createFromFormat('Y-m-d H:i:s', $request->unpublish . ' 00:00:00');
         }
-        #temp
-        $session->status = '1';
+        $session->status = $request->status ? $request->status : '0';
         $session->save();
-
 
         $program_session = new ProgramSessionMap;
         $program_session->session_id = $session->id;
         $program_session->program_id = $program->id;
         $program_session->save();
+
+        #save access for session
+        if (isset($request->role_id)) {
+            foreach ($request->role_id as $role_id) {
+                if ($role_id) {
+                    $session_role = new SessionAccessMap;
+                    $session_role->role_id = $role_id;
+                    $session_role->session_id = $session->id;
+                    $session_role->save();
+                }
+            }
+        }
 
         #save authors for session
         if (isset($request->author_id)) {
@@ -98,50 +114,26 @@ class SessionController extends Controller {
                 $session_category_map->save();
             }
         }
-
-        if (isset($request->cover_image)) {
-            $imageName = strtolower($request->cover_image->getClientOriginalName());
-            $destination = config('constants.session.cover_path');
-            $i = 1;
-            while (true) {
-                if (!file_exists($destination . $imageName)) {
-                    break;
-                }
-                $imageName = ++$i . $imageName;
-            }
-            $img = Image::make($request->cover_image->getRealPath());
-            $img->resize(300, 300, function ($constraint) {
-                $constraint->aspectRatio();
-            })->save($destination . 'thumb_' . $imageName);
-
-            $request->cover_image->move($destination, $imageName);
-            $session_cover_media = new SessionCoverMedia;
-            $session_cover_media->unique_id = uniqid() . uniqid();
-            $session_cover_media->session_id = $session->id;
-            $session_cover_media->file = $imageName;
-            $session_cover_media->created_by = auth()->user()->id;
-            $session_cover_media->save();
+        if ($request->cover_id) {
+            $session_media_map = new SessionMediaMap;
+            $session_media_map->media_id = $request->cover_id;
+            $session_media_map->session_id = $session->id;
+            $session_media_map->type = 'cover';
+            $session_media_map->save();
         }
-
-        if (isset($request->video_attach)) {
-            $videoName = strtolower($request->video_attach->getClientOriginalName());
-            $destination = config('constants.session.video_path');
-
-            $i = 1;
-            while (true) {
-                if (!file_exists($destination . $videoName)) {
-                    break;
-                }
-                $videoName = ++$i . $videoName;
-            }
-
-            $request->video_attach->move($destination, $videoName);
-            $session_media = new SessionAttachment;
-            $session_media->unique_id = uniqid() . uniqid();
-            $session_media->session_id = $session->id;
-            $session_media->file = $videoName;
-            $session_media->created_by = auth()->user()->id;
-            $session_media->save();
+        if ($request->video_id) {
+            $session_media_map = new SessionMediaMap;
+            $session_media_map->media_id = $request->video_id;
+            $session_media_map->session_id = $session->id;
+            $session_media_map->type = 'video';
+            $session_media_map->save();
+        }
+        if ($request->material_id) {
+            $session_media_map = new SessionMediaMap;
+            $session_media_map->media_id = $request->material_id;
+            $session_media_map->session_id = $session->id;
+            $session_media_map->type = 'material';
+            $session_media_map->save();
         }
         return redirect()->route('admin.program.update', [$program_unique_id])->with('success', 'Session has been added.');
     }
@@ -150,20 +142,19 @@ class SessionController extends Controller {
         $program = Program::where('unique_id', $program_unique_id)->first();
         if (!$program)
             return redirect()->route('admin.program.list')->with('error', 'Program not found.');
-
         $session = Session::where('unique_id', $session_unique_id)
                         ->with('cover_media')
-                        ->with('materials')
+                        ->with('material')
                         ->with('resources')
                         ->with('authors')
-                        ->with('accesss')
-                        ->with('attachment')
+                        ->with('access')
+                        ->with('video')
                         ->with('session_categories')
                         ->orderBy('id', 'desc')->first();
         if (!$session)
             return redirect()->route('admin.program.update', [$program_unique_id])->with('error', 'Session not found.');
-        $materials = Material::orderBy('id', 'desc')->get();
         $roles = Role::orderBy('id', 'desc')->get();
+        $galleries = Media::orderBy('id', 'desc')->get();
         $resources = Resource::orderBy('id', 'desc')->get();
         $authors = User::where('role_id', 3)->orderBy('id', 'desc')->get();
         $session_categories = SessionCategory::orderBy('id', 'desc')->get();
@@ -172,15 +163,13 @@ class SessionController extends Controller {
                         ->withPageheader('Update Session')
                         ->withSession($session)
                         ->withProgram($program)
-                        ->withSessionRoles(array_column(isset($session->accesss) ? $session->accesss->toArray() : [], 'role_id'))
-//                        ->withSessionMaterials(array_column(isset($session->materials) ? $session->materials->toArray() : [], 'material_id'))
-//                        ->withSessionResources(array_column(isset($session->resources) ? $session->resources->toArray() : [], 'resource_id'))
+                        ->withSessionRoles(array_column(isset($session->access) ? $session->access->toArray() : [], 'role_id'))
                         ->withSessionAuthors(array_column(isset($session->authors) ? $session->authors->toArray() : [], 'user_id'))
                         ->withSessionCategoryMaps(array_column(isset($session->session_categories) ? $session->session_categories->toArray() : [], 'session_category_id'))
-                        ->withMaterials($materials)
                         ->withRoles($roles)
                         ->withResources($resources)
                         ->withAuthors($authors)
+                        ->withGalleries($galleries)
                         ->withSessionCategories($session_categories);
     }
 
@@ -188,10 +177,8 @@ class SessionController extends Controller {
         $program = Program::where('unique_id', $program_unique_id)->first();
         if (!$program)
             return redirect()->route('admin.program.list')->with('error', 'Program not found.');
-
         // Retrieve the validated input data...
         $validation = $request->validated();
-
         // create new Session and save it
         $session = Session::where('unique_id', $session_unique_id)->first();
         $session->slug = $request->slug ? $request->slug : Str::slug($request->title, '-');
@@ -206,18 +193,19 @@ class SessionController extends Controller {
             $session->unpublish_on = Carbon::createFromFormat('Y-m-d H:i:s', $request->unpublish . ' 00:00:00');
         }
         $session->save();
-
         SessionAccessMap::where('session_id', $session->id)->delete();
+        #save access for session
         #save access for session
         if (isset($request->role_id)) {
             foreach ($request->role_id as $role_id) {
-                $session_role = new SessionAccessMap;
-                $session_role->role_id = $role_id;
-                $session_role->session_id = $session->id;
-                $session_role->save();
+                if ($role_id) {
+                    $session_role = new SessionAccessMap;
+                    $session_role->role_id = $role_id;
+                    $session_role->session_id = $session->id;
+                    $session_role->save();
+                }
             }
         }
-
         SessionAuthorMap::where('session_id', $session->id)->delete();
         #save authors for session
         if (isset($request->author_id)) {
@@ -228,7 +216,6 @@ class SessionController extends Controller {
                 $session_author->save();
             }
         }
-
         SessionCategoryMap::where('session_id', $session->id)->delete();
         #save session_categories for session
         if (isset($request->session_category_id)) {
@@ -239,85 +226,29 @@ class SessionController extends Controller {
                 $session_category_map->save();
             }
         }
-
-        SessionResourceMap::where('session_id', $session->id)->delete();
-        #save resources for session
-        if (isset($request->resource_id)) {
-            foreach ($request->resource_id as $resource_id) {
-                $session_resource = new SessionResourceMap;
-                $session_resource->resource_id = $resource_id;
-                $session_resource->session_id = $session->id;
-                $session_resource->save();
-            }
+        SessionMediaMap::where('session_id', $session->id)->where('type', 'cover')->delete();
+        if ($request->cover_id) {
+            $session_media_map = new SessionMediaMap;
+            $session_media_map->media_id = $request->cover_id;
+            $session_media_map->session_id = $session->id;
+            $session_media_map->type = 'cover';
+            $session_media_map->save();
         }
-
-        SessionMaterialMap::where('session_id', $session->id)->delete();
-        #save materials for session
-        if (isset($request->material_id)) {
-            foreach ($request->material_id as $material_id) {
-                $session_material = new SessionMaterialMap;
-                $session_material->material_id = $material_id;
-                $session_material->session_id = $session->id;
-                $session_material->save();
-            }
+        SessionMediaMap::where('session_id', $session->id)->where('type', 'video')->delete();
+        if ($request->video_id) {
+            $session_media_map = new SessionMediaMap;
+            $session_media_map->media_id = $request->video_id;
+            $session_media_map->session_id = $session->id;
+            $session_media_map->type = 'video';
+            $session_media_map->save();
         }
-
-        if (isset($request->cover_image)) {
-            $imageName = strtolower($request->cover_image->getClientOriginalName());
-            $destination = config('constants.session.cover_path');
-            $sessionCoverMedia = SessionCoverMedia::where('session_id', $session->id)->first();
-            if (isset($sessionCoverMedia->file)) {
-                if (is_file(config('constants.session.cover_path') . $sessionCoverMedia->file))
-                    unlink(config('constants.session.cover_path') . $sessionCoverMedia->file);
-                if (is_file(config('constants.session.cover_path') . 'thumb_' . $sessionCoverMedia->file))
-                    unlink(config('constants.session.cover_path') . 'thumb_' . $sessionCoverMedia->file);
-                $sessionCoverMedia->delete();
-            }
-            $i = 1;
-            while (true) {
-                if (!file_exists($destination . $imageName)) {
-                    break;
-                }
-                $imageName = ++$i . $imageName;
-            }
-            $img = Image::make($request->cover_image->getRealPath());
-            $img->resize(300, 300, function ($constraint) {
-                $constraint->aspectRatio();
-            })->save($destination . 'thumb_' . $imageName);
-
-            $request->cover_image->move($destination, $imageName);
-            $session_cover_media = new SessionCoverMedia;
-            $session_cover_media->unique_id = uniqid() . uniqid();
-            $session_cover_media->session_id = $session->id;
-            $session_cover_media->file = $imageName;
-            $session_cover_media->created_by = auth()->user()->id;
-            $session_cover_media->save();
-        }
-
-        if (isset($request->video_attach)) {
-            $videoName = strtolower($request->video_attach->getClientOriginalName());
-            $destination = config('constants.session.video_path');
-            $sessionAttachment = SessionAttachment::where('session_id', $session->id)->first();
-            if (isset($sessionAttachment->file)) {
-                if (is_file(config('constants.session.video_path') . $sessionAttachment->file))
-                    unlink(config('constants.session.video_path') . $sessionAttachment->file);
-                $sessionAttachment->delete();
-            }
-            $i = 1;
-            while (true) {
-                if (!file_exists($destination . $videoName)) {
-                    break;
-                }
-                $videoName = ++$i . $videoName;
-            }
-
-            $request->video_attach->move($destination, $videoName);
-            $session_media = new SessionAttachment;
-            $session_media->unique_id = uniqid() . uniqid();
-            $session_media->session_id = $session->id;
-            $session_media->file = $videoName;
-            $session_media->created_by = auth()->user()->id;
-            $session_media->save();
+        SessionMediaMap::where('session_id', $session->id)->where('type', 'material')->delete();
+        if ($request->material_id) {
+            $session_media_map = new SessionMediaMap;
+            $session_media_map->media_id = $request->material_id;
+            $session_media_map->session_id = $session->id;
+            $session_media_map->type = 'material';
+            $session_media_map->save();
         }
         return redirect()->route('admin.program.update', [$program_unique_id])->with('success', 'Session has been updated.');
     }

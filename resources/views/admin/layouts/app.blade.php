@@ -14,6 +14,11 @@
         <link href="{{ asset('administrator/css/bootstrap.css') }}" rel="stylesheet">
         <link href="{{ asset('administrator/css/font-awesome.css') }}" rel="stylesheet">
         <link href="{{ asset('administrator/css/dashboard.css') }}" rel="stylesheet">
+        <style>
+            .ck-editor__editable_inline {
+                min-height: 200px;
+            }
+        </style>
         <!-- Page Styles -->
         @yield('after-style')
     </head>
@@ -29,13 +34,14 @@
                     <div class="rjadmin_breadcrumb_left">
                         <p>{{ $pageheader }}</p>
                         <div class="rjadmin_back"><a href="JavaScript:Void(0)" onclick="goBack()"><i class="fa fa-reply"></i></a></div>
-                        <div class="rjadmin_back"><a href="{{ route('landing') }}">Back to myThereo</a></div>
+                        @yield('left-breadcrumb')
                     </div>
                 </div>
                 <div class="col-md-6 col-sm-6 col-xs-4">
                     <!--@yield('breadcrumb-right')-->
                     <div class="rjadmin_breadcrumb_right">
                         <div class="rjadmin_back"><a href="{{ route('admin.logout') }}">Logout</a></div>
+                        @yield('right-breadcrumb')
                     </div>
                 </div>
             </div>

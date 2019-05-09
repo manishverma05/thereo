@@ -23,21 +23,37 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin'], function () {
             Route::get('dashboard', 'DashboardController@getDashboard')->name('dashboard');
             Route::get('logout', 'DashboardController@getlogout')->name('logout');
 
+            // Admin Media
+            Route::group(['as' => 'media.', 'prefix' => 'media'], function () {
+                Route::get('add', 'MediaController@getAdd')->name('add');
+                Route::post('add', 'MediaController@postAdd')->name('add');
+            });
+            
             // Admin Program
             Route::group(['as' => 'program.', 'prefix' => 'program'], function () {
                 Route::get('list', 'ProgramController@getList')->name('list');
+
+                // Admin Program Category
+                Route::group(['as' => 'category.', 'prefix' => 'category'], function () {
+                    Route::get('create', 'ProgramCategoryController@getCreate')->name('create');
+                    Route::post('create', 'ProgramCategoryController@postCreate')->name('create');
+                    Route::get('update/{program_category_unique_id}', 'ProgramCategoryController@getUpdate')->name('update');
+                    Route::post('update/{program_category_unique_id}', 'ProgramCategoryController@postUpdate')->name('update');
+                });
+
+
+
+
+
+
+
+
+
+
                 Route::get('create', 'ProgramController@getCreate')->name('create');
                 Route::post('create', 'ProgramController@postCreate')->name('create');
                 Route::get('update/{program_unique_id}', 'ProgramController@getUpdate')->name('update');
                 Route::post('update/{program_unique_id}', 'ProgramController@postUpdate')->name('update');
-
-                // Admin Program Category
-                Route::group(['as' => 'category.', 'prefix' => 'category'], function () {
-                    Route::get('create', 'ProgramController@getCategoryCreate')->name('create');
-                    Route::post('create', 'ProgramController@postCategoryCreate')->name('create');
-                    Route::get('update/{program_category_unique_id}', 'ProgramController@getCategoryUpdate')->name('update');
-                    Route::post('update/{program_category_unique_id}', 'ProgramController@postCategoryUpdate')->name('update');
-                });
 
                 // Admin Program Update
                 Route::group(['as' => 'update.', 'prefix' => 'update'], function () {
@@ -50,7 +66,7 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin'], function () {
                 Route::group(['as' => 'resource.', 'prefix' => 'resource'], function () {
                     // Admin Resource 
                     Route::group(['as' => 'create.', 'prefix' => 'create'], function () {
-                        Route::get('/{program_unique_id}', 'ResourceController@getProgramCreate')->name('option');
+//                        Route::get('/{program_unique_id}', 'ResourceController@getProgramCreate')->name('option');
                         Route::get('local/{program_unique_id}', 'ResourceController@getCreateProgramLocal')->name('local');
                         Route::get('media/{program_unique_id}', 'ResourceController@getCreateProgramMedia')->name('media');
                         Route::get('external/{program_unique_id}', 'ResourceController@getCreateProgramExternal')->name('external');
@@ -79,11 +95,11 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin'], function () {
                         Route::get('update/{attachment_unique_id}', 'SessionController@getVideoUpdate')->name('update');
                         Route::post('update/{attachment_unique_id}', 'SessionController@postVideoUpdate')->name('update');
                     });
-                    Route::group(['as' => 'cover.', 'prefix' => 'cover'], function () {
-                        // Admin Session Video
-                        Route::get('update/{attachment_unique_id}', 'SessionController@getCoverUpdate')->name('update');
-                        Route::post('update/{attachment_unique_id}', 'SessionController@postVideoUpdate')->name('update');
-                    });
+//                    Route::group(['as' => 'cover.', 'prefix' => 'cover'], function () {
+//                        // Admin Session Video
+//                        Route::get('update/{attachment_unique_id}', 'SessionController@getCoverUpdate')->name('update');
+//                        Route::post('update/{attachment_unique_id}', 'SessionController@postVideoUpdate')->name('update');
+//                    });
                 });
 
 
@@ -91,11 +107,11 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin'], function () {
 
 
 
-                Route::group(['as' => 'cover.', 'prefix' => 'cover'], function () {
-                    // Admin Session Video
-                    Route::get('update/{attachment_unique_id}', 'ProgramController@getCoverUpdate')->name('update');
-                    Route::post('update/{attachment_unique_id}', 'ProgramController@postVideoUpdate')->name('update');
-                });
+//                Route::group(['as' => 'cover.', 'prefix' => 'cover'], function () {
+//                    // Admin Session Video
+//                    Route::get('update/{attachment_unique_id}', 'ProgramController@getCoverUpdate')->name('update');
+//                    Route::post('update/{attachment_unique_id}', 'ProgramController@postVideoUpdate')->name('update');
+//                });
                 Route::group(['as' => 'session.', 'prefix' => 'session'], function () {
                     // Admin Session 
                     Route::get('create/{program_unique_id}', 'SessionController@getCreate')->name('create');
@@ -107,11 +123,11 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin'], function () {
                         Route::get('update/{attachment_unique_id}', 'SessionController@getVideoUpdate')->name('update');
                         Route::post('update/{attachment_unique_id}', 'SessionController@postVideoUpdate')->name('update');
                     });
-                    Route::group(['as' => 'cover.', 'prefix' => 'cover'], function () {
-                        // Admin Session Video
-                        Route::get('update/{attachment_unique_id}', 'SessionController@getCoverUpdate')->name('update');
-                        Route::post('update/{attachment_unique_id}', 'SessionController@postVideoUpdate')->name('update');
-                    });
+//                    Route::group(['as' => 'cover.', 'prefix' => 'cover'], function () {
+//                        // Admin Session Video
+//                        Route::get('update/{attachment_unique_id}', 'SessionController@getCoverUpdate')->name('update');
+//                        Route::post('update/{attachment_unique_id}', 'SessionController@postVideoUpdate')->name('update');
+//                    });
                 });
             });
 
@@ -122,7 +138,7 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin'], function () {
                 Route::group(['as' => 'resource.', 'prefix' => 'resource'], function () {
                     // Admin Resource 
                     Route::group(['as' => 'create.', 'prefix' => 'create'], function () {
-                        Route::get('/{session_unique_id}', 'ResourceController@getSessionCreate')->name('option');
+//                        Route::get('/{session_unique_id}', 'ResourceController@getSessionCreate')->name('option');
                         Route::get('local/{session_unique_id}', 'ResourceController@getCreateSessionLocal')->name('local');
                         Route::get('media/{session_unique_id}', 'ResourceController@getCreateSessionMedia')->name('media');
                         Route::get('external/{session_unique_id}', 'ResourceController@getCreateSessionExternal')->name('external');

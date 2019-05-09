@@ -10,7 +10,7 @@ class Program extends Model {
      * Get the cover media record associated with the program.
      */
     public function cover_media() {
-        return $this->hasOne('App\Models\ProgramCoverMedia');
+        return $this->hasOne('App\Models\ProgramMediaMap')->where('type','cover');;
     }
 
     /**
@@ -48,9 +48,9 @@ class Program extends Model {
     }
 
     /**
-     * Get the accesss record associated with the session.
+     * Get the access record associated with the session.
      */
-    public function accesss() {
+    public function access() {
         return $this->hasMany('App\Models\ProgramAccessMap');
     }
 

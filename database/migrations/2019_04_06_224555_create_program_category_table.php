@@ -18,8 +18,6 @@ class CreateProgramCategoryTable extends Migration
             $table->string('unique_id', 100)->unique();
             $table->string('slug', 150)->unique();
             $table->string('title', 191);
-            $table->string('cover_title', 191)->nullable();
-            $table->text('description');
             $table->string('meta_title', 191)->nullable();
             $table->text('meta_description')->nullable();
             $table->text('meta_keywords')->nullable();

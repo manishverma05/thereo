@@ -6,12 +6,13 @@ use Illuminate\Http\Request;
 use App\Models\Program;
 use App\Models\Session;
 use App\Models\ProgramCategory;
+use App\Helpers\Helper;
 
 class ProgramController extends Controller {
 
     public function index() {
-        $programs = Program::with('cover_media')->orderBy('id', 'desc')->get();
-        $programCategories = ProgramCategory::with('cover_media')->orderBy('id', 'desc')->get();
+        $programs = Program::where('status', '1')->with('cover_media')->with('access')->orderBy('id', 'desc')->get();
+        $programCategories = ProgramCategory::orderBy('id', 'desc')->get();
         return view('programs.index')
                         ->withPagetitle('Programs')
                         ->withPageheader('Programs')

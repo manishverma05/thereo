@@ -25,7 +25,7 @@ class AdminProgramCategoryUpdateRequest extends FormRequest {
         extract($_REQUEST);
         return [
             'title' => ['required', 'max:150', Rule::unique('program_categories')->ignore($category_id, 'id')],
-            'slug' => ['required', Rule::unique('program_categories')->ignore($category_id, 'id')],
+            'slug' => [Rule::unique('program_categories')->ignore($category_id, 'id')],
         ];
     }
 

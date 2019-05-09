@@ -3,6 +3,11 @@
 @section('after-style')
 @endsection('after-style')
 
+@section('left-breadcrumb')
+<div class="rjadmin_back"><a href="{{ route('admin.program.list') }}">Return to Programs</a></div>
+@endsection('left-breadcrumb')
+
+
 @section('content')
 <!-- Start Navigation -->
 <div class="rjadmin_navigation">
@@ -13,13 +18,13 @@
 </div>
 
 <!-- Start Navigation -->
-<form action="{{ route('admin.program.update.update',[$program->unique_id,$programUpdate->unique_id]) }}" method="post" enctype="multipart/form-data">
+<form action="{{ route('admin.program.update.update',[$program->unique_id,$programUpdate->unique_id]) }}" method="post" enctype="multipart/form-data" id="form">
     @csrf 
     <input type="hidden" value="{{ $programUpdate->id }}" name="update_id"/>
     <!-----Article Edit Section------>
     <div class="tab-content">
         <div id="update-tab" class="tab-pane fade in active">
-            <div class="admin-nav-head">Add this update using the settings below.</div>
+            <div class="admin-nav-head">Edit this update using the settings below.</div>
             <div class="col-sm-12 artctitle">
                 <h5>Title: What name would you like the update to have?</h5>
                 <div class="form-group">
@@ -37,7 +42,11 @@
         </div>
     </div>
     <br/>
-    <button type="submit" class="btn btn-primary">Add Update</button>
+    <div class="col-sm-12 appearence">
+        <ul>
+            <li><a href="javascript:void(0)" onclick="formSubmit(1);">Edit Update</a></li>
+        </ul>
+    </div>
 </form>
 @endsection('content')
 
@@ -50,18 +59,6 @@
             .catch(error => {
                 console.error(error);
             });
-
-    function readURL(input) {
-        if (input.files && input.files[0]) {
-            var reader = new FileReader();
-
-            reader.onload = function (e) {
-                $('#cover_image_preview').attr('src', e.target.result);
-            };
-            $('.editimg').show();
-            $('.cover_image_name').text(input.files[0].name);
-            reader.readAsDataURL(input.files[0]);
-        }
-    }
 </script>
+@include('admin._partial.formjs')
 @endsection('after-script')

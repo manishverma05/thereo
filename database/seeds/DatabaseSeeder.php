@@ -14,7 +14,7 @@ class DatabaseSeeder extends Seeder {
         $this->call(DefaultAdminUserSeeder::class);
 
         #fakers
-//        $this->call(FakeAuthorUsersSeeder::class);
+        $this->call(FakeAuthorUsersSeeder::class);
 //        $this->call(FakeMaterialSeeder::class);
 //        $this->call(FakeProgramCategorySeeder::class);
 //        $this->call(FakeResourceSeeder::class);

@@ -10,7 +10,7 @@ class Session extends Model {
      * Get the cover media record associated with the session.
      */
     public function cover_media() {
-        return $this->hasOne('App\Models\SessionCoverMedia');
+        return $this->hasOne('App\Models\SessionMediaMap')->where('type', 'cover');
     }
 
     /**
@@ -23,8 +23,8 @@ class Session extends Model {
     /**
      * Get the sessions record associated with the session.
      */
-    public function materials() {
-        return $this->hasMany('App\Models\SessionMaterialMap');
+    public function material() {
+        return $this->hasOne('App\Models\SessionMediaMap')->where('type', 'material');
     }
 
     /**
@@ -48,20 +48,18 @@ class Session extends Model {
         return $this->hasMany('App\Models\SessionCategoryMap');
     }
 
-    
     /**
-     * Get the accesss record associated with the session.
+     * Get the access record associated with the session.
      */
-    public function accesss() {
+    public function access() {
         return $this->hasMany('App\Models\SessionAccessMap');
     }
 
-    
     /**
      * Get the attachment record associated with the session.
      */
-    public function attachment() {
-        return $this->hasOne('App\Models\SessionAttachment');
+    public function video() {
+        return $this->hasOne('App\Models\SessionMediaMap')->where('type', 'video');
     }
 
 }

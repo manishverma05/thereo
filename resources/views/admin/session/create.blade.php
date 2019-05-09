@@ -3,34 +3,39 @@
 @section('after-style')
 @endsection('after-style')
 
+@section('left-breadcrumb')
+<div class="rjadmin_back"><a href="{{ route('admin.program.update', [$program->unique_id]) }}">Return to Program</a></div>
+@endsection('left-breadcrumb')
+
 @section('content')
 <!-- Start Navigation -->
 <div class="rjadmin_navigation">
     <ul class="menu_tab nav nav-tabs">
         <li class="active"><a data-toggle="tab" href="#session-tab">Session Page</a></li>
-        <li><a data-toggle="tab" href="#video-tab">Video</a></li>
+        <li><a data-toggle="tab" href="#attachment-tab">Attachments</a></li>
         <li><a data-toggle="tab" href="#cover-tab">Cover Settings</a></li>
         <li><a data-toggle="tab" href="#meta-tab">Meta Settings</a></li>
-        <!--<li><a data-toggle="tab" href="#public-tab">Publication</a></li>-->
+        <li><a data-toggle="tab" href="#public-tab">Publication</a></li>
         <li class="rightside"><a data-toggle="tab" href="#analytic-tab">Analytics</a></li>
     </ul>
 </div>
 
-<form action="{{ url()->current() }}" method="post" enctype="multipart/form-data">
+<form action="{{ url()->current() }}" method="post" enctype="multipart/form-data" id="form">
     @csrf 
+    <input type="hidden" name="status" value="{{ old('status') }}"/>
     <div class="tab-content">
         <div id="session-tab" class="tab-pane fade in active">
             <div class="admin-nav-head">The session page describes what the session is about.</div>
             <div class="col-sm-12 artctitle">
-                <h5>Title: What name would you like the article to have?</h5>
+                <h5>Title: What name would you like the session to have?</h5>
                 <div class="form-group">
-                    <input type="text" class="form-control" name="title" value="{{ old('title') }}" placeholder="Introduction to Stress.">
+                    <input type="text" class="form-control" name="title" value="{{ old('title') }}" placeholder="Session title.">
                 </div>
             </div>  
             <div class="col-sm-12 artctitle">
                 <h5>Alternative Title: If you don't want the title of the page to be the same as the name of the session, you may input something different here instead.</h5>
                 <div class="form-group">
-                    <input type="text" class="form-control" name="title_alt" value="{{ old('title_alt') }}" placeholder="Alternative Title">
+                    <input type="text" class="form-control" name="title_alt" value="{{ old('title_alt') }}" placeholder="Write something here...">
                 </div>
             </div>
             <div class="col-sm-12 artcontent">
@@ -42,27 +47,47 @@
                 </div>
             </div> 
         </div>
-        <div id="video-tab" class="tab-pane fade in">
-            <div class="admin-nav-head">The video is the main content of the session. Use the settings below to attach a video to the session.</div>
+        <div id="attachment-tab" class="tab-pane fade in">
+            <div class="admin-nav-head">The session The video and material represents the main content of the session. Use the settings below to attach a video and material to the session.</div>
             <div class="col-sm-12 artcover">
                 <p><span style="color: #fff;">Video Attachment: </span> This session is currently attached to the video displayed below.</p>
-                <a href="javascript::void(0)" onclick="$('[name=video_attach]').click()">Add Video</a>
-                <input type="file" name="video_attach" accept="video/*" style="display: none;" onchange="readVideoURL(this);" />
+                <a href="#" data-toggle="modal" data-target="#modal-videoPopup">Attach Video</a>
             </div> 
-            <div class="row media-wrapper">
-                <div class="col-sm-12 imagewrap">
+            <div class="col-sm-12 media-wrapper">
+                <div class="imagewrap">
                     <div class="col-sm-3 covercontainer">
-                        <video src="{{ asset('administrator/images/no-image.png') }}" alt="video" id="video_attach_preview" class="image vdo"  style="width:100%" controls="">
+                        <input type="hidden" name="video_id" value=""/>
+                        <video src="#" alt="video" id="video_attach_preview" class="image vdo"  style="width:100%" controls="">
                             <div class="middle">
                                 <div class="text video_attach_name"></div>
                             </div>
                     </div>
-                    <div class="col-sm-9 editimg editVideo" style="display:none;">
+                    <div class="col-sm-9 editimg video_attach_detail" style="display:none;">
                         <div class="postnbotm">
                             <h5 class="video_attach_name"></h5>
                             <!--<p><a href="javascript:void(0)"> Edit Video</a></p>-->
                         </div>
                     </div>   
+                </div>
+            </div>
+            <div class="col-sm-12 artcover">
+                <p><span style="color: #fff;">Material Attachment: </span> The material for this session is currently attached to the file displayed below.</p>
+                <a href="#" data-toggle="modal" data-target="#modal-materialPopup">Attach Material</a>
+            </div> 
+            <div class="col-sm-12 media-wrapper">
+                <div class="imagewrap">
+                    <div class="col-sm-3 covercontainer">
+                        <img src="{{ asset(config('constants.media.default_media_path_display')) }}" alt="material Image" id="material_preview" class="image" style="width:100%">
+                        <div class="middle">
+                            <div class="text material_name"></div>
+                        </div>
+                    </div>
+                    <input type="hidden" name="material_id" value=""/>
+                    <div class="col-sm-9 editimg material_detail" style="display: none;">
+                        <div class="postnbotm">
+                            <h5 class="material_name"></h5>
+                        </div>
+                    </div>  
                 </div>
             </div>
         </div>
@@ -106,39 +131,41 @@
             </div>
         </div>
         <div id="cover-tab" class="tab-pane fade in">
-            <div class="admin-nav-head">The cover is an image that represents the article. You can change the cover by altering the settings below.</div>
+            <div class="admin-nav-head">The cover represents the session. Add the settings below to control what the cover looks like.</div>
             <div class="col-sm-12 artctitle">
-                <h5>Cover Title: If you don't want the title of the cover to be the same as the name of the article, you may input something different here instead.</h5>
+                <h5>Cover Title: If you don't want the label of the cover to be the same as the title of the session, you may input something different here instead.</h5>
                 <div class="form-group">
                     <input type="text" class="form-control"  value="{{ old('cover_title') }}" name="cover_title">
                 </div>
-            </div> 
+            </div>
             <div class="col-sm-12 artcover">
-                <p>Content: What would you like to say in the article?</p>
-                <a href="javascript::void(0)" onclick="$('[name=cover_image]').click()">Add Cover</a>
-                <input type="file" name="cover_image" accept="image/*" style="display: none;" onchange="readURL(this);" />
+                <p>Image: The session is currently associated with the image displayed below.</p>
+                <a href="#" data-toggle="modal" data-target="#modal-coverPopup">Attach Image</a>
             </div> 
             <div class="col-sm-12 imagewrap">
                 <div class="col-sm-3 covercontainer">
-                    <img src="{{ asset('administrator/images/no-image.png') }}" alt="Cover Image" id="cover_image_preview" class="image" style="width:100%">
+                    <img src="{{ asset(config('constants.media.default_media_path_display')) }}" alt="Cover Image" id="cover_image_preview" class="image" style="width:100%">
                     <div class="middle">
                         <div class="text cover_image_name"></div>
                     </div>
-
                 </div>
-                <div class="col-sm-9 editimg editimgImage" style="display: none;">
+                <input type="hidden" name="cover_id" value=""/>
+                <div class="col-sm-9 editimg cover_image_detail" style="display: none;">
                     <div class="postnbotm">
                         <h5 class="cover_image_name"></h5>
-                        <!--<p><a href="javascript:void(0)">Edit Image</a></p>-->
                     </div>
                 </div>   
             </div>
         </div>
-<!--        <div id="public-tab" class="tab-pane fade in">
-            <div class="admin-nav-head">The publication tab controls how and when you want the article to be published.</div>        
+        <div id="public-tab" class="tab-pane fade in">
+            <div class="admin-nav-head">The publication tab controls how and when you want the session to be published.</div>        
             <div class="col-sm-12 meta-auther userAccess">
-                <h5>Access Level</h5>
+                <h5>User Access: Who can view the session?</h5>
                 <div class="auth_wrap">
+                    <label class="auth_container">Everyone
+                        <input type="radio"  name="role_id[]" value="" checked="">
+                        <span class="checkmark"></span>
+                    </label>
                     @foreach($roles as $role)
                     <label class="auth_container">{{ $role->name }}
                         <input type="radio"  name="role_id[]" value="{{ $role->id }}"  @if(is_array(old('role_id')) && in_array($role->id, old('role_id'))) checked @endif >
@@ -148,36 +175,39 @@
                 </div>
             </div>
             <div class="col-sm-12 presentation">
-                <h5>Presentation Style: How prominent would you like the article to be displayed?</h5>
+                <h5>Presentation Style: How prominent would you like the session to be displayed?</h5>
                 <div class="input-group">
                     <div class="input-group-btn">
                         <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <span class="caret"></span></button>
-                    </div> /btn-group 
+                    </div> 
                     <input type="text" class="form-control" aria-label="..." value="Dynamic Profile">
-                </div> /input-group 
+                </div>
             </div>
             <div class="col-sm-12 appearence">
-                <h5>Publication: How would you like to republish the article?</h5>
-                <ul>
+                <h5>Publication: No changes have been made to the session. The option to republish the session will become available when changes have been made.</h5>
+                <ul style="opacity:0.5">
                     <li>Schedule for Republication</li>
-                    <li><input type="date" name="publish" value="{{ old('publish') }}"/></li>
+                    <li>Republish Now</li>
                 </ul>
             </div>
             <div class="col-sm-12 appearence">
-                <h5>Depublication: You can depublish the article using the settings below.</h5>
+                <h5>Depublication: You can depublish the session using the settings below.</h5>
                 <ul>
-                    <li>Schedule for Republication</li>
-                    <li><input type="date" name="unpublish" value="{{ old('unpublish') }}"/></li>
+                    <li>Schedule for Depublication</li>
+                    <li><a href="#" data-toggle="modal" data-target="#modal-depublication">Depublish Now</a></li>
                 </ul>
             </div>
-        </div>-->
+        </div>
         <div id="analytic-tab" class="tab-pane fade in">
             <div class="admin-nav-head">Analytics provides details about how your audience responds to, and interacts with, this article in particular.</div>
         </div>
     </div>
-    <button type="submit" class="btn btn-primary">Add Session</button>
 </form>
 <!-- Start Navigation -->
+@include('admin._partial.depublication',['message'=>'This action will make this session inaccessible to your audience. Are you sure you want to depublish the program?'])
+@include('admin._partial.coverPopup',['galleries' => $galleries])
+@include('admin._partial.videoPopup',['galleries' => $galleries])
+@include('admin._partial.materialPopup',['galleries' => $galleries])
 @endsection('content')
 @section('after-script')
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/tagmanager/3.0.2/tagmanager.min.js"></script>
@@ -193,48 +223,6 @@
     $(document).ready(function () {
         $(".tm-input").tagsManager();
     });
-    $('body').on('click', '.select-material-th', function () {
-        if ($(this)[0].checked) {
-            $('body .select-material-td').prop('checked', true);
-        } else {
-            $('body .select-material-td').prop('checked', false);
-        }
-    });
-    $('body').on('click', '.select-material-td', function () {
-        if (!$(this)[0].checked) {
-            $('body .select-material-th').prop('checked', false);
-        }
-    });
-    //Select deselect resource
-    $('body').on('click', '.select-resource-th', function () {
-        if ($(this)[0].checked) {
-            $('body .select-resource-td').prop('checked', true);
-        } else {
-            $('body .select-resource-td').prop('checked', false);
-        }
-    });
-    $('body').on('click', '.select-resource-td', function () {
-        if (!$(this)[0].checked) {
-            $('body .select-resource-th').prop('checked', false);
-        }
-    });
-    function readURL(input) {
-        if (input.files && input.files[0]) {
-            var reader = new FileReader();
-
-            reader.onload = function (e) {
-                $('#cover_image_preview').attr('src', e.target.result);
-            };
-            $('.editimgImage').show();
-            $('.cover_image_name').text(input.files[0].name);
-            reader.readAsDataURL(input.files[0]);
-        }
-    }
-    function readVideoURL(input) {
-        $('.editVideo').show();
-        $('.video_attach_name').text(input.files[0].name);
-        var fileUrl = window.URL.createObjectURL(input.files[0]);
-        $("#video_attach_preview").attr("src", fileUrl);
-    }
 </script>
+@include('admin._partial.formjs')
 @endsection('after-script')

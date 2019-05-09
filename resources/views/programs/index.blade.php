@@ -94,24 +94,39 @@
                     <div class="col-md-12 pd0 mrgn-left">
                         @foreach ($programs as $program)
                         @php
-                        $program_cover_image = asset('images/no-image.png');
-                        $program_cover_image_thumb = asset('images/no-image.png');
-                        if(isset($program->cover_media->file)):
-                        $program_cover_image = asset(config('constants.program.cover_path_display').$program->cover_media->file);
-                        $program_cover_image_thumb = asset(config('constants.program.cover_path_display').'thumb_'.$program->cover_media->file);
+                        $program_cover_image = asset(config('constants.media.default_media_path_display'));
+                        $filename = '';
+                        if(isset($program->cover_media->media->file)):
+                        $filename = $program->cover_media->media->file; 
+                        $program_cover_image = asset(config('constants.media.media_path_display').$program->cover_media->media->file);
                         endif;
                         @endphp
+                        @if(Helper::is_access_allowed(@$program->access[0]->role_id))
                         <div class="col-md-4 pd0 wd420 mrgn-left">
                             <div class="rj_program rj_program_mk5  pd0">
                                 <div class="rj_program_inner">
                                     <a href="{{ route('user.program.detail',[$program->slug]) }}">
                                         <img src="{{ $program_cover_image }}" alt=""  >
                                         <div class="menu_opacity"></div>
-                                        <div class="menu_name">{{ $program->cover_title }}</div>
+                                        <div class="menu_name">{{ $program->cover_title ? $program->cover_title : $program->title }}</div>
                                     </a>
                                 </div>
                             </div>                      
                         </div>
+                        @else
+                        <div class="col-md-4 pd0 wd420 mrgn-left blk-both">
+                            <div class="rj_program rj_program_mk5  pd0">
+                                <div class="rj_program_inner">
+                                    <a href="javascript:void(0)">
+                                        <img src="{{ $program_cover_image }}" alt=""  >
+                                        <div class="menu_opacity_bl"></div>
+                                        <div class="menu_name">{{ $program->cover_title ? $program->cover_title : $program->title }}</div>
+                                        <div class="rj_lock_icon"><i class="fa fa-lock"></i></div>
+                                    </a>
+                                </div>
+                            </div>         
+                        </div>
+                        @endif
                         @endforeach
                     </div>
                 </div>

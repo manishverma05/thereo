@@ -3,6 +3,10 @@
 @section('after-style')
 @endsection('after-style')
 
+@section('left-breadcrumb')
+<div class="rjadmin_back"><a href="{{ route('admin.dashboard') }}">Return to Dashboard</a></div>
+@endsection('left-breadcrumb')
+
 @section('content')
 <!-- Start Navigation -->
 <div class="rjadmin_navigation">
@@ -52,10 +56,8 @@
                     @foreach ($programs as $program)
                     @php
                     $program_cover_image = asset('administrator/images/no-image.png');
-                    $program_cover_image_thumb = asset('administrator/images/no-image.png');
-                    if(isset($program->cover_media->file)):
-                    $program_cover_image = asset(config('constants.program.cover_path_display').$program->cover_media->file);
-                    $program_cover_image_thumb = asset(config('constants.program.cover_path_display').'thumb_'.$program->cover_media->file);
+                    if(isset($program->cover_media->media->file)):
+                    $program_cover_image = asset(config('constants.media.media_path_display').$program->cover_media->media->file);
                     endif;
                     @endphp
                     <!-- START: single grid -->
@@ -87,10 +89,8 @@
                         @foreach ($programs as $program)
                         @php
                         $program_cover_image = asset('administrator/images/no-image.png');
-                        $program_cover_image_thumb = asset('administrator/images/no-image.png');
-                        if(isset($program->cover_media->file)):
-                        $program_cover_image = asset(config('constants.program.cover_path_display').$program->cover_media->file);
-                        $program_cover_image_thumb = asset(config('constants.program.cover_path_display').'thumb_'.$program->cover_media->file);
+                        if(isset($program->cover_media->media->file)):
+                        $program_cover_image = asset(config('constants.media.media_path_display').$program->cover_media->media->file);
                         endif;
                         @endphp
                         <tr>  
@@ -104,7 +104,7 @@
                             </td>
                             <td>
                                 <a href="{{ route('admin.program.update',[$program->unique_id]) }}">
-                                    <img class="article-thumb" src="{{ $program_cover_image_thumb }}"> 
+                                    <img class="article-thumb" src="{{ $program_cover_image }}"> 
                                     {{ $program->title }}
                                 </a>
                             </td>
@@ -127,7 +127,7 @@
             </div>
             <div class="filter_option col-md-12">
                 <div class="col-sm-2">
-                    <input type="text" value="Search">
+                    <input type="text" value="" placeholder="Search">
                 </div> 
                 <div class="col-sm-2">
                     <select>
@@ -136,12 +136,6 @@
                 </div> 
                 <div class="col-sm-5">
                     <p>{{ count($programCategories) }} Categories</p>
-                </div> 
-                <div class="col-sm-1 switch-view">
-                    <a class="grid-btn switch-view-button" href="javascript:void(0)"> <i class="fa fa-th"></i> </a>
-                </div> 
-                <div class="col-sm-1 switch-view" style="display: none;">
-                    <a class="grid-btn switch-view-button" href="javascript:void(0)"> <i class="fa fa-th-list"></i> </a>
                 </div> 
                 <div class="col-sm-2">
                     <select>
@@ -152,30 +146,7 @@
             </div>
 
             <div class="col-md-12 responder_table">
-                <!-- START: grid row -->
-                <div class="row articles-wrapper switch-view">
-                    <!-- START: grid row -->
-                    <div class="row articles-wrapper switch-view">
-                        @foreach ($programCategories as $category)
-                        @php
-                        $category_cover_image = asset('administrator/images/no-image.png');
-                        $category_cover_image_thumb = asset('administrator/images/no-image.png');
-                        if(isset($category->cover_media->file)):
-                        $category_cover_image = asset(config('constants.program.category.cover_path_display').$category->cover_media->file);
-                        $category_cover_image_thumb = asset(config('constants.program.category.cover_path_display').'thumb_'.$category->cover_media->file);
-                        endif;
-                        @endphp
-                        <!-- START: single grid -->
-                        <div class="col-sm-3 articles-grid" style="background-image: url('{{ $category_cover_image }}');background-size:cover;background-repeat:no-repeat;">
-                            <h3><a href="{{ route('admin.program.category.update',[$category->unique_id]) }}" >{{ $category->title }}</a></h3>
-                        </div> 
-                        <!-- END: single grid -->
-                        @endforeach
-                    </div>         
-                    <!-- END :grid row -->
-                </div>         
-                <!-- END :grid row -->
-                <table class="table switch-view" style="display:none;" >
+                <table class="table" >
                     <thead>
                         <tr>
                             <td class="checkbox-cell">
@@ -186,21 +157,11 @@
                                     </label>
                                 </div>
                             </td>
-                            <td>Title <i class="fa fa-long-arrow-up" aria-hidden="true"></i><i class="fa fa-long-arrow-down" aria-hidden="true"></i></td>
-                            <td>Created By<i class="fa fa-long-arrow-up" aria-hidden="true"></i><i class="fa fa-long-arrow-down" aria-hidden="true"></i></td>
-                            <td>Date <i class="fa fa-long-arrow-up" aria-hidden="true"></i><i class="fa fa-long-arrow-down" aria-hidden="true"></i></td>
+                            <td>Title</td>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach ($programCategories as $category)
-                        @php
-                        $category_cover_image = asset('administrator/images/no-image.png');
-                        $category_cover_image_thumb = asset('administrator/images/no-image.png');
-                        if(isset($category->cover_media->file)):
-                        $category_cover_image = asset(config('constants.program.category.cover_path_display').$category->cover_media->file);
-                        $category_cover_image_thumb = asset(config('constants.program.category.cover_path_display').'thumb_'.$category->cover_media->file);
-                        endif;
-                        @endphp
                         <tr>  
                             <td class="checkbox-cell">
                                 <div class="checkbox">
@@ -212,12 +173,9 @@
                             </td>
                             <td>
                                 <a href="{{ route('admin.program.category.update',[$category->unique_id]) }}">
-                                    <img class="article-thumb" src="{{ $category_cover_image_thumb }}"> 
                                     {{ $category->title }}
                                 </a>
                             </td>
-                            <td><a href="javascript::void(0)">{{ $category->creator->username }}</a></td>
-                            <td><a href="javascript::void(0)">{{ $category->created_at }}</a></td>
                         </tr>
                         @endforeach
                     </tbody>

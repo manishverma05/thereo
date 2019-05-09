@@ -3,6 +3,10 @@
 @section('after-style')
 @endsection('after-style')
 
+@section('left-breadcrumb')
+<div class="rjadmin_back"><a href="{{ route('landing') }}">Back to myThereo</a></div>
+@endsection('left-breadcrumb')
+
 @section('content')
 <!-- Start Navigation -->
 <div class="rjadmin_navigation">
@@ -52,7 +56,7 @@
                 <div class="filter_option">
                     <div class="row">
                         <div class="col-xs-12 col-sm-8 col-md-8 col-lg-9">
-                            <input type="text" value="Search">
+                            <input type="text" value="" placeholder="Search">
                             <select>
                                 <option>Filter</option>
                             </select>
@@ -205,7 +209,7 @@
                 <div class="filter_option">
                     <div class="row">
                         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                            <input type="text" value="Search">
+                            <input type="text" value="" placeholder="Search">
                             <select>
                                 <option>Filter</option>
                             </select>
