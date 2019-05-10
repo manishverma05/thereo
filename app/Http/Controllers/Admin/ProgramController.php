@@ -77,7 +77,7 @@ class ProgramController extends Controller {
         }
         $program->status = $request->status ? $request->status : '0';
         $program->save();
-        
+
         #save access for program
         if (isset($request->role_id)) {
             foreach ($request->role_id as $role_id) {
@@ -89,7 +89,7 @@ class ProgramController extends Controller {
                 }
             }
         }
-        
+
         #save authors for program
         if (isset($request->author_id)) {
             foreach ($request->author_id as $author_id) {

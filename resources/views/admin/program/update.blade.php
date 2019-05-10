@@ -250,8 +250,10 @@
                         @foreach ($program->resources as $program_resource)
                         @php
                         $program_resource_cover_image = asset(config('constants.media.default_media_path_display'));
-                        if(isset($program_resource->resource->cover_media->media->file)):
-                        $program_resource_cover_image = asset(config('constants.resource.media_path_display').$program_resource->resource->cover_media->media->file);
+                        $mediaType = ($program_resource->resource->type == 'local'?'product' :($program_resource->resource->type == 'media' || $program_resource->resource->type == 'external'?'cover_media':'cover_media'));
+                        if($mediaType)
+                        if(isset($program_resource->resource->$mediaType->media->file)):
+                        $program_resource_cover_image = asset(config('constants.media.media_path_display').$program_resource->resource->$mediaType->media->file);
                         endif;
                         @endphp
                         <!-- START: single grid -->
@@ -283,8 +285,8 @@
                             @foreach ($program->resources as $program_resource)
                             @php
                             $program_resource_cover_image = asset(config('constants.media.default_media_path_display'));
-                            if(isset($program_resource->resource->cover_media->media->file)):
-                            $program_resource_cover_image = asset(config('constants.resource.media_path_display').$program_resource->resource->cover_media->media->file);
+                            if(isset($program_resource->resource->product->media->file)):
+                            $program_resource_cover_image = asset(config('constants.resource.media_path_display').$program_resource->resource->product->media->file);
                             endif;
                             @endphp
                             <tr>  

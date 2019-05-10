@@ -58,7 +58,6 @@ class MaterialController extends Controller {
             return redirect()->route('admin.session.list')->with('error', 'Session not found.');
         // Retrieve the validated input data...
         $validation = $request->validated();
-
         // create new material and save it
         $material = new Material;
         $material->unique_id = uniqid() . uniqid();
@@ -74,12 +73,10 @@ class MaterialController extends Controller {
         }
         $material->status = '1';
         $material->save();
-
         $session_material = new SessionMaterialMap;
         $session_material->material_id = $material->id;
         $session_material->session_id = $session->id;
         $session_material->save();
-
         if (isset($request->cover_image)) {
             $imageName = strtolower($request->cover_image->getClientOriginalName());
             $destination = config('constants.material.cover_path');
@@ -94,7 +91,6 @@ class MaterialController extends Controller {
             $img->resize(300, 300, function ($constraint) {
                 $constraint->aspectRatio();
             })->save(config('constants.material.cover_path') . 'thumb_' . $imageName);
-
             $request->cover_image->move($destination, $imageName);
             $material_cover_media = new MaterialCoverMedia;
             $material_cover_media->unique_id = uniqid() . uniqid();
@@ -103,11 +99,9 @@ class MaterialController extends Controller {
             $material_cover_media->created_by = auth()->user()->id;
             $material_cover_media->save();
         }
-
         if (isset($request->attachment)) {
             $attachmentName = strtolower($request->attachment->getClientOriginalName());
             $destination = config('constants.material.attachment_path');
-
             $i = 1;
             while (true) {
                 if (!file_exists($destination . $attachmentName)) {
@@ -115,7 +109,6 @@ class MaterialController extends Controller {
                 }
                 $attachmentName = ++$i . $attachmentName;
             }
-
             $request->attachment->move($destination, $attachmentName);
             $material_media = new MaterialAttachment;
             $material_media->unique_id = uniqid() . uniqid();
@@ -134,7 +127,6 @@ class MaterialController extends Controller {
         // Retrieve the validated input data...
         $validation = $request->validated();
 
-
         // create new material and save it
         $material = new Material;
         $material->unique_id = uniqid() . uniqid();
@@ -150,12 +142,10 @@ class MaterialController extends Controller {
         }
         $material->status = '1';
         $material->save();
-
         $session_material = new SessionMaterialMap;
         $session_material->material_id = $material->id;
         $session_material->session_id = $session->id;
         $session_material->save();
-
         if (isset($request->cover_image)) {
             $imageName = strtolower($request->cover_image->getClientOriginalName());
             $destination = config('constants.material.cover_path');
@@ -170,7 +160,6 @@ class MaterialController extends Controller {
             $img->resize(300, 300, function ($constraint) {
                 $constraint->aspectRatio();
             })->save(config('constants.material.cover_path') . 'thumb_' . $imageName);
-
             $request->cover_image->move($destination, $imageName);
             $material_cover_media = new MaterialCoverMedia;
             $material_cover_media->unique_id = uniqid() . uniqid();
@@ -182,7 +171,6 @@ class MaterialController extends Controller {
         if (isset($request->attachment)) {
             $attachmentName = strtolower($request->attachment->getClientOriginalName());
             $destination = config('constants.material.attachment_path');
-
             $i = 1;
             while (true) {
                 if (!file_exists($destination . $attachmentName)) {
@@ -190,7 +178,6 @@ class MaterialController extends Controller {
                 }
                 $attachmentName = ++$i . $attachmentName;
             }
-
             $request->attachment->move($destination, $attachmentName);
             $material_media = new MaterialAttachment;
             $material_media->unique_id = uniqid() . uniqid();
@@ -240,9 +227,7 @@ class MaterialController extends Controller {
             return redirect()->route('admin.session.list')->with('error', 'Session not found.');
         // Retrieve the validated input data...
         $validation = $request->validated();
-
         // create new material and save it
-
         $material = Material::where('unique_id', $material_unique_id)->first();
         $material->slug = $request->slug ? $request->slug : Str::slug($request->title, '-') . uniqid();
         $material->title = $request->title;
@@ -256,7 +241,6 @@ class MaterialController extends Controller {
         }
         $material->status = '1';
         $material->save();
-
         if (isset($request->cover_image)) {
             $material_cover_media = MaterialCoverMedia::where('material_id', $material->id)->first();
             $destination = config('constants.material.cover_path');
@@ -278,7 +262,6 @@ class MaterialController extends Controller {
             $img->resize(300, 300, function ($constraint) {
                 $constraint->aspectRatio();
             })->save(config('constants.material.cover_path') . 'thumb_' . $imageName);
-
             $request->cover_image->move($destination, $imageName);
             if (!$material_cover_media) {
                 $material_cover_media = new MaterialCoverMedia;
@@ -299,7 +282,6 @@ class MaterialController extends Controller {
                     unlink($destination . 'thumb_' . $material_media->file);
             }
             $attachmentName = strtolower($request->attachment->getClientOriginalName());
-
             $i = 1;
             while (true) {
                 if (!file_exists($destination . $attachmentName)) {
@@ -307,7 +289,6 @@ class MaterialController extends Controller {
                 }
                 $attachmentName = ++$i . $attachmentName;
             }
-
             $request->attachment->move($destination, $attachmentName);
             if (!$material_media) {
                 $material_media = new MaterialAttachment;
@@ -327,7 +308,6 @@ class MaterialController extends Controller {
             return redirect()->route('admin.session.list')->with('error', 'Session not found.');
         // Retrieve the validated input data...
         $validation = $request->validated();
-
         // create new material and save it
         $material = Material::where('unique_id', $material_unique_id)->first();
         $material->slug = $request->slug ? $request->slug : Str::slug($request->title, '-') . uniqid();
@@ -342,7 +322,6 @@ class MaterialController extends Controller {
         }
         $material->status = '1';
         $material->save();
-
         if (isset($request->cover_image)) {
             $material_cover_media = MaterialCoverMedia::where('material_id', $material->id)->first();
             $destination = config('constants.material.cover_path');
@@ -364,7 +343,6 @@ class MaterialController extends Controller {
             $img->resize(300, 300, function ($constraint) {
                 $constraint->aspectRatio();
             })->save(config('constants.material.cover_path') . 'thumb_' . $imageName);
-
             $request->cover_image->move($destination, $imageName);
             if (!$material_cover_media) {
                 $material_cover_media = new MaterialCoverMedia;
@@ -392,7 +370,6 @@ class MaterialController extends Controller {
                 }
                 $attachmentName = ++$i . $attachmentName;
             }
-
             $request->attachment->move($destination, $attachmentName);
             if (!$material_media) {
                 $material_media = new MaterialAttachment;

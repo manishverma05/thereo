@@ -78,12 +78,10 @@ class SessionController extends Controller {
         }
         $session->status = $request->status ? $request->status : '0';
         $session->save();
-
         $program_session = new ProgramSessionMap;
         $program_session->session_id = $session->id;
         $program_session->program_id = $program->id;
         $program_session->save();
-
         #save access for session
         if (isset($request->role_id)) {
             foreach ($request->role_id as $role_id) {
@@ -95,7 +93,6 @@ class SessionController extends Controller {
                 }
             }
         }
-
         #save authors for session
         if (isset($request->author_id)) {
             foreach ($request->author_id as $author_id) {

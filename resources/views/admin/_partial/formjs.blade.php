@@ -14,10 +14,10 @@
         document.getElementById('form').submit();
     }
     $(window).bind('beforeunload', function () {
-//        if (isFormSubmit) {
-//            return;
-//        }
-//        return 'Are you sure you want to leave?';
+        if (isFormSubmit) {
+            return;
+        }
+        return 'Are you sure you want to leave?';
     });
     function updateCover(obj) {
         $('.cover_image_name').text($(obj).find('img').attr('data-name'));
@@ -39,5 +39,19 @@
         $('input[name=material_id]').val($(obj).find('img').attr('id'));
         $('.material_detail').show();
         $('#modal-materialPopup').modal('hide');
+    }
+    function updateProduct(obj) {
+        $('.product_name').text($(obj).find('img').attr('data-name'));
+        $('#product_preview').attr('src', $(obj).find('img').attr('src'));
+        $('input[name=product_id]').val($(obj).find('img').attr('id'));
+        $('.product_detail').show();
+        $('#modal-productPopup').modal('hide');
+    }
+    function updateMedia(obj) {
+        $('.media_name').text($(obj).find('img').attr('data-name'));
+        $('#media_preview').attr('src', $(obj).find('img').attr('src'));
+        $('input[name=media_id]').val($(obj).find('img').attr('id'));
+        $('.media_detail').show();
+        $('#modal-mediaPopup').modal('hide');
     }
 </script>

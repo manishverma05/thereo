@@ -21,7 +21,6 @@ class ProgramCategoryController extends Controller {
     public function postCreate(AdminProgramCategoryCreateRequest $request) {
         // Retrieve the validated input data...
         $validation = $request->validated();
-
         // create new program and save it
         $program_category = new ProgramCategory;
         $program_category->unique_id = uniqid() . uniqid();
@@ -33,7 +32,6 @@ class ProgramCategoryController extends Controller {
             $program_category->unpublish_on = Carbon::createFromFormat('Y-m-d H:i:s', $request->unpublish . ' 00:00:00');
         }
         $program_category->save();
-
         return redirect()->route('admin.program.list')->with('success', 'Program Category has been added.');
     }
 
@@ -48,7 +46,6 @@ class ProgramCategoryController extends Controller {
     public function postUpdate(AdminProgramCategoryUpdateRequest $request, $program_category_unique_id) {
         // Retrieve the validated input data...
         $validation = $request->validated();
-
         // update existing program category and save it
         $program_category = ProgramCategory::where('unique_id', $program_category_unique_id)->first();
         $program_category->slug = Str::slug($request->title, '-');
@@ -59,7 +56,6 @@ class ProgramCategoryController extends Controller {
             $program_category->unpublish_on = Carbon::createFromFormat('Y-m-d H:i:s', $request->unpublish . ' 00:00:00');
         }
         $program_category->save();
-
         return redirect()->route('admin.program.list')->with('success', 'Program Category has been updated.');
     }
 

@@ -26,7 +26,6 @@ class MediaController extends Controller {
                 }
                 $fileName = ++$i . $fileName;
             }
-
             $request->file->move($destination, $fileName);
             $filemedia = new Media;
             $filemedia->unique_id = uniqid() . uniqid();
