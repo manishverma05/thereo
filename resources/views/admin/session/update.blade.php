@@ -24,6 +24,7 @@
 <form action="{{ route('admin.program.session.update',[$program->unique_id,$session->unique_id]) }}" method="post" enctype="multipart/form-data" id="form">
     @csrf 
     <input type="hidden" name="status" value="{{ old('status', $session->status) }}"/>
+    <input type="hidden" name="status" value="{{ old('status',$session->status) }}"/>
     <div class="tab-content">
         <div id="session-tab" class="tab-pane fade in active">
             <div class="admin-nav-head">The session page describes what the session is about.</div>
