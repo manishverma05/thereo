@@ -84,7 +84,7 @@
                                     </div>
                                     <!-- END: single grid -->
                                     @endif
-                                @endforeach
+                                    @endforeach
                                 </div>  
                                 @endforeach
                                 <!-- END :grid row -->
