@@ -64,7 +64,7 @@ $anchors = [];
             @endphp
             <div class="videoBackground" style="height:200px; z-index: -999999999999999999999999999;">
                 <video preload="none" autoplay="autoplay" muted loop id="backVideo">
-                    <source type="video/{{ $pathinfo['extension'] }}" src="{{ $video }}" />
+                    <source type="video/{{ @$pathinfo['extension'] }}" src="{{ $video }}" />
                 </video>
             </div>	
             <div class="single_opacity"></div>
@@ -115,7 +115,7 @@ $pathinfo = pathinfo($program_session->session->attachment->file);
 endif;
 @endphp
 <!-- Modal -->
-@include('_partial.pop_modal', ['video' => $video , 'type' => $pathinfo['extension'], 'modalId' => $program_session->session->unique_id ])
+@include('_partial.pop_modal', ['video' => $video , 'type' => @$pathinfo['extension'], 'modalId' => $program_session->session->unique_id ])
 @endforeach
 @endsection
 

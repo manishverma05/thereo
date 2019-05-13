@@ -13,6 +13,7 @@
     <ul class="menu_tab nav nav-tabs">
         <li class="active"><a data-toggle="tab" href="#session-tab">Session Page</a></li>
         <li><a data-toggle="tab" href="#attachment-tab">Attachments</a></li>
+        <li><a data-toggle="tab" href="#resource-tab">Resources</a></li>
         <li><a data-toggle="tab" href="#cover-tab">Cover Settings</a></li>
         <li><a data-toggle="tab" href="#meta-tab">Meta Settings</a></li>
         <li><a data-toggle="tab" href="#public-tab">Publication</a></li>
@@ -77,7 +78,7 @@
                             </div>
                     </div>
                     <div class="col-sm-9 editimg video_attach_detail" @if(!@$videoFilename) {{ 'style=display:none;' }} @endif>
-                        <div class="postnbotm">
+                         <div class="postnbotm">
                             <h5 class="video_attach_name">{{ @$videoFilename }}</h5>
                         </div>
                     </div>   
@@ -111,12 +112,115 @@
                     </div>
                     <input type="hidden" name="material_id" value="{{@$session->material->media_id}}"/>
                     <div class="col-sm-9 editimg material_detail" @if(!@$materialFilename) {{ 'style=display:none;' }} @endif>
-                        <div class="postnbotm">
+                         <div class="postnbotm">
                             <h5 class="material_name">{{ @$materialFilename }}</h5>
                         </div>
                     </div>  
                 </div>
             </div>
+        </div>
+
+        <div id="resource-tab" class="tab-pane fade in">
+            <div class="admin-nav-head">The resource page helps you to feature all kinds of products that relate to the session; including, articles, other sessions, and links.</div>           
+            <section id="filter">
+                <div class="filter_hd">
+                    <p>You may search, filter, organize, and edit the resources listed below.</p>
+                    <a href="#" data-toggle="modal" data-target="#modal-resourcePopup" class="nw_article">Add Resource</a>
+                </div>
+                <div class="filter_option col-md-12">
+                    <div class="col-sm-2">
+                        <input type="text" value="" placeholder="Type here to search">
+                    </div> 
+                    <div class="col-sm-2">
+                        <select>
+                            <option>Filter</option>
+                        </select>
+                    </div> 
+                    <div class="col-sm-5">
+                        <p>{{ count($session->resources) }} Program Resources</p>
+                    </div> 
+                    <div class="col-sm-1 switch-view">
+                        <a class="grid-btn switch-view-button" href="javascript:void(0)"> <i class="fa fa-th"></i> </a>
+                    </div> 
+                    <div class="col-sm-1 switch-view" style="display: none;">
+                        <a class="grid-btn switch-view-button" href="javascript:void(0)"> <i class="fa fa-th-list"></i> </a>
+                    </div> 
+                    <div class="col-sm-2">
+                        <select>
+                            <option>Actions</option>
+                        </select>
+                        <a class="conf_btn" href="javascript:void(0)">Confirm</a>
+                    </div> 
+                </div>
+                <div class="col-md-12 responder_table">
+                    <!-- START: grid row -->
+                    <div class="row articles-wrapper switch-view">
+                        @foreach ($session->resources as $session_resource)
+                        @php
+                        $session_resource_cover_image = asset(config('constants.media.default_media_path_display'));
+                        $mediaType = ($session_resource->resource->type == 'local'?'product' :($session_resource->resource->type == 'media' || $session_resource->resource->type == 'external'?'cover_media':'cover_media'));
+                        if($mediaType)
+                        if(isset($session_resource->resource->$mediaType->media->file)):
+                        $session_resource_cover_image = asset(config('constants.media.media_path_display').$session_resource->resource->$mediaType->media->file);
+                        endif;
+                        @endphp
+                        <!-- START: single grid -->
+                        <div class="col-sm-3 articles-grid" style="background-image: url('{{ $session_resource_cover_image }}');background-size:cover;background-repeat:no-repeat;">
+                            <h3><a href="{{ route('admin.session.resource.update.'.$session_resource->resource->type,[$session->unique_id,$session_resource->resource->unique_id]) }}">{{ $session_resource->resource->title }}</a></h3>
+                        </div> 
+                        <!-- END: single grid -->
+                        @endforeach
+                    </div>         
+                    <!-- END :grid row -->
+                    <table class="table switch-view" style="display:none;" >
+                        <thead>
+                            <tr>
+                                <td class="checkbox-cell">
+                                    <div class="checkbox">
+                                        <label>
+                                            <input type="checkbox" class="select-resource-th">
+                                            <i class="helper"></i>
+                                        </label>
+                                    </div>
+                                </td>
+                                <td>Title <i class="fa fa-long-arrow-up" aria-hidden="true"></i><i class="fa fa-long-arrow-down" aria-hidden="true"></i></td>
+                                <td>Created By<i class="fa fa-long-arrow-up" aria-hidden="true"></i><i class="fa fa-long-arrow-down" aria-hidden="true"></i></td>
+                                <!--<td>Category <i class="fa fa-long-arrow-up" aria-hidden="true"></i><i class="fa fa-long-arrow-down" aria-hidden="true"></i></td>-->
+                                <td>Date <i class="fa fa-long-arrow-up" aria-hidden="true"></i><i class="fa fa-long-arrow-down" aria-hidden="true"></i></td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($session->resources as $session_resource)
+                            @php
+                            $session_resource_cover_image = asset(config('constants.media.default_media_path_display'));
+                            if(isset($session_resource->resource->product->media->file)):
+                            $session_resource_cover_image = asset(config('constants.resource.media_path_display').$session_resource->resource->product->media->file);
+                            endif;
+                            @endphp
+                            <tr>  
+                                <td class="checkbox-cell">
+                                    <div class="checkbox">
+                                        <label>
+                                            <input type="checkbox" name="resource_id" class="select-resource-td" value="{{ $session_resource->resource->id }}">
+                                            <i class="helper"></i>
+                                        </label>
+                                    </div>
+                                </td>
+                                <td>
+                                    <a href="{{ route('admin.session.resource.update.'.$session_resource->resource->type,[$session->unique_id,$session_resource->resource->unique_id]) }}">
+                                        <img class="article-thumb" src="{{ $session_resource_cover_image }}"> 
+                                        {{ $session_resource->resource->title }}
+                                    </a>
+                                </td>
+                                <td><a href="javascript::void(0)">{{ $session_resource->resource->creator->username }}</a></td>
+                                <!--<td><a href="javascript::void(0)"></a></td>-->
+                                <td><a href="javascript::void(0)">{{ $session_resource->resource->created_at }}</a></td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            </section>
         </div>
         <div id="meta-tab" class="tab-pane fade in">
             <div class="admin-nav-head">The meta tab controls information relating to search engines - in addition to settings that help organize the article.</div>
@@ -146,7 +250,7 @@
                 </div>
             </div> 
             <div class="col-sm-12 meta-auther">
-                <h5>Categories: What categories would you like the article to belong to? <a href="#" class="nwauthr">New Category</a></h5>
+                <h5>Categories: What categories would you like the article to belong to? <a href="{{ route('admin.session.category.create') }}" class="nwauthr">New Category</a></h5>
                 <div class="auth_wrap">
                     @foreach($sessionCategories as $category)
                     <label class="auth_container">{{ $category->title }}
@@ -250,6 +354,7 @@
 @include('admin._partial.coverPopup',['galleries' => $galleries])
 @include('admin._partial.videoPopup',['galleries' => $galleries])
 @include('admin._partial.materialPopup',['galleries' => $galleries])
+@include('admin._partial.resourcePopup',['relatedTo' => 'session'])
 @endsection('content')
 @section('after-script')
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/tagmanager/3.0.2/tagmanager.min.js"></script>

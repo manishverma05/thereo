@@ -47,6 +47,13 @@
         $('.product_detail').show();
         $('#modal-productPopup').modal('hide');
     }
+    function updateExternal(obj) {
+        $('.external_name').text($(obj).find('img').attr('data-name'));
+        $('#external_preview').attr('src', $(obj).find('img').attr('src'));
+        $('input[name=external_id]').val($(obj).find('img').attr('id'));
+        $('.external_detail').show();
+        $('#modal-externalPopup').modal('hide');
+    }
     function updateMedia(obj) {
         $('.media_name').text($(obj).find('img').attr('data-name'));
         $('#media_preview').attr('src', $(obj).find('img').attr('src'));

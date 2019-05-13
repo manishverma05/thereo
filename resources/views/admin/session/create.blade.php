@@ -119,7 +119,7 @@
                 </div>
             </div> 
             <div class="col-sm-12 meta-auther">
-                <h5>Categories: What categories would you like the article to belong to? <a href="#" class="nwauthr">New Category</a></h5>
+                <h5>Categories: What categories would you like the article to belong to? <a href="{{ route('admin.session.category.create') }}" class="nwauthr">New Category</a></h5>
                 <div class="auth_wrap">
                     @foreach($sessionCategories as $category)
                     <label class="auth_container">{{ $category->title }}

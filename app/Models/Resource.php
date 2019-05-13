@@ -26,6 +26,14 @@ class Resource extends Model {
     public function product() {
         return $this->hasOne('App\Models\ResourceMediaMap')->where('type', 'product');
     }
+
+    /**
+     * Get the attachment record associated with the resource.
+     */
+    public function external() {
+        return $this->hasOne('App\Models\ResourceMediaMap')->where('type', 'external');
+    }
+
     /**
      * Get the attachment record associated with the resource.
      */

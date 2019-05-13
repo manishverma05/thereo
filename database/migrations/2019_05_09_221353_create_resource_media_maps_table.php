@@ -16,7 +16,7 @@ class CreateResourceMediaMapsTable extends Migration {
             $table->bigIncrements('id');
             $table->integer('resource_id');
             $table->integer('media_id');
-            $table->enum('type', ['product','media','cover'])->default('cover');
+            $table->enum('type', ['product','media','cover','external'])->default('cover');
             $table->timestampsTz();
         });
     }

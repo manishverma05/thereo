@@ -32,15 +32,15 @@
                 <div class="progrm_matirial_wrap">
                     <h1>{{ $session->title }} # Material</h1>
                     {!! $session->description !!}
-                    @foreach ($session->materials as $session_material)
                     @php
-                    $session_material_attachment = '#';
-                    if(isset($session_material->material->attachment->file)):
-                    $session_material_attachment = asset(config('constants.material.attachment_path_display').$session_material->material->attachment->file);
+                    $material_attachemnt = asset(config('constants.media.default_media_path_display'));
+                    $filename = '';
+                    if(isset($session->material->media->file)):
+                    $materialFilename = $session->material->media->file; 
+                    $material_attachemnt = asset(config('constants.media.media_path_display').$session->material->media->file);
                     endif;
-                    @endphp
-                    <div class="rjbtn discover_rj pma"><a href="{{ $session_material_attachment }}" target="_blank">{{ $session_material->material->title }}</a></div>
-                    @endforeach
+                    @endphp 
+                    <div class="rjbtn discover_rj pma"><a href="{{ $material_attachemnt }}" target="_blank">{{ $session->material->media->file }}</a></div>
                 </div>
             </div>
         </div>

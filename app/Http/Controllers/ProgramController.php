@@ -21,7 +21,10 @@ class ProgramController extends Controller {
     }
 
     public function detail($program_slug) {
-        $program = Program::where('slug', $program_slug)->with('cover_media')->with('sessions')->first();
+        $program = Program::where('slug', $program_slug)->with('cover_media')->with('sessions')->with('access')->first();
+
+        if (!Helper::is_access_allowed($program->access[0]->role_id))
+            return redirect()->route('unauthorize')->with('error', 'Program not accessable.');
         return view('programs.detail')
                         ->withPagetitle($program->title)
                         ->withPageheader($program->title)

@@ -11,7 +11,7 @@
 @section('content')
 <div class="rjadmin_navigation">
     <ul class="menu_tab nav nav-tabs">
-        <li class="active"><a data-toggle="tab" href="#local-tab"> Local Product</a></li>
+        <li class="active"><a data-toggle="tab" href="#local-tab"> Local</a></li>
         <li><a data-toggle="tab" href="#public-tab">Publication</a></li>
         <li class="rightside"><a data-toggle="tab" href="#analytic-tab">Analytics</a></li>
     </ul>
