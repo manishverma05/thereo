@@ -39,7 +39,6 @@
                     $materialFilename = $session->material->media->file; 
                     $material_attachemnt = asset(config('constants.media.media_path_display').$session->material->media->file);
                     endif;
-                    @endphp 
                     <div class="rjbtn discover_rj pma"><a href="{{ $material_attachemnt }}" target="_blank">{{ $session->material->media->file }}</a></div>
                 </div>
             </div>

@@ -49,19 +49,22 @@ $anchors = [];
     <div id="fullpage">
         @foreach($program->sessions as $program_session)
         @php
+        if (!Helper::is_access_allowed(@$program_session->session->access[0]->role_id))
         $anchors[] = $program_session->session->slug;
         @endphp
         <!-- Start Section -->
         <div class="section program-session" id="section0" style="">
             @php
+            if (!Helper::is_access_allowed(@$program_session->session->access[0]->role_id))
+            continue;
             $video = '';
             $filename = '';
-            if(isset($program_session->session->attachment->file)):
-            $filename = $program_session->session->attachment->file; 
-            $video = asset(config('constants.session.video_path_display').$program_session->session->attachment->file);
-            $pathinfo = pathinfo($program_session->session->attachment->file);
+            if(isset($program_session->session->video->media->file)):
+            $filename = $program_session->session->video->media->file; 
+            $video = asset(config('constants.media.media_path_display').$program_session->session->video->media->file);
+            $pathinfo = pathinfo($program_session->session->video->media->file);
             endif;
-            @endphp
+            @endphp 
             <div class="videoBackground" style="height:200px; z-index: -999999999999999999999999999;">
                 <video preload="none" autoplay="autoplay" muted loop id="backVideo">
                     <source type="video/{{ @$pathinfo['extension'] }}" src="{{ $video }}" />
@@ -94,13 +97,26 @@ $anchors = [];
         </div>	
         <!-- End Section -->
         @endforeach
+        <div class="section program-session" id="loginRegister" style="">
+            <div class="row">
+                <div class="login_wrap login_wrap_mk">
+                    <p class="log_p" style="font-size:17px">Sign in or join up below to access all our programs, resources, and more.</p>
+                    <div class="rjbtn discover_rj"><a href="javascript::void(0);" onclick="{{ route('login') }}">Sign In</a></div>
+                    <div class="or_rj">or</div>
+                    <div class="rjbtn browse_pro"><a href="{{ route('register') }}">Join Up</a></div>
+                </div>
+            </div>
+        </div>
     </div>
     <div id="fp-nav" class="fp-right rj_nav_menu program-sess-nav">
         <ul>
             <li class="goback_rj goback_rj_mks"><a href="{{ route('user.program.detail',[$program->slug]) }}"><span></span></a></li>
             @foreach($program->sessions as $program_session)
+            @if (!Helper::is_access_allowed(@$program_session->session->access[0]->role_id))
             <li class="bluedot"><a href="{{ $program_session->session->slug }}" class=""><span></span></a></li>
+            @endif
             @endforeach
+            <li class="bluedot"><a href="loginRegister" class=""><span></span></a></li>
         </ul>
     </div>
 </div> 
@@ -108,10 +124,10 @@ $anchors = [];
 @php
 $video = '';
 $filename = '';
-if(isset($program_session->session->attachment->file)):
-$filename = $program_session->session->attachment->file; 
-$video = asset(config('constants.session.video_path_display').$program_session->session->attachment->file);
-$pathinfo = pathinfo($program_session->session->attachment->file);
+if(isset($program_session->session->video->media->file)):
+$filename = $program_session->session->video->media->file; 
+$video = asset(config('constants.media.media_path_display').$program_session->session->video->media->file);
+$pathinfo = pathinfo($program_session->session->video->media->file);
 endif;
 @endphp
 <!-- Modal -->

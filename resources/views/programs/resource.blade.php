@@ -90,11 +90,9 @@
                     <div class="program_resource_wrap">
                         @foreach ($program->resources as $program_resource)
                         @php
-                        $program_resource_cover_image = asset('images/no-image.png');
-                        $program_resource_cover_image_thumb = asset('images/no-image.png');
-                        if(isset($program_resource->resource->cover_media->file)):
-                        $program_resource_cover_image = asset(config('constants.resource.cover_path_display').$program_resource->resource->cover_media->file);
-                        $program_resource_cover_image_thumb = asset(config('constants.resource.cover_path_display').'thumb_'.$program_resource->resource->cover_media->file);
+                        $program_resource_cover_image = asset(config('constants.media.default_media_path_display');
+                        if(isset($program_resource->resource->cover_media->media->file)):
+                        $program_resource_cover_image = asset(config('constants.resource.cover_path_display').$program_resource->resource->cover_media->media->file);
                         endif;
                         @endphp
                         <div class="col-md-4 pd0">
