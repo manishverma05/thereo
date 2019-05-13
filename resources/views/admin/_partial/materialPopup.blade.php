@@ -69,7 +69,7 @@
                             <div class="col-md-12 responder_table"> 
                                 @foreach($galleries_chunk as $galleries)
                                 <!-- START: grid row -->
-                                <!--<div class="row articles-wrapper gallery-grid">-->
+                                <div class="row articles-wrapper gallery-grid">
                                     @foreach($galleries as $gallery)
                                     @if(isset($gallery['file']) && !empty($gallery['file']))
                                     @php 
@@ -84,7 +84,7 @@
                                     </div>
                                     <!-- END: single grid -->
                                     @endif
-                                @endforeach
+                                    @endforeach
                                 </div>  
                                 @endforeach
                                 <!-- END :grid row -->
