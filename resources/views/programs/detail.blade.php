@@ -48,6 +48,8 @@
                     <div class="col-md-12 pd0">
                         @foreach($sessions as $sessionIndex => $session)
                         @php
+                        if(!$session->session->status)
+                        continue;
                         $session_cover_image = asset(config('constants.media.default_media_path_display'));
                         if(isset($session->session->cover_media->media->file)):
                         $session_cover_image = asset(config('constants.media.media_path_display').$session->session->cover_media->media->file);
