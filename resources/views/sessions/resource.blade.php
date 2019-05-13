@@ -90,9 +90,9 @@
                     <div class="program_resource_wrap">
                         @foreach ($session->resources as $session_resource)
                         @php
-                        $session_resource_cover_image = asset(config('constants.media.default_media_path_display');
+                        $session_resource_cover_image = asset(config('constants.media.default_media_path_display'));
                         if(isset($session_resource->resource->cover_media->media->file)):
-                        $session_resource_cover_image = asset(config('constants.resource.cover_path_display').$session_resource->resource->cover_media->media->file);
+                        $session_resource_cover_image = asset(config('constants.resource.cover_path_display')).$session_resource->resource->cover_media->media->file);
                         endif;
                         @endphp
                         <div class="col-md-4 pd0">
