@@ -91,8 +91,10 @@
                         @foreach ($session->resources as $session_resource)
                         @php
                         $session_resource_cover_image = asset(config('constants.media.default_media_path_display'));
-                        if(isset($session_resource->resource->cover_media->media->file)):
-                        $session_resource_cover_image = asset(config('constants.resource.cover_path_display')).$session_resource->resource->cover_media->media->file);
+                        $mediaType = ($session_resource->resource->type == 'local'?'product' :($session_resource->resource->type == 'media' || $session_resource->resource->type == 'external'?'cover_media':'cover_media'));
+                        if($mediaType)
+                        if(isset($session_resource->resource->$mediaType->media->file)):
+                        $session_resource_cover_image = asset(config('constants.media.media_path_display').$session_resource->resource->$mediaType->media->file);
                         endif;
                         @endphp
                         <div class="col-md-4 pd0">
