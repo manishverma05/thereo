@@ -49,7 +49,6 @@ $anchors = [];
     <div id="fullpage">
         @foreach($program->sessions as $program_session)
         @php
-        if (Helper::is_access_allowed(@$program_session->session->access[0]->role_id))
         $anchors[] = $program_session->session->slug;
         @endphp
         <!-- Start Section -->
@@ -112,9 +111,7 @@ $anchors = [];
         <ul>
             <li class="goback_rj goback_rj_mks"><a href="{{ route('user.program.detail',[$program->slug]) }}"><span></span></a></li>
             @foreach($program->sessions as $program_session)
-            @if (Helper::is_access_allowed(@$program_session->session->access[0]->role_id))
             <li class="bluedot"><a href="{{ $program_session->session->slug }}" class=""><span></span></a></li>
-            @endif
             @endforeach
             <li class="bluedot"><a href="loginRegister" class=""><span></span></a></li>
         </ul>
