@@ -189,6 +189,7 @@ class SessionController extends Controller {
         if ($request->unpublish != '') {
             $session->unpublish_on = Carbon::createFromFormat('Y-m-d H:i:s', $request->unpublish . ' 00:00:00');
         }
+        $session->status = $request->status ? $request->status : '0';
         $session->save();
         SessionAccessMap::where('session_id', $session->id)->delete();
         #save access for session
