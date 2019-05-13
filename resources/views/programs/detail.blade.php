@@ -62,7 +62,7 @@
                                     <a href="{{ route('user.program.session.list',[$program->slug.'#'.$session->session->slug]) }}">
                                         <img src="{{ $session_cover_image }}" alt="">
                                         <div class="menu_opacity white_opacity"></div>
-                                        <div class="menu_name white_opacity1">{{ ++$sessionIndex }}. {{ $session->session->cover_title }}</div>
+                                        <div class="menu_name white_opacity1">{{ ++$sessionIndex }}. {{ $session->cover_title ? $session->cover_title : $session->title }}</div>
                                     </a>
                                 </div>
                             </div>
