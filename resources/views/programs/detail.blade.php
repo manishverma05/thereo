@@ -74,7 +74,7 @@
                                     <a href="javascript:void(0)">
                                         <img src="{{ $session_cover_image }}" alt="">
                                         <div class="menu_opacity menu_opacity_bl"></div>
-                                        <div class="menu_name">{{ ++$sessionIndex }}. {{ $session->session->cover_title }}</div>
+                                        <div class="menu_name">{{ ++$sessionIndex }}. {{ $session->cover_title ? $session->cover_title : $session->title }}</div>
                                         <div class="rj_lock_icon"><i class="fa fa-lock"></i></div>
                                     </a>
                                 </div>
