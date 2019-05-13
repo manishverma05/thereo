@@ -97,7 +97,7 @@
             </div> 
             @php
             $material_attachemnt = asset(config('constants.media.default_media_path_display'));
-            $filename = '';
+            $materialFilename = '';
             if(isset($session->material->media->file)):
             $materialFilename = $session->material->media->file; 
             $material_attachemnt = asset(config('constants.media.media_path_display').$session->material->media->file);

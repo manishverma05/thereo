@@ -34,12 +34,13 @@
                     {!! $session->description !!}
                     @php
                     $material_attachemnt = asset(config('constants.media.default_media_path_display'));
-                    $filename = '';
+                    $materialFilename = '';
                     if(isset($session->material->media->file)):
-                    $filename = $session->material->media->file; 
+                    $materialFilename = $session->material->media->file; 
                     $material_attachemnt = asset(config('constants.media.media_path_display').$session->material->media->file);
                     endif;
-                    <div class="rjbtn discover_rj pma"><a href="{{ @$material_attachemnt }}" target="_blank">{{ $filename }}</a></div>
+                    @endphp 
+                    <div class="rjbtn discover_rj pma"><a href="{{ $material_attachemnt }}" target="_blank">{{ $materialFilename }}</a></div>
                 </div>
             </div>
         </div>
